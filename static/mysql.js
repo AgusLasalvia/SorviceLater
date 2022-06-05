@@ -18,9 +18,15 @@ function add_ticket(person,description) {
 
 function search_ticket(number ,person) {
   if (number == 0) {
-    connection.query('SELECT FROM ticket WHERE person = ${person}')
+    connection.query('SELECT FROM ticket WHERE person = ${person}', (err, rows) => {
+      if (err) throw err
+      console.log(rows[0])
+    })
   } else if (person == null) {
-    connection.query("SELECT FROM ticket WHERE person = ${number}");
+    connection.query("SELECT FROM ticket WHERE person = ${number}", (err, rows) => {
+      if (err) throw err;
+      console.log(rows[0]);
+    });
   } else {
     // console.log('error, no information given')
   }
