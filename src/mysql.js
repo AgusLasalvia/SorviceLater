@@ -1,4 +1,5 @@
 const { query } = require('express');
+const { get } = require('express/lib/response');
 const sql = require('mysql');
 
 //connection SQL
@@ -12,7 +13,7 @@ const user = sql.createConnection({
 
 //User data
 function verification(username, password) {
-    query = user.query(`SELECT username,password FROM person WHERE username = "${username}" AND password = "${password}"`);
+    query = user.query(`SELECT username,password FROM user WHERE username = "${username}" AND password = "${password}"`);
     if (query[0] == username && query[1] == password) {
         
     }
