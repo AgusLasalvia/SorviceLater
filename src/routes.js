@@ -15,3 +15,8 @@ app.get('/', (recuest, response) => {
 app.get('/profile', (recuest, response) => {
     response.sendFile(path.join(__dirname, '/views/profile.html'));
 });
+
+app.get('/Submit', (request, response) => {
+    if (request) throw request
+    response.sendFile(path.join(__dirname,'/views/Ticket_submit.html'))
+})

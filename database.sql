@@ -30,7 +30,6 @@ CONSTRAINT FOREIGN KEY (request_for) REFERENCES User(username),
 CONSTRAINT FOREIGN KEY (assigned) REFERENCES Admin(username),
 CONSTRAINT FOREIGN KEY (service_offering) REFERENCES Problem(type)
 
-
 CREATE TABLE worknotes(note_id int(20) PRIMARY KEY,
 ticket_id int(7),
 person varchar(25),
