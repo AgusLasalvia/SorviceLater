@@ -1,5 +1,4 @@
 const { query } = require('express');
-const { get } = require('express/lib/response');
 const sql = require('mysql');
 
 //connection SQL
