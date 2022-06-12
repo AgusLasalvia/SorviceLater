@@ -12,7 +12,7 @@ body {
     background-color: #000;
     border-radius: 20px;
     box-sizing: border-box;
-    height: 600px;
+    height: 580px;
     width: 580px;
     align-items: center;
     justify-content: center;
@@ -37,11 +37,15 @@ body {
     color: #3D2DED;
    }
 
-   /* .subtitle {
+   .subtitle {
      color: #e0e0e0;
      font-size: 16px;
      font-weight: 600;
-     margin-top: 10px;
+     margin-top: 0px;
+   }
+
+   /* .subtitle span {
+    color: #3D2DED;
    }
     */
 
