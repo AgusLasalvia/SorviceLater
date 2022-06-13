@@ -32,7 +32,8 @@ app.get('', (req, res) => {
 })
 app.post('/', (req, res) => {
      const { username, password } = req.body
-     connection.query(`INSERT INTO person VALUES("${username}","${password}");`)
+     //connection.query(`INSERT INTO person VALUES("${username}","${password}");`)
+     res.sendFile(path.join(__dirname, '/Templates/menu.html'))
 })
 app.get('/menu', (req, res) => {
      res.sendFile(path.join(__dirname, '/Templates/menu.html'))
