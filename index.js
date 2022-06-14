@@ -7,14 +7,13 @@ const bodyParser = require('body-parser');
 const port = 3000
 
 const connection = mysql.createConnection({
-     host :"localhost",
+     host: "localhost",
      user: "root",
      password: "",
-     database:"test"
+     database: "test"
 
 
 })
-var user = {}
 //app.use(express.urlencoded({ extended: false }));
 
 //statics
@@ -23,7 +22,7 @@ app.use('/js', express.static(__dirname + '/js'))
 app.use('/static', express.static(__dirname + '/static'))
 
 app.use(express.json())
-app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
@@ -32,8 +31,8 @@ app.get('', (req, res) => {
 })
 app.post('/', (req, res) => {
      const { username, password } = req.body
-     //connection.query(`INSERT INTO person VALUES("${username}","${password}");`)
-     res.sendFile(path.join(__dirname, '/Templates/menu.html'))
+     sql = connection.query(`SELECT username FROM person WHERE username = "${username} AND password = "${password}""`)
+     console.log(sql)
 })
 app.get('/menu', (req, res) => {
      res.sendFile(path.join(__dirname, '/Templates/menu.html'))
