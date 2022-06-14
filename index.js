@@ -14,7 +14,11 @@ const connection = mysql.createConnection({
 
 
 })
-var user = {}
+connection.connect((err) => {
+     if (err) throw err
+     console.log('db connected')
+})
+
 //app.use(express.urlencoded({ extended: false }));
 
 //statics
