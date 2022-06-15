@@ -9,8 +9,8 @@ const port = 3000
 // database connection
 const connection = mysql.createConnection({
      host: "localhost",
-     user: "administrator",
-     password: "1234",
+     user: "admin",
+     password: "minecraft1234",
      database: "servicelater"
 
 
@@ -36,13 +36,13 @@ app.get('', (req, res) => {
 });
 app.post('', (req, res) => {
      const { username, password } = req.body
-     //sql = connection.query(`SELECT username FROM person WHERE username = "${username} AND password = "${password}"`)
+     sql = connection.query(`SELECT username FROM Admin WHERE username = "${username} AND password = "${password}"`)
      sql = connection.query(`INSERT INTO person VALUES("${username}","${password}");`)
-     // if (sql === null) {
-     //      console.log('vacio')
-     // } else {
-     //      console.log(sql)
-     // }
+     if (sql === null) {
+           console.log('vacio')
+      } else {
+           console.log(sql)
+      }
 
 });
 
