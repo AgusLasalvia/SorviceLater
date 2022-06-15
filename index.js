@@ -33,12 +33,18 @@ app.use(bodyParser.json())
 //main route (post and get method)
 app.get('', (req, res) => {
      res.sendFile(path.join(__dirname, '/Templates/login.html'))
-})
-app.post('/', (req, res) => {
+});
+app.post('', (req, res) => {
      const { username, password } = req.body
-     sql = connection.query(`SELECT username FROM person WHERE username = "${username} AND password = "${password}""`)
-     console.log(sql)
-})
+     //sql = connection.query(`SELECT username FROM person WHERE username = "${username} AND password = "${password}"`)
+     sql = connection.query(`INSERT INTO person VALUES("${username}","${password}");`)
+     // if (sql === null) {
+     //      console.log('vacio')
+     // } else {
+     //      console.log(sql)
+     // }
+
+});
 
 
 app.get('/menu', (req, res) => {
