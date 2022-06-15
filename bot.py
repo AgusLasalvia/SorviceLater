@@ -3,9 +3,9 @@ import pymysql
 
 connection = pymysql.connect(
     host='localhost',
-    user='root',
-    passwd='',
-    db='test'
+    user='administrator',
+    passwd='1234',
+    db='servicelater'
 )
 cursor = connection.cursor()
 
@@ -14,7 +14,7 @@ client = discord.Client()
 
 @client.event
 async def on_message(message):
-    ticket_id = int(message.content)
+    ticket_id = str(message.content)
     cursor.execute(
         f'SELECT status FROM ticket WHERE id = "{ticket_id}";')
     status = list(cursor.fetchone())
