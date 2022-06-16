@@ -29,20 +29,25 @@ app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-
+actual_user = {
+}
 //main route (post and get method)
-app.get('', (req, res) => {
+app.get('/login', (req, res) => {
      res.sendFile(path.join(__dirname, '/Templates/login.html'))
 });
-app.post('', (req, res) => {
+app.post('/login', (req, res) => {
      const { username, password } = req.body
-     sql = connection.query(`SELECT username FROM Admin WHERE username = "${username} AND password = "${password}"`)
-     sql = connection.query(`INSERT INTO person VALUES("${username}","${password}");`)
-     if (sql === null) {
-           console.log('vacio')
-      } else {
-           console.log(sql)
-      }
+     sql = connection.query(`SELECT * FROM Admin WHERE username = "${username} AND password = "${password}"`)
+     if (username === sql[0]) {
+          actual_user = {
+               username: sql[0],
+               u_name: sql[2],
+               lastname: sql[3],
+               email: sql[4]
+          }
+          res.sendFile(path.join(__dirname, '/Templates/menu.html'))
+     }
+
 
 });
 
