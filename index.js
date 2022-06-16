@@ -12,42 +12,42 @@ const connection = mysql.createConnection({
      user: "admin",
      password: "minecraft1234",
      database: "servicelater"
+});
 
-
-})
 connection.connect((err) => {
-	if (err) throw err
-	console.log('db connected')
-})
+     if (err) throw err
+     console.log('db connected')
+});
 
 
 //statics
-app.use('/styles', express.static(__dirname + "/styles"))
-app.use('/js', express.static(__dirname + '/js'))
-app.use('/static', express.static(__dirname + '/static'))
-app.use(express.json())
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use('/styles', express.static(__dirname + "/styles"));
+app.use('/js', express.static(__dirname + '/js'));
+app.use('/static', express.static(__dirname + '/static'));
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 
-//main route (post and get method)
+//Routes
 app.get('/', (req, res) => {
      res.sendFile(path.join(__dirname, '/Templates/login.html'))
 });
+
+
 app.post('/', (req, res) => {
      const { username, password } = req.body
      console.log(username, password)
      connection.query(`SELECT username FROM Admin WHERE username = "${username}" AND password = "${password}"`, function (err, result, fields) {
-          if(err) throw err
-	  console.log(result)
+          if (err) throw err
+          console.log(result)
           if (result[0].username === username) {
-                   res.sendFile(path.join(__dirname, './Templates/menu.html'))
+               res.sendFile(path.join(__dirname, './Templates/menu.html'))
           } else {
-                   res.send('<p>ERROR</p>')
-               }
-         
-     } )
+               res.send('<p>ERROR</p>')
+          }
      })
+});
 
 
 
@@ -55,6 +55,13 @@ app.get('/menu', (req, res) => {
      res.sendFile(path.join(__dirname, '/Templates/menu.html'))
 });
 
+
+app.get('/ticket', (req, res) => {
+     res.sendFile(path.join(__dirname, './Templates/ticket.html'))
+});
+app.post('/ticket', (req, res) => {
+
+});
 
 //Server start url
 app.listen(port, () => console.info(`http://localhost:${port}`));
