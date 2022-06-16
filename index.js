@@ -16,8 +16,8 @@ const connection = mysql.createConnection({
 
 })
 connection.connect((err) => {
-     if (err) throw err
-     console.log('db connected')
+	if (err) throw err
+	console.log('db connected')
 })
 
 
@@ -31,25 +31,30 @@ app.use(bodyParser.json())
 
 
 //main route (post and get method)
-app.get('', (req, res) => {
+app.get('/', (req, res) => {
      res.sendFile(path.join(__dirname, '/Templates/login.html'))
 });
-app.post('', (req, res) => {
+app.post('/', (req, res) => {
      const { username, password } = req.body
-     sql = connection.query(`SELECT username FROM Admin WHERE username = "${username} AND password = "${password}"`)
-     //sql = connection.query(`INSERT INTO person VALUES("${username}","${password}");`)
-     console.log(sql)
+     console.log(username, password)
+     connection.query(`SELECT username FROM Admin WHERE username = "${username}" AND password = "${password}"`, function (err, result, fields) {
+          if(err) throw err
+	  console.log(result)
+          if (result[0].username === username) {
+                   res.sendFile(path.join(__dirname, './Templates/menu.html'))
+          } else {
+                   res.send('<p>ERROR</p>')
+               }
+         
+     } )
+     })
 
-});
 
 
 app.get('/menu', (req, res) => {
      res.sendFile(path.join(__dirname, '/Templates/menu.html'))
-})
+});
 
 
 //Server start url
-app.listen(port, () => console.info(`http://localhost:${port}`))
-
-
-
+app.listen(port, () => console.info(`http://localhost:${port}`));
