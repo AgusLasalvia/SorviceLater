@@ -29,27 +29,16 @@ app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-actual_user = {
-}
+
 //main route (post and get method)
-app.get('/login', (req, res) => {
+app.get('', (req, res) => {
      res.sendFile(path.join(__dirname, '/Templates/login.html'))
 });
-app.post('/login', (req, res) => {
+app.post('', (req, res) => {
      const { username, password } = req.body
-     sql = connection.query(`SELECT * FROM Admin WHERE username = "${username} AND password = "${password}"`)
-     if (username === sql[0]) {
-          actual_user = {
-               username: sql[0],
-               u_name: sql[2],
-               lastname: sql[3],
-               email: sql[4]
-          }
-          res.sendFile(path.join(__dirname, '/Templates/menu.html'))
-     } else {
-          console.log('contraseña o usuario equivocado')
-     }
-
+     sql = connection.query(`SELECT username FROM Admin WHERE username = "${username} AND password = "${password}"`)
+     //sql = connection.query(`INSERT INTO person VALUES("${username}","${password}");`)
+     console.log(sql)
 
 });
 
