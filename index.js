@@ -46,6 +46,8 @@ app.post('/login', (req, res) => {
                email: sql[4]
           }
           res.sendFile(path.join(__dirname, '/Templates/menu.html'))
+     } else {
+          console.log('contraseña o usuario equivocado')
      }
 
 
