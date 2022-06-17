@@ -6,59 +6,99 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const port = 3000
 
-// database connection
-// const connection = mysql.createConnection({
-//      host: "localhost",
-//      user: "admin",
-//      password: "minecraft1234",
-//      database: "servicelater"
-// });
+//database connection
+const connection = mysql.createConnection({
+     host: "localhost",
+     user: "admin",
+     password: "minecraft1234",
+     database: "servicelater"
+});
 
-// connection.connect((err) => {
-//      if (err) throw err
-//      console.log('db connected')
-// });
+connection.connect((err) => {
+     if (err) throw err
+     console.log('db connected')
+});
+
+
+// Engine
+app.set('view engine', 'ejs');
+app.engine('ejs', require('ejs').__express);
 
 
 //statics
-app.set('view engine', 'ejs');
-app.engine('ejs', require('ejs').__express);
 app.use('/styles', express.static(__dirname + "/styles"));
 app.use('/js', express.static(__dirname + '/js'));
 app.use('/static', express.static(__dirname + '/static'));
+
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
-//Routes
-app.get('', (req, res) => {
+//Home(login) Route
+app.get('', function (req, res) {
      res.render(path.join(__dirname, '/views/login'),)
 });
 
-
-app.post('', (req, res) => {
+app.post('', function (req, res) {
      const { username, password } = req.body
      console.log(username, password)
-     // connection.query(`SELECT username FROM Admin WHERE username = "${username}" AND password = "${password}"`, function (err, result, fields) {
-     //      if (err) throw err
-     //      console.log(result)
-     res.render(path.join(__dirname, '/views/ticket'))
+     connection.query(`SELECT username FROM Admin WHERE username = "${username}" AND password = "${password}"`, function (err, result) {
+          if (err) throw err
+          if (result[0] === username) {
+               res.render(path.join(__dirname, '/views/menu'))
+          }
      })
-// });
-
-
-
-app.get('/menu', (req, res) => {
 });
 
 
-app.get('/ticket', (req, res) => {
-     // res.sendFile(path.join(__dirname, './Templates/ticket.html'))
-     res.render(path.join(__dirname, '/views/ticket'),)
+//Menu Route
+app.get('/menu', function (req, res) {
+     const data = {
+          totalResolved: 0,
+          inProgress: 0,
+          ticketNew: 0
+     }
+     res.render('/menu', { data: data })
 });
-app.post('/ticket', (req, res) => {
 
+app.post('/menu', function (req, res) {
+
+})
+
+
+//Ticket Route
+app.get('/ticket', function (req, res) {
+     connection.query(`SELECT * FROM ticket id=${id}"`, function (err, result) {
+          data = {
+
+          }
+          res.render(path.join(__dirname, '/views/ticket'), {})
+     })
+});
+app.post('/ticket', function (req, res) {
+     const { incNum, reqBy, reqFor, srvcOf,
+          confItem, contactType, State,
+          Assigned, Category, Symptom, Impact,
+          Urgency, Priority } = req.body;
+     connection.query(`UPDATE ticket SET request_by = "${reqBy}",\
+     request_for = "${reqFor}",service_offering = "${srvcOf}",\
+     item = "${confItem}",contact_type = "${contactType}",\
+     status = "${State}",assigned = "${Assigned}",\
+     category = "${Category}",symptom = "${Symptom}",\
+     impact = "${Impact}",urgency = "${Urgency}",priority = "${Priority}"\
+     WHERE id = ${incNum};`);
+});
+
+app.post('/ticket_create', function (req, res) {
+     id_new = 0;
+     connection.query(`SELECT id FROM ticket ORDER BY DESC;"`, function (err, result) {
+          id_new = result[0] + 1
+     });
+     connection.query(`INSERT INTO ticket VALUES(${id_new},NULL,\
+     NULL,NULL,NULL,NULL,\
+     NULL,NULL,NULL,\
+     NULL,NULL,NULL,NULL;`)
 });
 
 //Server start url
