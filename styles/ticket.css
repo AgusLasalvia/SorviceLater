@@ -1,13 +1,13 @@
 body {
-  display: flex;
   height: 100vh;
   background: #121212;
 }
 
 .formWrapper {
-  margin: 0 auto;
   display: flex;
-
+  margin: 0 auto;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
   align-items: center;
   justify-content: center;
   border-color: greenyellow;
@@ -20,7 +20,6 @@ body {
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(10, 1fr);
   grid-column-gap: 4rem;
-  grid-row-gap: 0px;
 
   border-color: rgb(255, 30, 0);
   border-style: dotted;
@@ -28,7 +27,7 @@ body {
   border-radius: 20px;
 
   box-sizing: border-box;
-  height: 80vh;
+  height: 70vh;
   width: 80vw;
 
   align-items: center;
@@ -79,11 +78,12 @@ body {
 
 /* ================================= */
 
-.input {
+.input,
+.select {
   display: inline;
-  background-color: #454545; /* greyed out, porque el num de incidente se genera solo y no tiene por que tocarse */
+  background-color: #1f1f1f;
   border-radius: 10px;
-  border: 0;
+  border: 0px;
   box-sizing: border-box;
   color: #e0e0e0;
   font-size: 14px;
@@ -93,6 +93,11 @@ body {
   float: right;
   margin-left: 15px;
   padding-left: 10px;
+  transition: all 0.2s;
+}
+
+.input:focus {
+  border: 2px solid #3d2ded;
 }
 
 .inputLabel {
@@ -102,7 +107,14 @@ body {
 }
 
 .gridcontent {
-  text-align: right;
-
+  display: flex;
+  justify-content: right;
+  align-items: center;
   margin-right: 20%;
+}
+
+#incNum,
+#priority {
+  background-color: #454545;
+  /* greyed out, porque el num de incidente y la prority se generan solos y no tiene por que tocarse */
 }
