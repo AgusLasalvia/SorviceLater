@@ -32,6 +32,7 @@ app.use(bodyParser.json());
 //Routes
 app.get('/', (req, res) => {
      res.sendFile(path.join(__dirname, '/Templates/login.html'))
+     const { } = req
 });
 
 
@@ -42,7 +43,7 @@ app.post('/', (req, res) => {
           if (err) throw err
           console.log(result)
           if (result[0].username === username) {
-               res.sendFile(path.join(__dirname, './Templates/menu.html'))
+               res.redirect(path.join(__dirname, './Templates/menu.html'))
           } else {
                res.send('<p>ERROR</p>')
           }
