@@ -1,86 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>serviceLater</title>
     <script src="../js/index.js"></script>
     <link rel="stylesheet" href="../styles/global.css" />
-    <link rel="stylesheet" href="../styles/menu.css" />
-</head>
+    <link rel="stylesheet" href="../styles/ticket.css" />
+    <link rel="stylesheet" href="../styles/navbar.css" />
+  </head>
 
-<body>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="navbar__container">
+        <a href="/menu.html" class="navbar__title">service<span>Later</span></a>
+
+        <ul class="navbar__menu">
+          <!-- <li class="navbar__item">
+            <a href="" onclick="" class="navbar__attach" id="attach">&#128206;</a>
+          </li> -->
+          <li class="navbar__btn">
+            <button class="button">Save</button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
     <div class="formWrapper">
-        <form class="form" method="post">
-            <div class="gridcontent" id="div1">
-                <p class="inputLabel">Incident number</p>
-                <input id="incNum" name="incNum" class="input" type="text" placeholder="" readonly />
-            </div>
+      <form class="form" method="post" action="/ticket">
+        <div class="gridcontent" id="div1">
+          <p class="inputLabel">Incident number</p>
+          <input id="incNum" name="incNum" class="input" type="text" placeholder=" " readonly />
+        </div>
 
-            <div class="gridcontent" id="div2">
-                <p class="inputLabel">Requested by</p>
-                <input id="reqBy" name="reqBy" class="input" type="text" placeholder=" " />
-            </div>
+        <div class="gridcontent" id="div2">
+          <p class="inputLabel">Requested by</p>
+          <input id="reqBy" name="reqBy" class="input" type="text" placeholder=" " />
+        </div>
 
-            <div class="gridcontent" id="div3">
-                <p class="inputLabel">Requested for</p>
-                <input id="reqFor" name="reqFor" class="input" type="text" placeholder=" " />
-            </div>
+        <div class="gridcontent" id="div3">
+          <p class="inputLabel">Requested for</p>
+          <input id="reqFor" name="reqFor" class="input" type="text" placeholder=" " />
+        </div>
 
-            <div class="gridcontent" id="div4">
-                <p class="inputLabel">Service offering</p>
-                <input id="srvcOf" name="srvcOf" class="input" type="text" placeholder=" " />
-            </div>
+        <div class="gridcontent" id="div4">
+          <p class="inputLabel">Service offering</p>
+          <input id="srvcOf" name="srvcOf" class="input" type="text" placeholder=" " />
+        </div>
 
-            <div class="gridcontent" id="div5">
-                <p class="inputLabel">Configuration item</p>
-                <input id="confItem" name="confItem" class="input" type="text" placeholder=" " />
-            </div>
+        <div class="gridcontent" id="div5">
+          <p class="inputLabel">Configuration item</p>
+          <input id="confItem" name="confItem" class="input" type="text" placeholder=" " />
+        </div>
 
-            <div class="gridcontent" id="div6">
-                <p class="inputLabel">Contact type</p>
-                <input id="contactType" name="contactType" class="input" type="text" placeholder=" " />
-            </div>
+        <div class="gridcontent" id="div6">
+          <p class="inputLabel">Contact type</p>
+          <!-- <input id="contactType" name="contactType" class="input" type="text" placeholder=" " /> -->
+          <select id="contactType" name="contactType" class="select">
+            <option value="Discord">Discord</option>
+            <option value="ingame">In-game chat</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
 
-            <div class="gridcontent" id="div7">
-                <p class="inputLabel">State</p>
-                <input id="State" name="State" class="input" type="text" placeholder=" " />
-            </div>
+        <div class="gridcontent" id="div7">
+          <p class="inputLabel">State</p>
+          <!-- <input id="state" name="State" class="input" type="text" placeholder=" " /> -->
+          <select id="state" name="State" class="select">
+            <option value="new">New</option>
+            <option value="inProgress">In progress</option>
+            <option value="resolved">Resolved</option>
+            <option value="pendingVendor">Pending (Awaiting vendor)</option>
+            <option value="pendingAdmin">Pending (Admin action)</option>
+            <option value="pendingTechnical">Pending (Technical)</option>
+            <option value="pendingOther">Pending (Other)</option>
+          </select>
+        </div>
 
-            <div class="gridcontent" id="div8">
-                <p class="inputLabel">Assigned to</p>
-                <input id="Assigned" name="Assigned" class="input" type="text" placeholder=" " />
-            </div>
+        <div class="gridcontent" id="div8">
+          <p class="inputLabel">Assigned to</p>
+          <!-- <input id="assigned" name="Assigned" class="input" type="text" placeholder=" " /> -->
+          <select id="assigned" name="Assigned" class="select">
+            <!-- se carga con los nicks de los admins registrados en servicelater -->
+          </select>
+        </div>
 
-            <div class="gridcontent" id="div9">
-                <p class="inputLabel">Category</p>
-                <input id="Category" name="Category" class="input" type="text" placeholder=" " />
-            </div>
+        <div class="gridcontent" id="div9">
+          <p class="inputLabel">Category</p>
+          <input id="category" name="Category" class="input" type="text" placeholder=" " />
+        </div>
 
-            <div class="gridcontent" id="div10">
-                <p class="inputLabel">Symptom</p>
-                <input id="Symptom" name="Symptom" class="input" type="text" placeholder=" " />
-            </div>
+        <div class="gridcontent" id="div10">
+          <p class="inputLabel">Symptom</p>
+          <input id="symptom" name="Symptom" class="input" type="text" placeholder=" " />
+        </div>
 
-            <div class="gridcontent" id="div11">
-                <p class="inputLabel">Impact</p>
-                <input id="Impact" name="Impact" class="input" type="text" placeholder=" " />
-            </div>
+        <div class="gridcontent" id="div11">
+          <p class="inputLabel">Impact</p>
+          <!-- <input id="impact" name="Impact" class="input" type="text" placeholder=" " /> -->
+          <select id="impact" name="Impact" class="select">
+            <option value="high">1 - High</option>
+            <option value="medium">2 - Medium</option>
+            <option value="low">3 - Low</option>
+          </select>
+        </div>
 
-            <div class="gridcontent" id="div12">
-                <p class="inputLabel">Urgency</p>
-                <input id="Urgency" name="Urgency" class="input" type="text" placeholder=" " />
-            </div>
+        <div class="gridcontent" id="div12">
+          <p class="inputLabel">Urgency</p>
+          <!-- <input id="urgency" name="Urgency" class="input" type="text" placeholder=" " /> -->
+          <select id="urgency" name="Urgency" class="select">
+            <option value="high">1 - High</option>
+            <option value="medium">2 - Medium</option>
+            <option value="low">3 - Low</option>
+          </select>
+        </div>
 
-            <div class="gridcontent" id="div13">
-                <p class="inputLabel">Priority</p>
-                <input id="Priority" name="Priotity" class="input" type="text" placeholder=" " />
-            </div>
-            
-        </form>
+        <div class="gridcontent" id="div13">
+          <p class="inputLabel">Priority</p>
+          <input id="priority" name="Priority" class="input" type="text" placeholder=" " readonly />
+          <!-- DICE prioTity EN name (xd) -->
+          <!-- PRIORITY DETERMINADA POR LA RELACION ENTRE EL IMAPCTO Y LA URGENCIA -->
+        </div>
+      </form>
     </div>
-</body>
-
+  </body>
 </html>

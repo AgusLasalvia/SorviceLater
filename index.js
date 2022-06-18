@@ -34,6 +34,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+let ticket_id = 0;
 
 //Home(login) Route
 app.get('', function (req, res) {
@@ -78,8 +79,29 @@ app.get('/menu', function (req, res) {
 
 //Tickets Route
 app.get('/ticket', function (req, res) {
+     const data = {
+          incNum: ticket_id,
+          reqBy: '',
+          reqFor: '',
+          srvcOf: '',
+          confItem: '',
+          contactType: '',
+          State: '',
+          Assigned: '',
+          Category: '',
+          Symptom: '',
+          Impact: '',
+          Urgency: '',
+          Priority: ''
+     } 
      connection.query(`SELECT * FROM ticket id=${id}`, function (err, result) {
+          data.incNum = result[0], data.reqBy = result[1], data.reqFor = result[2]
+          data.srvcOf = result[3], data.confItem = result[4], data.contactType = result[5]
+          data.State = result[6], data.Assigned = result[7], data.Category = result[8]
+          data.Symptom = result[9], data.Impact = result[10], data.Urgency = result[11]
+          data.Priority = result[12]
      });
+     res.render(path.join(__dirname, '/views/ticket'), { data: data });
 });
 
 app.post('/ticket', function (req, res) {
@@ -96,6 +118,8 @@ app.post('/ticket', function (req, res) {
      WHERE id = ${incNum};`);
 });
 
+
+//Ticket auto creator
 app.post('/ticket_create', function (req, res) {
      id_new = 0;
      connection.query(`SELECT id FROM ticket ORDER BY DESC;"`, function (err, result) {
