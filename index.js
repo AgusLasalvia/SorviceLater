@@ -60,12 +60,15 @@ app.get('/menu', function (req, res) {
           ticketNew: 0
      }
      connection.query('SELECT COUNT(*) FROM ticket WHERE status = "Resolved"', function (err, result) {
+          if(err) throw err
           data.totalResolved = result
      });
      connection.query('SELECT COUNT(*) FROM ticket WHERE status = "New"', function (err, result) {
+          if (err) throw err
           data.ticketNew = result
      });
      connection.query('SELECT COUNT(*) FROM ticket WHERE status = "In Progress"', function (err, result) {
+          if (err) throw err
           data.inProgress = result
      });
      res.render(path.join(__dirname, '/views/menu'), { data: data })
