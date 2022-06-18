@@ -46,9 +46,9 @@ app.post('', function (req, res) {
      connection.query(`SELECT username FROM Admin WHERE username = "${username}" AND password = "${password}"`, function (err, result) {
           if (err) throw err
           if (result[0] === username) {
-               res.render(path.join(__dirname, '/views/menu'))
+               res.render(path.join(__dirname, '/views/menu'));
           }
-     })
+     });
 });
 
 
@@ -59,23 +59,26 @@ app.get('/menu', function (req, res) {
           inProgress: 0,
           ticketNew: 0
      }
-     res.render('/menu', { data: data })
+     connection.query('SELECT COUNT(*) FROM ticket WHERE status = "Resolved"', function (err, result) {
+          data.totalResolved = result
+     });
+     connection.query('SELECT COUNT(*) FROM ticket WHERE status = "New"', function (err, result) {
+          data.ticketNew = result
+     });
+     connection.query('SELECT COUNT(*) FROM ticket WHERE status = "In Progress"', function (err, result) {
+          data.inProgress = result
+     });
+     res.render(path.join(__dirname, '/views/menu'), { data: data })
 });
 
-app.post('/menu', function (req, res) {
-
-})
 
 
-//Ticket Route
+//Tickets Route
 app.get('/ticket', function (req, res) {
-     connection.query(`SELECT * FROM ticket id=${id}"`, function (err, result) {
-          data = {
-
-          }
-          res.render(path.join(__dirname, '/views/ticket'), {})
-     })
+     connection.query(`SELECT * FROM ticket id=${id}`, function (err, result) {
+     });
 });
+
 app.post('/ticket', function (req, res) {
      const { incNum, reqBy, reqFor, srvcOf,
           confItem, contactType, State,
@@ -98,8 +101,10 @@ app.post('/ticket_create', function (req, res) {
      connection.query(`INSERT INTO ticket VALUES(${id_new},NULL,\
      NULL,NULL,NULL,NULL,\
      NULL,NULL,NULL,\
-     NULL,NULL,NULL,NULL;`)
+     NULL,NULL,NULL,NULL;`);
 });
+
+
 
 //Server start url
 app.listen(port, () => console.info(`http://localhost:${port}`));
