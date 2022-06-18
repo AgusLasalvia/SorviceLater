@@ -109,7 +109,7 @@ app.post('/ticket', function (req, res) {
           confItem, contactType, State,
           Assigned, Category, Symptom, Impact,
           Urgency, Priority } = req.body;
-     connection.query(`UPDATE ticket SET request_by = "${reqBy}",\
+     connection.query(`UPDATE Ticket SET request_by = "${reqBy}",\
      request_for = "${reqFor}",service_offering = "${srvcOf}",\
      item = "${confItem}",contact_type = "${contactType}",\
      status = "${State}",assigned = "${Assigned}",\
@@ -122,7 +122,7 @@ app.post('/ticket', function (req, res) {
 //Ticket auto creator
 app.post('/ticket_create', function (req, res) {
      id_new = 0;
-     connection.query(`SELECT id FROM ticket ORDER BY DESC;"`, function (err, result) {
+     connection.query(`SELECT id FROM Ticket ORDER BY DESC;"`, function (err, result) {
           id_new = result[0] + 1
      });
      connection.query(`INSERT INTO ticket VALUES(${id_new},NULL,\
