@@ -1,35 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>serviceLater</title>
-    <script src="../js/index.js"></script>
-    <link rel="stylesheet" href="../styles/global.css" />
-    <link rel="stylesheet" href="../styles/ticket.css" />
-    <link rel="stylesheet" href="../styles/navbar.css" />
-  </head>
 
-  <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-      <div class="navbar__container">
-        <a href="/menu.html" class="navbar__title">service<span>Later</span></a>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>serviceLater</title>
+  <script src="../js/index.js"></script>
+  <link rel="stylesheet" href="../styles/global.css" />
+  <link rel="stylesheet" href="../styles/ticket.css" />
+  <link rel="stylesheet" href="../styles/navbar.css" />
+</head>
 
-        <ul class="navbar__menu">
-          <!-- <li class="navbar__item">
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar__container">
+      <a href="/menu.html" class="navbar__title">service<span>Later</span></a>
+
+      <ul class="navbar__menu">
+        <!-- <li class="navbar__item">
             <a href="" onclick="" class="navbar__attach" id="attach">&#128206;</a>
           </li> -->
-          <li class="navbar__btn">
-            <button class="button">Save</button>
-          </li>
-        </ul>
-      </div>
-    </nav>
+        <li class="navbar__btn">
+          <button class="button">Save</button>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-    <div class="formWrapper">
-      <form class="form" method="post" action="/ticket">
+  <div class="formWrapper">
+    <form class="form" action="/ticket" method="post">
+      <div class="topGrid">
         <div class="gridcontent" id="div1">
           <p class="inputLabel">Incident number</p>
           <input id="incNum" name="incNum" class="input" type="text" placeholder=" " readonly />
@@ -120,10 +122,37 @@
         <div class="gridcontent" id="div13">
           <p class="inputLabel">Priority</p>
           <input id="priority" name="Priority" class="input" type="text" placeholder=" " readonly />
-          <!-- DICE prioTity EN name (xd) -->
           <!-- PRIORITY DETERMINADA POR LA RELACION ENTRE EL IMAPCTO Y LA URGENCIA -->
         </div>
-      </form>
-    </div>
-  </body>
+      </div>
+      <div class="bottomGrid" id="">
+        <!-- ESTO ESTÁ ALINEADO PARA LA MIERDA PORQUE NO SE LA FORMA DE ALINEARLO BIEN CON LO DE ARRIBA -->
+        <p id="shortDescP" class="inputLabel">Short description</p>
+        <input id="shortDescI" name=" " class="input" type="text" placeholder=" " />
+
+        <p id="knowledgeP" class="inputLabel">Knowledge base</p>
+        <input id="knowledgeI" name=" " class="input" type="text" placeholder=" " />
+
+        <p id="worknotesP" class="inputLabel">Worknotes</p>
+        <textarea id="worknotesI" name=worknotes" class="input" type="text" placeholder=" "></textarea>
+        <script>
+              document.getElementById("incNum").value = '<%=data.id%>';
+              document.getElementById("reqBy").value = '<%=data.request_by%>';
+              document.getElementById("reqFor").value = '<%=data.request_for%>';
+              document.getElementById("srvcOf").value = '<%=data.service_offering%>';
+              document.getElementById("confItem").value = '<%=data.item%>';
+              document.getElementById("contactType").value = '<%=data.contact_type%>';
+              document.getElementById("state").value = '<%=data.status%>';
+              document.getElementById("assigned").value = '<%=data.assigned%>';
+              document.getElementById("category").value = '<%=data.category%>';
+              document.getElementById("symptom").value = '<%=data.symptom%>';
+              document.getElementById("impact").value = '<%=data.impact%>';
+              document.getElementById("urgency").value = '<%=data.urgency%>';
+              document.getElementById("priority").value = '<%=data.priority%>';
+        </script>
+      </div>
+    </form>
+  </div>
+</body>
+
 </html>
