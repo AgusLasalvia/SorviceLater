@@ -10,23 +10,24 @@ body {
   padding-bottom: 4rem;
   align-items: center;
   justify-content: center;
-  border-color: greenyellow;
-  border-style: dotted;
-  border-radius: 20px;
+  /*     
+    border-color: greenyellow;
+    border-style: dotted;
+    border-radius: 20px; */
 }
 
 .topGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(10, 1fr);
-  grid-column-gap: 3rem;
+  grid-column-gap: 0rem;
   grid-row-gap: 15px;
-  padding-top: 2rem;
+  padding: 2rem;
 
-  border-color: rgb(255, 30, 0);
+  /* border-color: rgb(255, 30, 0);
   border-style: dotted;
   border-radius: 20px;
-  border-radius: 20px;
+  border-radius: 20px; */
 
   box-sizing: border-box;
   height: 100%;
@@ -124,14 +125,16 @@ body {
 .bottomGrid {
   display: grid;
   grid-template-columns: 1fr 5fr; /* Una de una fracción y otra de 2 fracciones */
-  grid-template-rows: repeat(4, 1fr); /* Dos de una fracción, es lo mismo que poner 1fr, 1fr; */
+  grid-template-rows: 35px 35px auto 1fr; /* Dos de una fracción, es lo mismo que poner 1fr, 1fr; */
   grid-column-gap: 0px;
   grid-row-gap: 15px;
 
-  border-color: rgb(9, 126, 116);
+  padding: 2rem;
+
+  /* border-color: rgb(9, 126, 116);
   border-style: dotted;
   border-radius: 20px;
-  border-radius: 20px;
+  border-radius: 20px; */
 
   box-sizing: border-box;
   height: 100%;
@@ -142,24 +145,44 @@ body {
 
 #shortDescP,
 #knowledgeP,
-#worknotesP {
+#worknotesP,
+#addcommentsP {
   text-align: right;
   padding-right: 20px;
 }
 
-#shortDescI,
-#knowledgeI {
-  padding: 0;
-  margin: 0;
-  width: 84%;
+#worknotesP,
+#addcommentsP {
+  align-self: start;
 }
 
-#worknotesI {
-  padding: 0;
+#shortDescI,
+#knowledgeI {
+  padding: 10px;
   margin: 0;
-  width: 84%;
-  height: 10rem;
+  width: 85.3%;
+}
+
+#worknotesI,
+#addcommentsI {
+  padding: 10px;
+  margin: 0;
+  width: 85.3%;
+  height: 13.4rem;
 
   overflow: hidden;
-  resize: vertical;
+  resize: none;
+}
+
+#worknotesI:focus {
+  border: 2px solid #ffe600;
+}
+
+#addcommentsI:focus {
+  border: 2px solid #fe3535;
+}
+
+#worknotesI,
+#worknotesP {
+  margin-top: 8rem;
 }
