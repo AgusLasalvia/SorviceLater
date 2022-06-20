@@ -45,9 +45,10 @@ app.post('', function (req, res) {
      const { username, password } = req.body
      console.log(username, password)
      connection.query(`SELECT username FROM Admin WHERE username = "${username}" AND password = "${password}"`, function (err, result) {
-          if (err) throw err
           if (result[0].username === username) {
                res.render(path.join(__dirname, '/views/menu'));
+          } else {
+               //Poner para que envie mensaje automatico de error
           }
      });
 });
@@ -61,16 +62,13 @@ app.get('/menu', function (req, res) {
           ticketNew: 0
      }
      connection.query('SELECT COUNT(*) as Resolved FROM ticket WHERE status = "Resolved"', function (err, result) {
-          if(err) throw err
-          data.totalResolved = result[0].Resolved
+          data.totalResolved = result.Resolved
      });
      connection.query('SELECT COUNT(*) as tkNew FROM ticket WHERE status = "New"', function (err, result) {
-          if (err) throw err
-          data.ticketNew = result[0].tkNew
+          data.ticketNew = result.tkNew
      });
      connection.query('SELECT COUNT(*) as inProgress FROM ticket WHERE status = "In Progress"', function (err, result) {
-          if (err) throw err
-          data.inProgress = result[0].inProgress
+          data.inProgress = result.inProgress
      });
      res.render(path.join(__dirname, '/views/menu'), { data: data })
 });
