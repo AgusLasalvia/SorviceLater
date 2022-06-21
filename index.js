@@ -77,10 +77,19 @@ app.get('/menu', function (req, res) {
 
 //Tickets Route
 app.get('/ticket', function (req, res) {
-     connection.query(`SELECT * FROM Ticket WHERE id= 1;`, function (err, result) {
-          res.render(path.join(__dirname, '/views/ticket'), { data: result[0] });
-     });
-});
+     const users = []
+     connection.query(`SELECT * FROM Ticket WHERE id = 8;`, function (err, first) {
+          connection.query(`SELECT username FROM Admin;`, function (err, second) {
+               connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, third) {
+                    for (var a = 1; a < parseInt(third[0].count); a++) {
+                         users.push(second[a].username)
+                    }
+                    console.log(users)
+                    res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: users})
+          })
+     })
+})
+})
 
 
 app.post('/ticket', function (req, res) {
@@ -114,3 +123,5 @@ app.post('/ticket_create', function (req, res) {
 
 //Server start url
 app.listen(port, () => console.info(`http://localhost:${port}`));
+
+

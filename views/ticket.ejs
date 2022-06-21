@@ -6,7 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>serviceLater</title>
-  <script src="../js/index.js"></script>
   <link rel="stylesheet" href="../styles/global.css" />
   <link rel="stylesheet" href="../styles/ticket.css" />
   <link rel="stylesheet" href="../styles/navbar.css" />
@@ -19,9 +18,9 @@
       <a href="/menu.html" class="navbar__title">service<span>Later</span></a>
 
       <ul class="navbar__menu">
-        <li class="navbar__item">
-            <!-- <a href="" onclick="" class="navbar__attach" id="attach">&#128206;</a> -->
-          </li>
+        <!-- <li class="navbar__item">
+            <a href="" onclick="" class="navbar__attach" id="attach">&#128206;</a>
+          </li> -->
         <li class="navbar__btn">
           <button class="button" form="save">Save</button>
         </li>
@@ -135,20 +134,37 @@
 
         <p id="worknotesP" class="inputLabel">Worknotes</p>
         <textarea id="worknotesI" name=worknotes" class="input" type="text" placeholder=" "></textarea>
+
+        <p id="addcommentsP" class="inputLabel">Additional comments</p>
+        <textarea id="addcommentsI" name=addcomments" class="input" type="text" placeholder=" "></textarea>
+
         <script>
-              document.getElementById("incNum").value = '<%=data.id%>';
-              document.getElementById("reqBy").value = '<%=data.request_by%>';
-              document.getElementById("reqFor").value = '<%=data.request_for%>';
-              document.getElementById("srvcOf").value = '<%=data.service_offering%>';
-              document.getElementById("confItem").value = '<%=data.item%>';
-              document.getElementById("contactType").value = '<%=data.contact_type%>';
-              document.getElementById("state").value = '<%=data.status%>';
-              document.getElementById("assigned").value = '<%=data.assigned%>';
-              document.getElementById("category").value = '<%=data.category%>';
-              document.getElementById("symptom").value = '<%=data.symptom%>';
-              document.getElementById("impact").value = '<%=data.impact%>';
-              document.getElementById("urgency").value = '<%=data.urgency%>';
-              document.getElementById("priority").value = '<%=data.priority%>';
+          document.getElementById("incNum").value = '<%=data.id%>';
+          document.getElementById("reqBy").value = '<%=data.request_by%>';
+          document.getElementById("reqFor").value = '<%=data.request_for%>';
+          document.getElementById("srvcOf").value = '<%=data.service_offering%>';
+          document.getElementById("confItem").value = '<%=data.item%>';
+          document.getElementById("contactType").value = '<%=data.contact_type%>';
+          document.getElementById("state").value = '<%=data.status%>';
+          document.getElementById("assigned").value = '<%=data.assigned%>';
+          document.getElementById("category").value = '<%=data.category%>';
+          document.getElementById("symptom").value = '<%=data.symptom%>';
+          document.getElementById("impact").value = '<%=data.impact%>';
+          document.getElementById("urgency").value = '<%=data.urgency%>';
+          document.getElementById("priority").value = '<%=data.priority%>';
+          var user_field = document.getElementById("assigned");
+
+          var user = '<%=users%>';
+          var user_list = user.split(',');
+          for (var i = user_list.length - 1; i >= 0; i--) {
+            console.log(user_list[i])
+            var option = document.createElement("option");
+            option.text = user_list[i];
+            option.value = user_list[i];
+            option.innerHTML = user_list[i];
+            user_field.appendChild(option);
+          }
+
         </script>
       </div>
     </form>
