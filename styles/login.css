@@ -34,7 +34,7 @@ body {
 }
 
 .title span {
-  color: #3d2ded;
+  color: #695cfe;
 }
 
 .subtitle {
@@ -45,7 +45,7 @@ body {
 }
 
 /* .subtitle span {
-    color: #3D2DED;
+    color: #695cfe;
    }
     */
 
@@ -98,7 +98,7 @@ body {
 }
 
 .placeholder {
-  color: #e0e0e0;
+  color: #707070;
   /* font-family: sans-serif; */
   left: 20px;
   line-height: 14px;
@@ -119,11 +119,11 @@ body {
 }
 
 .input:focus ~ .placeholder {
-  color: #3d2ded;
+  color: #695cfe;
 }
 
 .loginBtn {
-  background-color: #3d2ded;
+  background-color: #695cfe;
   border-radius: 12px;
   border: 0;
   box-sizing: border-box;
@@ -139,5 +139,5 @@ body {
 }
 
 .loginBtn:hover {
-  background: #3623ff;
+  background: #4736ff;
 }

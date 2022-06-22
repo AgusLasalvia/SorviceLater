@@ -40,7 +40,7 @@
 }
 
 .navbar__title span {
-  color: #3d2ded;
+  color: #695cfe;
 }
 
 .navbar__title:hover {
@@ -75,7 +75,7 @@
 }
 
 .navbar__links:hover {
-  color: #3d2ded;
+  color: #695cfe;
   transition: all 0.3s ease;
 } */
 
@@ -98,11 +98,11 @@
   border: none;
   outline: none;
   border-radius: 4px;
-  background: #3d2ded;
+  background: #695cfe;
   color: #e0e0e0;
   transition: all 0.3s ease;
 }
 
 .button:hover {
-  background: #3623ff;
+  background: #4736ff;
 }
