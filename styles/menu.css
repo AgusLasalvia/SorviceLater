@@ -238,7 +238,7 @@ header .image-text .adminName {
 .bLogTitle {
   font-size: 80px;
   font-weight: 600;
-  color: #707070;
+  color: #c2c2c2;
 }
 
 .rCount,
@@ -254,7 +254,7 @@ header .image-text .adminName {
 .nLabel {
   font-size: 30px;
   font-weight: 400;
-  color: #707070;
+  color: #c2c2c2;
 }
 
 .rBtn,
