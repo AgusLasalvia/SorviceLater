@@ -12,7 +12,7 @@
   /* Position sticky hace que quede ahi siempre el navbar aunque scrollee */
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 0;
   /* con el z-index me aseguro de que el navbar siempre salga arriba de cualquier cosa */
 }
 
@@ -101,6 +101,7 @@
   background: #695cfe;
   color: #e0e0e0;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .button:hover {
