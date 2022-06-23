@@ -34,21 +34,49 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
+const user_data = {
+     username: '',
+     realname: '',
+     email: ''
+}
+
+const data = {
+     resolve: 0,
+     New: 0,
+     inP: 0
+};
+
 let ticket_id = 0;
+
+function update_counters() {
+     connection.query('SELECT COUNT(*) as count FROM Ticket WHERE status = "resolved";', function (err, resolved) {
+          data.resolve = resolved[0].count;
+          connection.query('SELECT COUNT(*) as count FROM Ticket WHERE status = "new";', function (err, t_new) {
+               data.New = t_new[0].count;
+               connection.query('SELECT COUNT(*) as count FROM Ticket WHERE status = "inProgress";', function (err, progress) {
+                    data.inP = progress[0].count;
+                    return console.log(data);
+               });
+          });
+     });
+};
 
 //Home(login) Route
 app.get('', function (req, res) {
+     update_counters();
      res.render(path.join(__dirname, '/views/login'),)
 });
 
 app.post('', function (req, res) {
      const { username, password } = req.body
-     console.log(username, password)
-     connection.query(`SELECT username FROM Admin WHERE username = "${username}" AND password = "${password}"`, function (err, result) {
+     connection.query(`SELECT * FROM Admin WHERE username = "${username}" AND password = "${password}"`, function (err, result) {
+          if (err) throw err
           if (result[0].username === username) {
-               res.render(path.join(__dirname, '/views/menu'));
-          } else {
-               //Poner para que envie mensaje automatico de error
+               user_data.username = result[0].username
+               user_data.realname = result[0].name
+               user_data.email = result[0].email
+               res.render(path.join(__dirname, '/views/menu'), { user: user_data, data: data });
           }
      });
 });
@@ -56,40 +84,25 @@ app.post('', function (req, res) {
 
 //Menu Route
 app.get('/menu', function (req, res) {
-     const data = {
-          totalResolved: 0,
-          inProgress: 0,
-          ticketNew: 0
-     }
-     connection.query('SELECT COUNT(*) as Resolved FROM ticket WHERE status = "Resolved"', function (err, result) {
-          data.totalResolved = result.Resolved
-     });
-     connection.query('SELECT COUNT(*) as tkNew FROM ticket WHERE status = "New"', function (err, result) {
-          data.ticketNew = result.tkNew
-     });
-     connection.query('SELECT COUNT(*) as inProgress FROM ticket WHERE status = "In Progress"', function (err, result) {
-          data.inProgress = result.inProgress
-     });
-     res.render(path.join(__dirname, '/views/menu'), { data: data })
+     update_counters();
+     res.render(path.join(__dirname, '/views/menu', { user: user_data, data: data }));
 });
-
 
 
 //Tickets Route
 app.get('/ticket', function (req, res) {
      const users = []
-     connection.query(`SELECT * FROM Ticket WHERE id = 8;`, function (err, first) {
+     connection.query(`SELECT * FROM Ticket WHERE id = ${ticket_id};`, function (err, first) {
           connection.query(`SELECT username FROM Admin;`, function (err, second) {
                connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, third) {
                     for (var a = 1; a < parseInt(third[0].count); a++) {
                          users.push(second[a].username)
                     }
-                    console.log(users)
-                    res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: users})
+                    res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: users });
+               })
           })
      })
-})
-})
+});
 
 
 app.post('/ticket', function (req, res) {
@@ -104,20 +117,36 @@ app.post('/ticket', function (req, res) {
      category = "${Category}",symptom = "${Symptom}",
      impact = "${Impact}",urgency = "${Urgency}",priority = "${Priority}"
      WHERE id = ${incNum};`);
+     update_counters();
+     res.render(path.join(__dirname, '/views/menu'), { data: data, user: user_data });
+     
 });
 
 
 //Ticket auto creator
-app.post('/ticket_create', function (req, res) {
-     id_new = 0;
-     connection.query(`SELECT COUNT(*) AS count FROM Ticket;"`, function (err, result) {
-          id_new = result[0].count + 1
+app.get('/ticket_create', function (req, res) {
+     connection.query(`SELECT COUNT(*) AS count FROM Ticket;`, function (err, result) {
+          ticket_id = result[0].count;
+          ticket_id += 1;
+          connection.query(`INSERT INTO Ticket VALUES(${ticket_id},NULL,NULL,NULL,NULL,NULL,NULL,'lasa1307',NULL,NULL,NULL,NULL,NULL);`);
+          const users = []
+          connection.query(`SELECT * FROM Ticket WHERE id = ${ticket_id};`, function (err, first) {
+               connection.query(`SELECT username FROM Admin;`, function (err, second) {
+                    connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, third) {
+                         for (var a = 1; a < parseInt(third[0].count); a++) {
+                              users.push(second[a].username)
+                         }
+                         res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: users });
+                    })
+               })
+          })
      });
-     connection.query(`INSERT INTO ticket VALUES(${id_new},NULL,\
-     NULL,NULL,NULL,NULL,\
-     NULL,NULL,NULL,\
-     NULL,NULL,NULL,NULL;`);
 });
+
+
+
+
+
 
 
 

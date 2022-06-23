@@ -1,0 +1,30 @@
+CREATE TABLE Admin(
+username varchar(25)PRIMARY KEY,
+password varchar(25),
+name varchar(25),
+lastname varchar(25),
+email varchar(50));
+
+CREATE TABLE Ticket(id int(7)PRIMARY KEY,
+request_by varchar(25),
+request_for varchar(25),
+service_offering varchar(50),
+item varchar(70),
+contact_type varchar(60),
+status varchar(50),
+assigned varchar(25),
+category varchar(60),
+symptom varchar(50),
+impact varchar(20),
+urgency varchar(20),
+priority varchar(20),
+CONSTRAINT FOREIGN KEY (assigned) REFERENCES Admin(username));
+
+CREATE TABLE worknotes(note_id int(14) PRIMARY KEY,
+ticket_id int(7),
+person varchar(25),
+notes varchar(900),
+time time,
+date date,
+CONSTRAINT FOREIGN KEY (ticket_id) REFERENCES Ticket(id),
+CONSTRAINT FOREIGN KEY (person) REFERENCES User(username));
