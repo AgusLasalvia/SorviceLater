@@ -117,7 +117,6 @@ app.post('/ticket', function (req, res) {
      category = "${Category}",symptom = "${Symptom}",
      impact = "${Impact}",urgency = "${Urgency}",priority = "${Priority}"
      WHERE id = ${incNum};`);
-     update_counters();
      res.render(path.join(__dirname, '/views/menu'), { data: data, user: user_data });
      
 });
@@ -142,10 +141,6 @@ app.get('/ticket_create', function (req, res) {
           })
      });
 });
-
-
-
-
 
 
 
