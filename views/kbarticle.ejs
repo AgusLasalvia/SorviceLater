@@ -6,9 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>serviceLater</title>
+    <script src="../js/index.js"></script>
     <link rel="stylesheet" href="../styles/global.css" />
-    <link rel="stylesheet" href="../styles/menu.css" />
     <link rel="stylesheet" href="../styles/sidebar.css" />
+    <link rel="stylesheet" href="../styles/navbar.css" />
+    <link rel="stylesheet" href="../styles/kbarticle.css" />
+
     <!-- icons -->
     <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet" />
 </head>
@@ -23,7 +26,7 @@
 
                 <div class="text logo-text">
                     <span class="name">Service<span>Later</span></span>
-                    <span class="adminName"><%=user.username%></span>
+                    <span class="adminName">%nombreadmin%</span>
                 </div>
             </div>
 
@@ -36,30 +39,30 @@
                 <li class="search-box">
                     <!-- PARA BUSCAR KB O INC -->
                     <i class="bx bx-search icon"></i>
-                        <input type="text" name="Search" placeholder="Search KB, INC" />
+                    <input type="text" placeholder="Search KB, INC" />
                 </li>
 
                 <ul class="menu-links">
                     <li class="nav-link">
-                        <a href="/ticket_create">
+                        <a href="#">
                             <i class="bx bx-edit icon"></i>
                             <span class="text nav-text">New incident</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="/kb_create"> <i class="bx bx-book-add icon"></i> <span class="text nav-text">New KB</span> </a>
+                        <a href="#"> <i class="bx bx-book-add icon"></i> <span class="text nav-text">New KB</span> </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="/all_inc">
+                        <a href="#">
                             <i class="bx bx-cabinet icon"></i>
                             <span class="text nav-text">Incidents</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="/all_kb">
+                        <a href="#">
                             <i class="bx bx-book-bookmark icon"></i>
                             <span class="text nav-text">KB articles</span>
                         </a>
@@ -86,52 +89,53 @@
         </div>
     </nav>
 
-    <!-- BACKLOG -->
     <div class="content">
-        <div class="backlog">
-            <p class="bLogTitle">Backlog</p>
-            <div class="backlogGrid">
-                <div class="resolved">
-                    <a href="#" class="rBtn">
-                        <p class="rCount"><%=data.Resolve%></p>
-                        <p class="rLabel">Resolved</p>
-                    </a>
-                </div>
-                <div class="inProgress">
-                    <a href="#" class="ipBtn">
-                        <p class="ipCount"><%=data.Pending%></p>
-                        <p class="ipLabel">Pending</p>
-                    </a>
-                </div>
-                <div class="new">
-                    <a href="#" class="nBtn">
-                        <p class="nCount"><%=data.New%></p>
-                        <p class="nLabel">New</p>
-                    </a>
-                </div>
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="navbar__container">
+                <a href="/menu" class="navbar__title">service<span>Later</span></a>
+
+                <ul class="navbar__menu">
+                    <!-- <li class="navbar__item">
+              <a href="" onclick="" class="navbar__attach" id="attach">&#128206;</a>
+            </li> -->
+                    <li class="navbar__btn">
+                        <button class="button" form="save">Save</button>
+                    </li>
+                </ul>
             </div>
+        </nav>
+
+        <div class="formWrapper">
+            <form id="save" class="form" action="/ticket" method="post">
+                <div class="bottomGrid" id="">
+                    <!-- ESTO ESTÁ ALINEADO PARA LA MIERDA PORQUE NO SE LA FORMA DE ALINEARLO BIEN CON LO DE ARRIBA -->
+                    <p id="kbArticleP" class="inputLabel">Knowledge article</p>
+                    <input id="kbArticleI" name="kbarticle" class="input" type="text" placeholder=" " />
+
+                    <p id="titleP" class="inputLabel">Title</p>
+                    <input id="titleI" name="title" class="input" type="text" placeholder=" " />
+
+                    <p id="knowledgeP" class="inputLabel">Knowledge</p>
+                    <textarea id="knowledgeI" name=knowledge" class="input" type="text" placeholder=" "></textarea>
+                </div>
+
         </div>
-    </div>
-    <script>
-        const body = document.querySelector("body"),
-            sidebar = body.querySelector("nav"),
-            toggle = body.querySelector(".toggle");
-        searchBtn = body.querySelector(".search-box");
 
-        toggle.addEventListener("click", () => {
-            sidebar.classList.toggle("close");
-        });
+        <script>
+            const body = document.querySelector("body"),
+                sidebar = body.querySelector("nav"),
+                toggle = body.querySelector(".toggle");
+            searchBtn = body.querySelector(".search-box");
 
-        searchBtn.addEventListener("click", () => {
-            sidebar.classList.remove("close");
-        });
-        window.onload = function () {
-            if (!window.location.hash) {
-                window.location = window.location + '#loaded';
-                window.location.reload();
-            }
-        }
-    </script>
+            toggle.addEventListener("click", () => {
+                sidebar.classList.toggle("close");
+            });
+
+            searchBtn.addEventListener("click", () => {
+                sidebar.classList.remove("close");
+            });
+        </script>
 </body>
 
 </html>
