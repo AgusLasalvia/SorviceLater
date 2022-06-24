@@ -77,24 +77,25 @@ app.post('', function (req, res) {
      update_counters();
      const { username, password } = req.body
      connection.query(`SELECT * FROM Admin WHERE username = "${username}" AND password = "${password}"`, function (err, result) {
-          if (err) throw err
-          if (result[0].username === username) {
+          if (result[0] === undefined) {
+               res.send('<script> prompt("Username or Password not correct.")</script >')
+          } else if (result[0].username === username) {
                user_data.username = result[0].username
                user_data.realname = result[0].name
                user_data.email = result[0].email
-               res.render(path.join(__dirname, '/views/menu'), { user: user_data, data: data });
+               res.render(path.join(__dirname, '/views/backlog'), { user: user_data, data: data });
           }
-     });
+     })
 });
 
 
-//Menu Route
-app.get('/menu', function (req, res) {
+//backlog Route
+app.get('/backlog', function (req, res) {
      update_counters();
-     res.render(path.join(__dirname, '/views/menu', { user: user_data, data: data }));
+     res.render(path.join(__dirname, '/views/backlog'), { user: user_data, data: data });
 });
 
-app.post('/menu', function (req, res) {
+app.post('/backlog', function (req, res) {
      const { Search } = req.body
      const [word, digit] = Search.split(/(?<=\D)(?=\d)/);
      if (word === 'KB') {
@@ -138,7 +139,7 @@ app.post('/ticket', function (req, res) {
      impact = "${Impact}",urgency = "${Urgency}",priority = "${Priority}"
      WHERE id = ${incNum};`);
      update_counters();
-     res.render(path.join(__dirname, '/views/menu'), { data: data, user: user_data });
+     res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
 });
 
 
@@ -197,7 +198,7 @@ app.post('/kbarticle', function (req, res) {
      connection.query(`UPDATE KnowledgeBase SET KB = ${kbarticle},
      title="${title}",description = "${knowledge}";`);
      update_counters();
-     res.render(path.join(__dirname, '/views/menu'), { data: data, user: user_data });
+     res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
 })
 
 app.get('/all_kb', function (req, res) {

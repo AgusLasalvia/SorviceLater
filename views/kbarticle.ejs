@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>serviceLater</title>
-    <script src="../js/index.js"></script>
     <link rel="stylesheet" href="../styles/global.css" />
     <link rel="stylesheet" href="../styles/sidebar.css" />
     <link rel="stylesheet" href="../styles/navbar.css" />
@@ -26,7 +25,9 @@
 
                 <div class="text logo-text">
                     <span class="name">Service<span>Later</span></span>
-                    <span class="adminName">%nombreadmin%</span>
+                    <span class="adminName">
+                        <%=user.username%>
+                    </span>
                 </div>
             </div>
 
@@ -39,37 +40,37 @@
                 <li class="search-box">
                     <!-- PARA BUSCAR KB O INC -->
                     <i class="bx bx-search icon"></i>
-                    <input type="text" placeholder="Search KB, INC" />
+                    <input type="text" name="Search" placeholder="Search KB, INC" />
                 </li>
 
                 <ul class="menu-links">
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="/ticket_create">
                             <i class="bx bx-edit icon"></i>
                             <span class="text nav-text">New incident</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="#"> <i class="bx bx-book-add icon"></i> <span class="text nav-text">New KB</span> </a>
+                        <a href="/kb_create"> <i class="bx bx-book-add icon"></i> <span class="text nav-text">New KB</span> </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="">
                             <i class="bx bx-cabinet icon"></i>
                             <span class="text nav-text">Incidents</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="/all_kb">
                             <i class="bx bx-book-bookmark icon"></i>
                             <span class="text nav-text">KB articles</span>
                         </a>
                     </li>
 
                     <li class="nav-link">
-                        <a href="#">
+                        <a href="/backlog">
                             <i class="bx bx-bar-chart icon"></i>
                             <span class="text nav-text">Backlog</span>
                         </a>
@@ -79,7 +80,7 @@
 
             <div class="bottom-content">
                 <li class="">
-                    <a href="#">
+                    <a href="/">
                         <!-- bx icon -->
                         <i class="bx bx-log-out icon"></i>
                         <span class="text nav-text">Logout</span>
@@ -93,7 +94,7 @@
         <!-- Navbar -->
         <nav class="navbar">
             <div class="navbar__container">
-                <a href="/menu" class="navbar__title">service<span>Later</span></a>
+                <a href="/backlog" class="navbar__title">service<span>Later</span></a>
 
                 <ul class="navbar__menu">
                     <!-- <li class="navbar__item">
@@ -107,19 +108,24 @@
         </nav>
 
         <div class="formWrapper">
-            <form id="save" class="form" action="/ticket" method="post">
+            <form id="save" class="form" action="/kbarticle" method="post">
                 <div class="bottomGrid" id="">
                     <!-- ESTO ESTÁ ALINEADO PARA LA MIERDA PORQUE NO SE LA FORMA DE ALINEARLO BIEN CON LO DE ARRIBA -->
-                    <p id="kbArticleP" class="inputLabel">Knowledge article</p>
+                    <p id="kbArticleP" class="inputLabel">
+                        <%='KB'+data.KB%>
+                    </p>
                     <input id="kbArticleI" name="kbarticle" class="input" type="text" placeholder=" " />
 
-                    <p id="titleP" class="inputLabel">Title</p>
+                    <p id="titleP" class="inputLabel">
+                        <%=data.title%>
+                    </p>
                     <input id="titleI" name="title" class="input" type="text" placeholder=" " />
 
-                    <p id="knowledgeP" class="inputLabel">Knowledge</p>
+                    <p id="knowledgeP" class="inputLabel">
+                        <%=data.description%>
+                    </p>
                     <textarea id="knowledgeI" name=knowledge" class="input" type="text" placeholder=" "></textarea>
                 </div>
-
         </div>
 
         <script>

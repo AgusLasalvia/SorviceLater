@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>serviceLater</title>
-    <script src="../js/index.js"></script>
     <link rel="stylesheet" href="../styles/global.css" />
     <link rel="stylesheet" href="../styles/sidebar.css" />
     <link rel="stylesheet" href="../styles/kblist.css" />
@@ -30,53 +29,53 @@
         <i class="bx bx-chevron-right toggle"></i>
       </header>
 
-      <div class="menu-bar">
-        <div class="menu">
-          <!-- Searchbox -->
-          <li class="search-box">
-            <!-- PARA BUSCAR KB O INC -->
-            <i class="bx bx-search icon"></i>
-            <input type="text" placeholder="Search KB, INC" />
-          </li>
-
-          <ul class="menu-links">
-            <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-edit icon"></i>
-                <span class="text nav-text">New incident</span>
-              </a>
-            </li>
-
-            <li class="nav-link">
-              <a href="#"> <i class="bx bx-book-add icon"></i> <span class="text nav-text">New KB</span> </a>
-            </li>
-
-            <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-cabinet icon"></i>
-                <span class="text nav-text">Incidents</span>
-              </a>
-            </li>
-
-            <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-book-bookmark icon"></i>
-                <span class="text nav-text">KB articles</span>
-              </a>
-            </li>
-
-            <li class="nav-link">
-              <a href="#">
-                <i class="bx bx-bar-chart icon"></i>
-                <span class="text nav-text">Backlog</span>
-              </a>
-            </li>
-          </ul>
-        </div>
+        <div class="menu-bar">
+            <div class="menu">
+                <!-- Searchbox -->
+                <li class="search-box">
+                    <!-- PARA BUSCAR KB O INC -->
+                    <i class="bx bx-search icon"></i>
+                    <input type="text" name="Search" placeholder="Search KB, INC" />
+                </li>
+        
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a href="/ticket_create">
+                            <i class="bx bx-edit icon"></i>
+                            <span class="text nav-text">New incident</span>
+                        </a>
+                    </li>
+        
+                    <li class="nav-link">
+                        <a href="/kb_create"> <i class="bx bx-book-add icon"></i> <span class="text nav-text">New KB</span> </a>
+                    </li>
+        
+                    <li class="nav-link">
+                        <a href="/all_inc">
+                            <i class="bx bx-cabinet icon"></i>
+                            <span class="text nav-text">Incidents</span>
+                        </a>
+                    </li>
+        
+                    <li class="nav-link">
+                        <a href="/all_kb">
+                            <i class="bx bx-book-bookmark icon"></i>
+                            <span class="text nav-text">KB articles</span>
+                        </a>
+                    </li>
+        
+                    <li class="nav-link">
+                        <a href="/backlog">
+                            <i class="bx bx-bar-chart icon"></i>
+                            <span class="text nav-text">Backlog</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
         <div class="bottom-content">
           <li class="">
-            <a href="#">
+            <a href="/">
               <!-- bx icon -->
               <i class="bx bx-log-out icon"></i>
               <span class="text nav-text">Logout</span>
@@ -103,7 +102,7 @@
                     <p class="kbID">
                         <%=data[i].KB%>
                     </p>
-                    <p class="kbTitle">How to pelado</p>
+                    <p class="kbTitle"><%=data.title%></p>
                     <button class="button" form="save">Open</button>
                 </div>
             <%}%>
