@@ -41,11 +41,13 @@ const user_data = {
      email: ''
 }
 
+
 const data = {
      Resolve: 0,
      New: 0,
      Pending: 0
 };
+
 
 let ticket_id = 0;
 let search_ticket = 0;
