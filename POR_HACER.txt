@@ -1,0 +1,7 @@
+-Terminar de adaptar todos los menus.
+
+-Hay que crear un app.post para cada search menu en cada pagina.
+
+-hacer pops up cuando las querry sean undefiend de que la informacion no es correcta.
+
+-
