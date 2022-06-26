@@ -57,7 +57,7 @@ let search_kb = 0;
 
 
 function update_counters() {
-     connection.query('SELECT COUNT(*) as count FROM Ticket WHERE status = "resolved";', function (err, resolved) {
+     connection.query('SELECT COUNT(*) as count FROM Ticket WHERE status = "pendingVendor" AND status = "pendingAdmin";', function (err, resolved) {
           data.Resolve = resolved[0].count;
           connection.query('SELECT COUNT(*) as count FROM Ticket WHERE status = "new";', function (err, t_new) {
                data.New = t_new[0].count;
@@ -135,22 +135,21 @@ app.post('/ticket', function (req, res) {
           Urgency, Priority } = req.body;
      switch (Impact) {
           case 'high':
-               switch (Urgency) {
-                    case 'high':
-                         Priority = '1-Urgent'
-                         break;
-                    case 'medium':
-                         Priority = '2-Very High'
-                         break;
+               if (Urgency == 'high') {
+
+                    Priority = '1-Urgent'
+
+               } else {
+                    Priority = '2-Very High'
+
                }
           case 'medium':
-               switch (Urgency) {
-                    case 'medium':
-                         Priority = '3-High'
-                         break;
-                    case 'low':
-                         Priority = '4-Medium'
-                         break;
+               if (Urgency == 'medium') {
+                    Priority = '3-High'
+
+               } else {
+                    Priority = '4-Medium'
+
                }
           case 'low':
                if (Urgency == 'low') {
@@ -241,7 +240,7 @@ app.get('/all_kb', function (req, res) {
 });
 
 app.get('/Pending', function (req, res) {
-     connection.query('SELECT * FROM Tcket WHERE status = "Pending";', function (err, result) {
+     connection.query('SELECT * FROM Tcket WHERE status = "pendingAdmin" AND status = "pendingVendor";', function (err, result) {
           if (result[0] != undefined) {
                res.render(path.join(__dirname, '/views/kblist'), { user: user_data, data: result })
           } else {
