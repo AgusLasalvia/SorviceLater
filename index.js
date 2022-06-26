@@ -129,32 +129,44 @@ app.get('/ticket', function (req, res) {
 
 //Ticket Modification
 app.post('/ticket', function (req, res) {
-     // const { Search } = req.body
-     // if (Search != null || Search != undefined) {
-     //      const [word, digit] = Search.split(/(?<=\D)(?=\d)/);
-     //      switch (word) {
-     //           case 'KB':
-     //                search_kb = digit;
-     //                res.redirect('/views/kbarticle.ejs');
-     //           case 'INC':
-     //                search_ticket = digit;
-     //                res.redirect('/views/ticket.ejs');
-     //      }
-     // } else {
-          const { incNum, reqBy, reqFor, srvcOf,
-               confItem, contactType, State,
-               Assigned, Category, Symptom, Impact,
-               Urgency, Priority } = req.body;
-          connection.query(`UPDATE Ticket SET request_by = "${reqBy}",
+     const { incNum, reqBy, reqFor, srvcOf,
+          confItem, contactType, State,
+          Assigned, Category, Symptom, Impact,
+          Urgency, Priority } = req.body;
+     switch (Impact) {
+          case 'high':
+               switch (Urgency) {
+                    case 'high':
+                         Priority = '1-Urgent'
+                         break;
+                    case 'medium':
+                         Priority = '2-Very High'
+                         break;
+               }
+          case 'medium':
+               switch (Urgency) {
+                    case 'medium':
+                         Priority = '3-High'
+                         break;
+                    case 'low':
+                         Priority = '4-Medium'
+                         break;
+               }
+          case 'low':
+               if (Urgency == 'low') {
+                    Priority = '5-Low'
+               }
+     }
+     connection.query(`UPDATE Ticket SET request_by = "${reqBy}",
      request_for = "${reqFor}",service_offering = "${srvcOf}",
      item = "${confItem}",contact_type = "${contactType}",
      status = "${State}",assigned = "${Assigned}",
      category = "${Category}",symptom = "${Symptom}",
      impact = "${Impact}",urgency = "${Urgency}",priority = "${Priority}"
      WHERE id = ${incNum};`);
-          update_counters();
-          res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
-     // }
+     update_counters();
+     res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
+
 });
 
 
@@ -232,7 +244,7 @@ app.get('/Pending', function (req, res) {
      connection.query('SELECT * FROM Tcket WHERE status = "Pending";', function (err, result) {
           if (result[0] != undefined) {
                res.render(path.join(__dirname, '/views/kblist'), { user: user_data, data: result })
-          } else { 
+          } else {
 
           }
      })
