@@ -6,7 +6,7 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const port = 3000
 
-//database connection
+// Database connection
 const connection = mysql.createConnection({
      host: "localhost",
      user: "admin",
@@ -25,7 +25,7 @@ app.set('view engine', 'ejs');
 app.engine('ejs', require('ejs').__express);
 
 
-//statics
+// statics
 app.use('/styles', express.static(__dirname + "/styles"));
 app.use('/js', express.static(__dirname + '/js'));
 app.use('/static', express.static(__dirname + '/static'));
@@ -129,20 +129,34 @@ app.get('/ticket', function (req, res) {
 
 //Ticket Modification
 app.post('/ticket', function (req, res) {
-     const { incNum, reqBy, reqFor, srvcOf,
-          confItem, contactType, State,
-          Assigned, Category, Symptom, Impact,
-          Urgency, Priority } = req.body;
-     connection.query(`UPDATE Ticket SET request_by = "${reqBy}",
+     // const { Search } = req.body
+     // if (Search != null || Search != undefined) {
+     //      const [word, digit] = Search.split(/(?<=\D)(?=\d)/);
+     //      switch (word) {
+     //           case 'KB':
+     //                search_kb = digit;
+     //                res.redirect('/views/kbarticle.ejs');
+     //           case 'INC':
+     //                search_ticket = digit;
+     //                res.redirect('/views/ticket.ejs');
+     //      }
+     // } else {
+          const { incNum, reqBy, reqFor, srvcOf,
+               confItem, contactType, State,
+               Assigned, Category, Symptom, Impact,
+               Urgency, Priority } = req.body;
+          connection.query(`UPDATE Ticket SET request_by = "${reqBy}",
      request_for = "${reqFor}",service_offering = "${srvcOf}",
      item = "${confItem}",contact_type = "${contactType}",
      status = "${State}",assigned = "${Assigned}",
      category = "${Category}",symptom = "${Symptom}",
      impact = "${Impact}",urgency = "${Urgency}",priority = "${Priority}"
      WHERE id = ${incNum};`);
-     update_counters();
-     res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
+          update_counters();
+          res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
+     // }
 });
+
 
 
 //Ticket auto creator
@@ -196,12 +210,13 @@ app.get('/kbarticle', function (req, res) {
 });
 
 app.post('/kbarticle', function (req, res) {
-     const { kbarticle, title, knowledge } = req.body
+     const { kbarticle, title } = req.body
+     const knowledge = req.body.knowledge
      connection.query(`UPDATE KnowledgeBase SET KB = ${kbarticle},
      title="${title}",description = "${knowledge}";`);
      update_counters();
      res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
-})
+});
 
 app.get('/all_kb', function (req, res) {
      connection.query('SELECT * FROM KnowledgeBase;', function (err, result) {
@@ -213,6 +228,15 @@ app.get('/all_kb', function (req, res) {
      });
 });
 
+app.get('/Pending', function (req, res) {
+     connection.query('SELECT * FROM Tcket WHERE status = "Pending";', function (err, result) {
+          if (result[0] != undefined) {
+               res.render(path.join(__dirname, '/views/kblist'), { user: user_data, data: result })
+          } else { 
+
+          }
+     })
+})
 
 
 
