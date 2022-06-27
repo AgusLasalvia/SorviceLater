@@ -132,36 +132,38 @@ app.post('/ticket', function (req, res) {
      const { incNum, reqBy, reqFor, srvcOf,
           confItem, contactType, State,
           Assigned, Category, Symptom, Impact,
-          Urgency, Priority } = req.body;
+          Urgency } = req.body;
+     let Priority = '';
+     console.log(Impact);
      switch (Impact) {
           case 'high':
                if (Urgency == 'high') {
 
-                    Priority = '1-Urgent'
+                    Priority = '1-Urgent';
 
                } else {
-                    Priority = '2-Very High'
+                    Priority = '2-Very High';
 
                }
           case 'medium':
                if (Urgency == 'medium') {
-                    Priority = '3-High'
+                    Priority = '3-High';
 
                } else {
-                    Priority = '4-Medium'
+                    Priority = '4-Medium';
 
                }
           case 'low':
                if (Urgency == 'low') {
-                    Priority = '5-Low'
+                    Priority = '5-Low';
                }
      }
-     connection.query(`UPDATE Ticket SET request_by = "${reqBy}",
-     request_for = "${reqFor}",service_offering = "${srvcOf}",
-     item = "${confItem}",contact_type = "${contactType}",
-     status = "${State}",assigned = "${Assigned}",
-     category = "${Category}",symptom = "${Symptom}",
-     impact = "${Impact}",urgency = "${Urgency}",priority = "${Priority}"
+     connection.query(`UPDATE Ticket SET request_by = "${reqBy}",\
+     request_for = "${reqFor}",service_offering = "${srvcOf}",\
+     item = "${confItem}",contact_type = "${contactType}",\
+     status = "${State}",assigned = "${Assigned}",\
+     category = "${Category}",symptom = "${Symptom}",\
+     impact = "${Impact}",urgency = "${Urgency}",priority = "${Priority}"\
      WHERE id = ${incNum};`);
      update_counters();
      res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
@@ -180,9 +182,11 @@ app.get('/ticket_create', function (req, res) {
           connection.query(`SELECT * FROM Ticket WHERE id = ${ticket_id};`, function (err, first) {
                connection.query(`SELECT username FROM Admin;`, function (err, second) {
                     connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, third) {
-                         for (var a = 1; a < parseInt(third[0].count); a++) {
+                         for (var a = 0; a < third[0].count; a++) {
+                              console.log(a)
                               users.push(second[a].username)
                          }
+                         console.log(users)
                          res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: users, user: user_data });
                     })
                })
@@ -223,8 +227,7 @@ app.get('/kbarticle', function (req, res) {
 app.post('/kbarticle', function (req, res) {
      const { kbarticle, title } = req.body
      const knowledge = req.body.knowledge
-     connection.query(`UPDATE KnowledgeBase SET KB = ${kbarticle},
-     title="${title}",description = "${knowledge}";`);
+     connection.query(`UPDATE KnowledgeBase SET title="${title}",description = "${knowledge} WHERE KB = ${kbarticle}`);
      update_counters();
      res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
 });
@@ -240,11 +243,11 @@ app.get('/all_kb', function (req, res) {
 });
 
 app.get('/Pending', function (req, res) {
-     connection.query('SELECT * FROM Tcket WHERE status = "pendingAdmin" AND status = "pendingVendor";', function (err, result) {
+     connection.query('SELECT * FROM Ticket WHERE status = "pendingAdmin" AND status = "pendingVendor";', function (err, result) {
           if (result[0] != undefined) {
-               res.render(path.join(__dirname, '/views/kblist'), { user: user_data, data: result })
+               res.render(path.join(__dirname, '/views/kblist'), { title: 'Incidents', user: user_data, data: result })
           } else {
-
+               res.render(path.join(__dirname, '/views/kblist'), { title: 'No pending incidents', user: user_data, data: null })
           }
      })
 })

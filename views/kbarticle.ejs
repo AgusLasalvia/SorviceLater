@@ -129,6 +129,10 @@
         </div>
 
         <script>
+            document.getElementById("kbArticleP").value = '<%=data.KB%>'
+            document.getElementById("kbArticleI").value = '<%=data.title%>'
+            document.getElementById("knowledgeI").value = '<%=data.description%>'
+            
             const body = document.querySelector("body"),
                 sidebar = body.querySelector("nav"),
                 toggle = body.querySelector(".toggle");
@@ -142,9 +146,6 @@
                 sidebar.classList.remove("close");
             });
 
-            document.getElementById("kbArticleP").value = '<%= data.KB %>'
-            document.getElementById("kbArticleP").value = '<%=data.title%>'
-            document.getElementById("kbArticleP").value = '<%=data.description%>'
         </script>
 </body>
 

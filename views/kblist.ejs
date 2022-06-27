@@ -94,7 +94,7 @@
                     <p class="kbID">
                     <%=data[i].id%>
                     </p>
-                    <p class="kbTitle">How to pelado</p>
+                    <p class="kbTitle"><%=data[i].title%></p>
                     <button class="button" form=save>Open</button>
                 </div>
             <% }else if (title=='Knowledge base articles'){%>
@@ -102,7 +102,7 @@
                     <p class="kbID">
                         <%=data[i].KB%>
                     </p>
-                    <p class="kbTitle"><%=data.title%></p>
+                    <p class="kbTitle"><%=data[i].title%></p>
                     <button class="button" form="save">Open</button>
                 </div>
             <%}%>
