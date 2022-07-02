@@ -4,4 +4,8 @@
 
 -hacer pops up cuando las querry sean undefiend de que la informacion no es correcta.
 
--
+-------------------------------------
+JOAQUIN
+
+-hacer un mensaje debajo del boton del login de bienvenida, para que yo lo pueda cambiar 
+cuando el usuario o la pass son incorrectas con un mensaje de error

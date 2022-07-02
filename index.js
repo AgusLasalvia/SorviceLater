@@ -48,7 +48,6 @@ const data = {
      Pending: 0
 };
 
-
 let ticket_id = 0;
 let search_ticket = 0;
 
@@ -57,12 +56,12 @@ let search_kb = 0;
 
 
 function update_counters() {
-     connection.query('SELECT COUNT(*) as count FROM Ticket WHERE status = "pendingVendor" AND status = "pendingAdmin";', function (err, resolved) {
+     connection.query('SELECT COUNT(*) as count FROM Ticket WHERE status = "resolved";', function (err, resolved) {
           data.Resolve = resolved[0].count;
           connection.query('SELECT COUNT(*) as count FROM Ticket WHERE status = "new";', function (err, t_new) {
                data.New = t_new[0].count;
-               connection.query('SELECT COUNT(*) as count FROM Ticket WHERE status = "inProgress";', function (err, progress) {
-                    data.Pending = progress[0].count;
+               connection.query('SELECT COUNT(*) as count FROM Ticket WHERE status = "pendingVendor" AND status = "pendingAdmin";', function (err, progress) {
+                    
                });
           });
      });
@@ -101,14 +100,39 @@ app.post('/backlog', function (req, res) {
      const { Search } = req.body
      const [word, digit] = Search.split(/(?<=\D)(?=\d)/);
      if (word === 'KB') {
-          search_kb = digit;
-          res.redirect('/views/kbarticle.ejs')
+          search_kb = parseInt(digit);
+          connection.query(`SELECT * FROM KnowledgeBase WHERE KB = ${search_kb};`, function (err, first) {
+               res.render(path.join(__dirname, '/views/kbarticle'), { data: first[0], user: user_data });
+          });
+          res.redirect('/views/kbarticle')
      } else if (word === 'INC') {
-          search_ticket = digit;
-          res.redirect('/views/ticket.ejs')
+          search_ticket = parseInt(digit);
+          connection.query(`SELECT * FROM Ticket WHERE id = ${search_ticket};`, function (err, first) {
+               res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: users });
+          })
      }
 });
 
+
+//Ticket auto creator
+app.get('/ticket_create', function (req, res) {
+     connection.query(`SELECT COUNT(*) AS count FROM Ticket;`, function (err, result) {
+          ticket_id = result[0].count;
+          ticket_id += 1;
+          const users = [];
+          connection.query(`INSERT INTO Ticket VALUES(${ticket_id},NULL,NULL,NULL,NULL,NULL,NULL,'lasa1307',NULL,NULL,NULL,NULL,NULL);`);
+          connection.query(`SELECT * FROM Ticket WHERE id = ${ticket_id};`, function (err, first) {
+               connection.query(`SELECT username FROM Admin;`, function (err, second) {
+                    connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, third) {
+                         for (var a = 0; a < third[0].count; a++) {
+                              users.push(second[a].username)
+                         }
+                         res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: users, user: user_data });
+                    })
+               })
+          })
+     });
+});
 
 //Tickets Route
 app.get('/ticket', function (req, res) {
@@ -134,7 +158,6 @@ app.post('/ticket', function (req, res) {
           Assigned, Category, Symptom, Impact,
           Urgency } = req.body;
      let Priority = '';
-     console.log(Impact);
      switch (Impact) {
           case 'high':
                if (Urgency == 'high') {
@@ -172,27 +195,6 @@ app.post('/ticket', function (req, res) {
 
 
 
-//Ticket auto creator
-app.get('/ticket_create', function (req, res) {
-     connection.query(`SELECT COUNT(*) AS count FROM Ticket;`, function (err, result) {
-          ticket_id = result[0].count;
-          ticket_id += 1;
-          connection.query(`INSERT INTO Ticket VALUES(${ticket_id},NULL,NULL,NULL,NULL,NULL,NULL,'lasa1307',NULL,NULL,NULL,NULL,NULL);`);
-          const users = [];
-          connection.query(`SELECT * FROM Ticket WHERE id = ${ticket_id};`, function (err, first) {
-               connection.query(`SELECT username FROM Admin;`, function (err, second) {
-                    connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, third) {
-                         for (var a = 0; a < third[0].count; a++) {
-                              console.log(a)
-                              users.push(second[a].username)
-                         }
-                         console.log(users)
-                         res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: users, user: user_data });
-                    })
-               })
-          })
-     });
-});
 
 
 app.get('/all_inc', function (req, res) {
