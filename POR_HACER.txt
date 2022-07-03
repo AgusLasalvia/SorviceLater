@@ -4,8 +4,19 @@
 
 -hacer pops up cuando las querry sean undefiend de que la informacion no es correcta.
 
+-Hacer que en search se pueda buscar tickets por usuario tanto Admin como jugadores
+
+-contador en lo KB nuevos no anda
+
+-Lista de KB no se carga
+
+-Hacer que ir para atras cancele la opcion o crear boton de cancelar
+
 -------------------------------------
 JOAQUIN
 
 -hacer un mensaje debajo del boton del login de bienvenida, para que yo lo pueda cambiar 
 cuando el usuario o la pass son incorrectas con un mensaje de error
+
+-Agregar nueva opcion en la navbar que se llame "My tickets"
+Es para que el usuario vea todos los tickets que creó
