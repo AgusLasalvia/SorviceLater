@@ -66,8 +66,7 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `Ticket`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+
 CREATE TABLE `Ticket` (
   `id` int NOT NULL,
   `request_by` varchar(25) DEFAULT NULL,
@@ -102,8 +101,7 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `Worknotes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+
 CREATE TABLE `Worknotes` (
   `note_id` int NOT NULL,
   `ticket_id` int DEFAULT NULL,
