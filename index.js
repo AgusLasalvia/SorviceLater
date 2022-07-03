@@ -56,6 +56,8 @@ let search_ticket = 0;
 let kb_id = 0;
 let search_kb = 0;
 
+
+//Important functions
 function existing_users() {
      connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, third) {
           for (var a = 1; a < parseInt(third[0].count); a++) {
@@ -79,7 +81,7 @@ function update_counters() {
 //Home(login) Route
 app.get('', function (req, res) {
      update_counters();
-     res.render(path.join(__dirname, '/views/login'),)
+     res.render(path.join(__dirname, '/views/login', { text: 'Welcome to ServiceLater'}),)
 });
 
 app.post('', function (req, res) {
@@ -87,7 +89,7 @@ app.post('', function (req, res) {
      const { username, password } = req.body
      connection.query(`SELECT * FROM Admin WHERE username = "${username}" AND password = "${password}"`, function (err, result) {
           if (result[0] === undefined) {
-               res.send('<script> prompt("Username or Password not correct.")</script >')
+               res.render(path.join(__dirname, '/views/login', { text: 'Username or password not correct' }))
           } else if (result[0].username === username) {
                user_data.username = result[0].username
                user_data.realname = result[0].name
