@@ -1,3 +1,4 @@
+<html>
 -Terminar de adaptar todos los menus.
 
 -Hay que crear un app.post para cada search menu en cada pagina.
@@ -20,3 +21,18 @@ cuando el usuario o la pass son incorrectas con un mensaje de error
 
 -Agregar nueva opcion en la navbar que se llame "My tickets"
 Es para que el usuario vea todos los tickets que creó
+
+</html>
+kkkkkkk
+
+
+var acc = document.getElementsByClassName("accordion");
+this.classList.toggle("active");
+
+.texto {
+     display: none;
+}
+
+.texto.active {
+     display: block;
+}

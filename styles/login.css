@@ -4,7 +4,7 @@ body {
   justify-content: center;
   height: 100vh;
   background-image: url(../static/blurredBALLS.svg);
-  /* background: url(../static/blurredBALLS.svg); */
+  background-size: cover;
 }
 
 .formWrapper {
@@ -140,4 +140,11 @@ body {
 
 .loginBtn:hover {
   background: #4736ff;
+}
+
+.errortext {
+  color: #ff3636;
+  margin-top: 1rem;
+  font-weight: 500;
+  font-size: 14px;
 }
