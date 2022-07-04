@@ -1,9 +1,4 @@
 <html>
--Terminar de adaptar todos los menus.
-
--Hay que crear un app.post para cada search menu en cada pagina.
-
--hacer pops up cuando las querry sean undefiend de que la informacion no es correcta.
 
 -Hacer que en search se pueda buscar tickets por usuario tanto Admin como jugadores
 
@@ -16,11 +11,6 @@
 -------------------------------------
 JOAQUIN
 
--hacer un mensaje debajo del boton del login de bienvenida, para que yo lo pueda cambiar 
-cuando el usuario o la pass son incorrectas con un mensaje de error
-
--Agregar nueva opcion en la navbar que se llame "My tickets"
-Es para que el usuario vea todos los tickets que creó
 
 </html>
 kkkkkkk

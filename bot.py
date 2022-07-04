@@ -21,5 +21,4 @@ async def on_message(message):
     status = cursor.fetchone()
     await message.author.send(f"Status: {status[0]}\n additional comments: {status[1]}")
 
-
 client.run('OTg2MTEwODY3MzY2MTE3Mzc4.G2eImO.C7A922zDyC0iVKH12olQjmBxyb1Lb198dJl5LU')
