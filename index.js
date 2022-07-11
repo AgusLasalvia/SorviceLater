@@ -48,7 +48,30 @@ const data = {
      Pending: 0
 };
 
+
 const users = []
+
+const new_ticket = {
+     id: 0,
+     request_by:'',
+     request_for:'',
+     service_offering:'',
+     item:'',
+     contact_type:'',
+     status:'',
+     assigned:'',
+     category:'',
+     symptom:'',
+     impact:'',
+     urgency:'',
+     priority:'',
+
+}
+const new_BK = {
+     KB: 0,
+     title: '',
+     description:''
+}
 
 let ticket_id = 0;
 let search_ticket = 0;
@@ -133,12 +156,11 @@ app.get('/ticket_create', function (req, res) {
      connection.query(`SELECT COUNT(*) AS count FROM Ticket;`, function (err, result) {
           ticket_id = result[0].count;
           ticket_id += 1;
-          connection.query(`INSERT INTO Ticket VALUES(${ticket_id},NULL,NULL,NULL,NULL,NULL,NULL,'lasa1307',NULL,NULL,NULL,NULL,NULL);`);
-          connection.query(`SELECT * FROM Ticket WHERE id = ${ticket_id};`, function (err, first) {
-               res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: users, user: user_data });
+          new_ticket.id = ticket_id
+          res.render(path.join(__dirname, '/views/ticket'), { data: new_ticket, users: users, user: user_data });
           })
      })
-})
+
 
 
 //Tickets Route
@@ -177,16 +199,14 @@ app.post('/ticket', function (req, res) {
                }
                break;
           case 'low':
+               Urgency = 'low'
                Priority = '5-Low';
                break;
      }
-     connection.query(`UPDATE Ticket SET request_by = "${reqBy}",\
-     request_for = "${reqFor}",service_offering = "${srvcOf}",\
-     item = "${confItem}",contact_type = "${contactType}",\
-     status = "${State}",assigned = "${Assigned}",\
-     category = "${Category}",symptom = "${Symptom}",\
-     impact = "${Impact}",urgency = "${Urgency}",priority = "${Priority}"\
-     WHERE id = ${incNum};`);
+     connection.query(`INSERT INTO Ticket VALUES(${incNum},"${reqBy}",\
+     "${reqFor}","${srvcOf}","${confItem}","${contactType}",\
+     "${State}","${Assigned}","${Category}","${Symptom}",\
+     "${Impact}","${Urgency}""${Priority}");`);
      update_counters();
      res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
 
@@ -264,6 +284,18 @@ app.get('/my_inc', function (req, res) {
           });
      })
 });
+
+
+// app.post('/cancel_kb', function (req, res) {
+//      const { kbarticle } = req.body
+//      connection.query(`DELETE FROM KnowledgeBase WHERE KB = ${kbarticle};`)
+// })
+
+
+// app.post('/cancel_ticket', function (req, res) {
+//      const { incNum } = req.body
+//      connection.query(`DELETE FROM Ticket WHERE id = ${incNum};`)
+// })
 
 
 //Server start url

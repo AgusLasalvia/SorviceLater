@@ -226,6 +226,7 @@
 
           <p id="worknotesP" class="inputLabel">Worknotes</p>
           <textarea id="worknotesI" name=worknotes" class="input" type="text" placeholder=" "></textarea>
+          <!-- CAMBIAR ESTO POR UN TEXT BOX -->
 
           <p id="addcommentsP" class="inputLabel">Additional comments</p>
           <textarea id="addcommentsI" name=addcomments" class="input" type="text" placeholder=" "></textarea>
@@ -255,7 +256,10 @@
     document.getElementById("symptom").value = '<%=data.symptom%>';
     document.getElementById("impact").value = '<%=data.impact%>';
     document.getElementById("urgency").value = '<%=data.urgency%>';
+    document.getElementById("shortDescI").value = '<%=data.description%>';
+    document.getElementById("knowledgeI").value = '<%=data.priority%>';
     document.getElementById("priority").value = '<%=data.priority%>';
+    
   </script>
 </body>
 
