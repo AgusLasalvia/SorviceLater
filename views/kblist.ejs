@@ -108,6 +108,12 @@
             <p class="kbID">
               <%=data[i].id%>
             </p>
+            <p class="kbID" id="reqfor">
+              <%data[i].reqfor%>
+            </p>
+            <p class="kbID" id="assignedto">
+              <%data[i].assignedto%>
+            </p>
             <p class="kbTitle">
               <%=data[i].title%>
             </p>
@@ -127,6 +133,7 @@
        <%}%>
     </div>
   </div>
+  
 
   <script>
     const body = document.querySelector("body"),
