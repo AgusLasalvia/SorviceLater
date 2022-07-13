@@ -35,59 +35,74 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
+const data = {
+Resolve: 0,
+     New: 0,
+     Pending: 0
+};
+
+//User data
+const users = []
 const user_data = {
      username: '',
      realname: '',
      email: ''
 }
 
-
-const data = {
-     Resolve: 0,
-     New: 0,
-     Pending: 0
-};
-
-
-const users = []
-
+//Ticket data
 const new_ticket = {
      id: 0,
-     request_by:'',
-     request_for:'',
-     service_offering:'',
-     item:'',
-     contact_type:'',
-     status:'',
-     assigned:'',
-     category:'',
-     symptom:'',
-     impact:'',
-     urgency:'',
-     priority:'',
-
+     request_by: '',
+     request_for: '',
+     service_offering: '',
+     item: '',
+     contact_type: '',
+     status: '',
+     assigned: '',
+     category: '',
+     symptom: '',
+     impact: '',
+     urgency: '',
+     priority: '',
+     
 }
-const new_BK = {
-     KB: 0,
-     title: '',
-     description:''
-}
-
 let ticket_id = 0;
 let search_ticket = 0;
 
+//KB data
+const kb = []
+const new_BK = {
+     KB: 0,
+     title: '',
+     description: ''
+}
 let kb_id = 0;
 let search_kb = 0;
 
 
+
+
 //Important functions
-function existing_users() {
-     connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, third) {
-          for (var a = 1; a < parseInt(third[0].count); a++) {
-               users.push(second[a].username)
-          }
+function existing_KB() {
+     connection.query('SELECT COUNT(*) as count FROM Admin;', function (err, first) {
+          connection.query('SELECT * FROM KnowledgeBase;', function (err, second) {
+               for (var i = 1; a <= first[0].count; i++){
+                    kb.push({ KB:second[i].KB,title:second[i].title })
+               }
+          })
      })
 }
+
+function existing_users() {
+     connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, first) {
+          connection.query('SELECT * FROM Admin;', function (err, second) {
+               for (var a = 1; a <= first[0].count; a++) {
+                    users.push(second[a].username)
+               }
+          })
+     })
+}
+
 function update_counters() {
      connection.query('SELECT COUNT(*) as count FROM Ticket WHERE status = "resolved";', function (err, resolved) {
           data.Resolve = resolved[0].count;
@@ -126,6 +141,7 @@ app.post('', function (req, res) {
 //backlog Route
 app.get('/backlog', function (req, res) {
      existing_users();
+     existing_KB();
      update_counters();
      res.render(path.join(__dirname, '/views/backlog'), { user: user_data, data: data });
 });
@@ -157,16 +173,17 @@ app.get('/ticket_create', function (req, res) {
           ticket_id = result[0].count;
           ticket_id += 1;
           new_ticket.id = ticket_id
-          res.render(path.join(__dirname, '/views/ticket'), { data: new_ticket, users: users, user: user_data });
-          })
+          res.render(path.join(__dirname, '/views/ticket'), { data: new_ticket, users: users, user: user_data,KB:kb });
      })
+})
 
 
 
 //Tickets Route
 app.get('/ticket', function (req, res) {
+     existing_KB();
      connection.query(`SELECT * FROM Ticket WHERE id = ${search_ticket};`, function (err, first) {
-          res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: users });
+          res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: users, KB: kb });
      })
 })
 
@@ -209,7 +226,6 @@ app.post('/ticket', function (req, res) {
      "${Impact}","${Urgency}""${Priority}");`);
      update_counters();
      res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
-
 });
 
 app.get('/all_inc', function (req, res) {
@@ -229,11 +245,9 @@ app.get('/kb_create', function (req, res) {
      connection.query('SELECT COUNT(*) AS count FROM KnowledgeBase;', function (err, result) {
           kb_id = result[0].count;
           kb_id += 1;
-          connection.query(`INSERT INTO KnowledgeBase VALUES(${kb_id},NULL,NULL);`);
-          connection.query(`SELECT * FROM KnowledgeBase WHERE KB = ${kb_id};`, function (req, first) {
-               res.render(path.join(__dirname, '/views/kbarticle'), { data: first[0], user: user_data });
+          new_BK.KB = kb_id
+               res.render(path.join(__dirname, '/views/kbarticle'), { data: new_BK, user: user_data });
           })
-     })
 });
 
 app.get('/kbarticle', function (req, res) {
@@ -248,6 +262,7 @@ app.post('/kbarticle', function (req, res) {
      connection.query(`UPDATE KnowledgeBase SET title="${title}",description = "${knowledge} WHERE KB = ${kbarticle}`);
      update_counters();
      res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
+     existing_KB();
 });
 
 //KB list

@@ -224,9 +224,11 @@
           <p id="knowledgeP" class="inputLabel">Knowledge base</p>
          <!-- <input id="knowledgeI" name=" " class="input" type="text" placeholder=" " /> -->
          <select id="knowledgeI" name=" " class="select">
-          <option value="high">KB0000038</option>
-          <option value="medium">KB0000038</option>
-          <option value="low">KB0000038</option>
+              <% for (var i=KB.length; i >= 0; i--) {%>
+                <option value="<%=KB[i].KB%>">
+                  <%=KB[i].title%>
+                </option>
+                <%}%>
         </select>
         
           <p id="worknotesP" class="inputLabel">Worknotes</p>
