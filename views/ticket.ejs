@@ -64,7 +64,7 @@
             </a>
           </li>
 
-          
+
           <li class="nav-link">
             <a href="/my_inc">
               <i class="bx bx-user-pin icon"></i>
@@ -222,15 +222,15 @@
           <input id="shortDescI" name=" " class="input" type="text" placeholder=" " />
 
           <p id="knowledgeP" class="inputLabel">Knowledge base</p>
-         <!-- <input id="knowledgeI" name=" " class="input" type="text" placeholder=" " /> -->
-         <select id="knowledgeI" name=" " class="select">
-              <% for (var i=KB.length; i >= 0; i--) {%>
-                <option value="<%=KB[i].KB%>">
-                  <%=KB[i].title%>
-                </option>
-                <%}%>
-        </select>
-        
+          <!-- <input id="knowledgeI" name=" " class="input" type="text" placeholder=" " /> -->
+          <select id="knowledgeI" name=" " class="select">
+            <% for (var i=KB.length; i> 0; i--) {%>
+              <option value="<%=KB[i].KB%>">
+                <%=KB[i].KB%>
+              </option>
+            <%}%>
+          </select>
+
           <p id="worknotesP" class="inputLabel">Worknotes</p>
           <textarea id="worknotesI" name=worknotes" class="input" type="text" placeholder=" "></textarea>
           <!-- CAMBIAR ESTO POR UN TEXT BOX -->
@@ -266,7 +266,7 @@
     document.getElementById("shortDescI").value = '<%=data.description%>';
     document.getElementById("knowledgeI").value = '<%=data.priority%>';
     document.getElementById("priority").value = '<%=data.priority%>';
-    
+
   </script>
 </body>
 

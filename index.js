@@ -36,7 +36,7 @@ app.use(bodyParser.json());
 
 
 const data = {
-Resolve: 0,
+     Resolve: 0,
      New: 0,
      Pending: 0
 };
@@ -64,7 +64,7 @@ const new_ticket = {
      impact: '',
      urgency: '',
      priority: '',
-     
+
 }
 let ticket_id = 0;
 let search_ticket = 0;
@@ -84,10 +84,15 @@ let search_kb = 0;
 
 //Important functions
 function existing_KB() {
-     connection.query('SELECT COUNT(*) as count FROM Admin;', function (err, first) {
-          connection.query('SELECT * FROM KnowledgeBase;', function (err, second) {
-               for (var i = 1; a <= first[0].count; i++){
-                    kb.push({ KB:second[i].KB,title:second[i].title })
+     connection.query('SELECT COUNT(KB) as count FROM KnowledgeBase;', function (err, first) {
+          connection.query('SELECT KB FROM KnowledgeBase;', function (err, second) {
+               console.log(first[0].count)
+               for (var i = 1; i <= first[0].count; i++) {
+                    if (first[0].count != 0) {
+                         kb.push(second[i].KB)
+                    } else {
+                         kb.push(0)
+                    }
                }
           })
      })
@@ -119,6 +124,7 @@ function update_counters() {
 //Home(login) Route
 app.get('', function (req, res) {
      update_counters();
+     existing_KB();
      res.render(path.join(__dirname, '/views/login'), { text: '' });
 });
 
@@ -127,7 +133,7 @@ app.post('', function (req, res) {
      const { username, password } = req.body
      connection.query(`SELECT * FROM Admin WHERE username = "${username}" AND password = "${password}"`, function (err, result) {
           if (result[0] === undefined) {
-               res.render(path.join(__dirname, '/views/login', { text: 'Username or password not correct' }))
+               res.render(path.join(__dirname, '/views/login'), { text: 'Username or password not correct' })
           } else if (result[0].username === username) {
                user_data.username = result[0].username
                user_data.realname = result[0].name
@@ -170,10 +176,11 @@ app.post('/search', function (req, res) {
 //Ticket auto creator
 app.get('/ticket_create', function (req, res) {
      connection.query(`SELECT COUNT(*) AS count FROM Ticket;`, function (err, result) {
+          console.log(result[0].count)
           ticket_id = result[0].count;
           ticket_id += 1;
           new_ticket.id = ticket_id
-          res.render(path.join(__dirname, '/views/ticket'), { data: new_ticket, users: users, user: user_data,KB:kb });
+          res.render(path.join(__dirname, '/views/ticket'), { data: new_ticket, users: users, user: user_data, KB: kb });
      })
 })
 
@@ -183,6 +190,8 @@ app.get('/ticket_create', function (req, res) {
 app.get('/ticket', function (req, res) {
      existing_KB();
      connection.query(`SELECT * FROM Ticket WHERE id = ${search_ticket};`, function (err, first) {
+          console.log(kb)
+
           res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: users, KB: kb });
      })
 })
@@ -246,8 +255,8 @@ app.get('/kb_create', function (req, res) {
           kb_id = result[0].count;
           kb_id += 1;
           new_BK.KB = kb_id
-               res.render(path.join(__dirname, '/views/kbarticle'), { data: new_BK, user: user_data });
-          })
+          res.render(path.join(__dirname, '/views/kbarticle'), { data: new_BK, user: user_data });
+     })
 });
 
 app.get('/kbarticle', function (req, res) {
@@ -259,10 +268,9 @@ app.get('/kbarticle', function (req, res) {
 app.post('/kbarticle', function (req, res) {
      const { kbarticle, title } = req.body
      const knowledge = req.body.knowledge
-     connection.query(`UPDATE KnowledgeBase SET title="${title}",description = "${knowledge} WHERE KB = ${kbarticle}`);
+     connection.query(`INSERT INTO KnowledgeBase VALUES(${kbarticle},"${title}","${knowledge}");`);
      update_counters();
      res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
-     existing_KB();
 });
 
 //KB list
@@ -299,18 +307,6 @@ app.get('/my_inc', function (req, res) {
           });
      })
 });
-
-
-// app.post('/cancel_kb', function (req, res) {
-//      const { kbarticle } = req.body
-//      connection.query(`DELETE FROM KnowledgeBase WHERE KB = ${kbarticle};`)
-// })
-
-
-// app.post('/cancel_ticket', function (req, res) {
-//      const { incNum } = req.body
-//      connection.query(`DELETE FROM Ticket WHERE id = ${incNum};`)
-// })
 
 
 //Server start url
