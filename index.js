@@ -42,7 +42,6 @@ const data = {
 };
 
 //User data
-const users = []
 const user_data = {
      username: '',
      realname: '',
@@ -70,7 +69,6 @@ let ticket_id = 0;
 let search_ticket = 0;
 
 //KB data
-const kb = []
 const new_BK = {
      KB: 0,
      title: '',
@@ -80,33 +78,10 @@ let kb_id = 0;
 let search_kb = 0;
 
 
-
-
 //Important functions
-function existing_KB() {
-     connection.query('SELECT COUNT(KB) as count FROM KnowledgeBase;', function (err, first) {
-          connection.query('SELECT KB FROM KnowledgeBase;', function (err, second) {
-               console.log(first[0].count)
-               for (var i = 1; i <= first[0].count; i++) {
-                    if (first[0].count != 0) {
-                         kb.push(second[i].KB)
-                    } else {
-                         kb.push(0)
-                    }
-               }
-          })
-     })
-}
-
 function existing_users() {
-     connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, first) {
-          connection.query('SELECT * FROM Admin;', function (err, second) {
-               for (var a = 1; a <= first[0].count; a++) {
-                    users.push(second[a].username)
-               }
-          })
-     })
-}
+
+};
 
 function update_counters() {
      connection.query('SELECT COUNT(*) as count FROM Ticket WHERE status = "resolved";', function (err, resolved) {
@@ -123,12 +98,11 @@ function update_counters() {
 
 //Home(login) Route
 app.get('', function (req, res) {
-     update_counters();
-     existing_KB();
      res.render(path.join(__dirname, '/views/login'), { text: '' });
 });
 
 app.post('', function (req, res) {
+     existing_users();
      update_counters();
      const { username, password } = req.body
      connection.query(`SELECT * FROM Admin WHERE username = "${username}" AND password = "${password}"`, function (err, result) {
@@ -146,7 +120,6 @@ app.post('', function (req, res) {
 
 //backlog Route
 app.get('/backlog', function (req, res) {
-     existing_users();
      existing_KB();
      update_counters();
      res.render(path.join(__dirname, '/views/backlog'), { user: user_data, data: data });
@@ -180,9 +153,21 @@ app.get('/ticket_create', function (req, res) {
           ticket_id = result[0].count;
           ticket_id += 1;
           new_ticket.id = ticket_id
-          res.render(path.join(__dirname, '/views/ticket'), { data: new_ticket, users: users, user: user_data, KB: kb });
-     })
-})
+          connection.query('SELECT COUNT(*) as count FROM KnowledgeBase;', function (err, first) {
+               connection.query('SELECT * FROM KnowledgeBase;', function (err, second) {
+                    connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, third) {
+                         connection.query('SELECT username FROM Admin;', function (err, forth) {
+                              res.render(path.join(__dirname, '/views/ticket'), {
+                                   data: new_ticket, user: user_data,
+                                   KB: second, count: first[0].count,
+                                   user_count: third[0].count, users: forth
+                              });
+                         });
+                    });
+               })
+          })
+     });
+});
 
 
 
@@ -190,9 +175,11 @@ app.get('/ticket_create', function (req, res) {
 app.get('/ticket', function (req, res) {
      existing_KB();
      connection.query(`SELECT * FROM Ticket WHERE id = ${search_ticket};`, function (err, first) {
-          console.log(kb)
-
-          res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: users, KB: kb });
+          connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, second) {
+               connection.query('SELECT username FROM Admin;', function (err, third) {
+                    res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: third, user_count: second[0].count, KB: kb });
+               })
+          })
      })
 })
 
@@ -270,6 +257,7 @@ app.post('/kbarticle', function (req, res) {
      const knowledge = req.body.knowledge
      connection.query(`INSERT INTO KnowledgeBase VALUES(${kbarticle},"${title}","${knowledge}");`);
      update_counters();
+     existing_KB();
      res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
 });
 
