@@ -95,6 +95,7 @@ function update_counters() {
 //Home(login) Route
 app.get('', function (req, res) {
      res.render(path.join(__dirname, '/views/login'), { text: '' });
+
 });
 
 app.post('', function (req, res) {
@@ -107,7 +108,7 @@ app.post('', function (req, res) {
                user_data.username = result[0].username
                user_data.realname = result[0].name
                user_data.email = result[0].email
-               res.render(path.join(__dirname, '/views/backlog'), { user: user_data, data: data });
+               res.redirect(path.join('/backlog'));
           }
      })
 });
@@ -140,7 +141,7 @@ app.post('/search', function (req, res) {
 });
 
 
-//Ticket auto creator
+//Ticket creator
 app.get('/ticket_create', function (req, res) {
      connection.query(`SELECT COUNT(*) AS count FROM Ticket;`, function (err, result) {
           console.log(result[0].count)
@@ -222,16 +223,20 @@ app.post('/ticket', function (req, res) {
           impact = "${Impact}",urgency = "${Urgency}",priority = "${Priority}",\
           description = "${Description}",KB = ${Kb},worknote = "${worknotes}",\
           additional = "${addcomments}" WHERE id = ${incNum};`);
+          ;
      }else{
           connection.query(`INSERT INTO Ticket VALUES(${incNum},"${reqBy}",\
           "${reqFor}","${srvcOf}","${confItem}","${contactType}",\
           "${State}","${Assigned}","${Category}","${Symptom}",\
           "${Impact}","${Urgency}","${Priority}","${Description}",${Kb},"${user_data.username}:  ${worknotes}",\
           "${user_data.username}:  ${addcomments}");`);
+          
      } 
-     });
-     update_counters();
-     res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
+});
+update_counters();
+res.redirect(path.join('/backlog'));
+
+
 });
 
 app.get('/all_inc', function (req, res) {
@@ -243,7 +248,6 @@ app.get('/all_inc', function (req, res) {
           });
      });
 });
-
 
 
 //KnowledgeBase Routes
@@ -273,7 +277,7 @@ app.post('/kbarticle', function (req, res) {
           } 
           });
      update_counters();
-     res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
+     res.redirect(path.join('/backlog'));
 });
 
 //KB list
