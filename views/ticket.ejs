@@ -230,11 +230,11 @@
           </select>
 
           <p id="worknotesP" class="inputLabel">Worknotes</p>
-          <textarea id="worknotesI" name=worknotes" class="input" type="text" placeholder=" "></textarea>
+          <textarea id="worknotes" name=worknotes" class="input" type="text" placeholder=" "></textarea>
           <!-- CAMBIAR ESTO POR UN TEXT BOX -->
 
           <p id="addcommentsP" class="inputLabel">Additional comments</p>
-          <textarea id="addcommentsI" name=addcomments" class="input" type="text" placeholder=" "></textarea>
+          <textarea id="addcomments" name=addcomments" class="input" type="text" placeholder=" "></textarea>
         </div>
       </form>
     </div>
@@ -263,8 +263,8 @@
     document.getElementById("urgency").value = '<%=data.urgency%>';
     document.getElementById("shortDescI").value = '<%=data.description%>';
     document.getElementById("knowledgeI").value = '<%=data.KB%>';
-    document.getElementById("worknotesI").textContent = '<%=data.worknote%>';
-    document.getElementById("addcommentsI").textContent = '<%=data.additional%>';
+    document.getElementById("worknotes").textContent = '<%=data.worknote%>';
+    document.getElementById("addcomments").textContent = '<%=data.additional%>';
 
   </script>
 </body>

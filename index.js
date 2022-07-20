@@ -182,7 +182,9 @@ app.post('/ticket', function (req, res) {
      const { incNum, reqBy, reqFor, srvcOf,
           confItem, contactType, State,
           Assigned, Category, Symptom, Impact,
-          Urgency, Description,Kb,worknote,addcomments } = req.body;
+          Urgency, Description,Kb} = req.body;
+     const worknotes = req.body.worknotes
+     const addcomments = req.body.addcomments
      let Priority = '';
      switch (Impact) {
           case 'high':
@@ -210,6 +212,7 @@ app.post('/ticket', function (req, res) {
                break;
      }
      connection.query(`SELECT COUNT(id) FROM Ticket WHERE id = ${incNum}`,function(err,result){
+     if(err) throw err
      if (result[0].count == 1){
           connection.query(`UPDATE Ticket SET request_by = "${reqBy}",\
           request_for = "${reqFor}",service_offering = "${srvcOf}",\
@@ -217,13 +220,13 @@ app.post('/ticket', function (req, res) {
           status = "${State}",assigned = "${Assigned}",\
           category = "${Category}",symptom = "${Symptom}",\
           impact = "${Impact}",urgency = "${Urgency}",priority = "${Priority}",\
-          description = "${Description}",KB = ${Kb},worknote = "${worknote}",\
+          description = "${Description}",KB = ${Kb},worknote = "${worknotes}",\
           additional = "${addcomments}" WHERE id = ${incNum};`);
      }else{
           connection.query(`INSERT INTO Ticket VALUES(${incNum},"${reqBy}",\
           "${reqFor}","${srvcOf}","${confItem}","${contactType}",\
           "${State}","${Assigned}","${Category}","${Symptom}",\
-          "${Impact}","${Urgency}""${Priority}","${Description}",${Kb},"${user_data.username}:  ${worknote}",\
+          "${Impact}","${Urgency}","${Priority}","${Description}",${Kb},"${user_data.username}:  ${worknotes}",\
           "${user_data.username}:  ${addcomments}");`);
      } 
      });
