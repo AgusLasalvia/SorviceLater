@@ -108,7 +108,7 @@ app.post('', function (req, res) {
                user_data.username = result[0].username
                user_data.realname = result[0].name
                user_data.email = result[0].email
-               res.redirect(path.join('/backlog'));
+               res.render(path.join(__dirname, '/views/backlog'), { user: user_data, data: data });
           }
      })
 });
@@ -116,8 +116,12 @@ app.post('', function (req, res) {
 
 //backlog Route
 app.get('/backlog', function (req, res) {
-     update_counters();
-     res.render(path.join(__dirname, '/views/backlog'), { user: user_data, data: data });
+     if (user_data.username === '') {
+          res.redirect(path.join('/'))
+     } else {
+          update_counters();
+          res.render(path.join(__dirname, '/views/backlog'), { user: user_data, data: data });
+     }
 });
 
 app.post('/search', function (req, res) {
@@ -128,7 +132,7 @@ app.post('/search', function (req, res) {
           case 'KB':
                search_kb = parseInt(digit);
                connection.query(`SELECT * FROM KnowledgeBase WHERE KB = ${search_kb};`, function (err, first) {
-                    res.render(path.join(__dirname, '/views/kbarticle'), { data: first[0], user: user_data});
+                    res.render(path.join(__dirname, '/views/kbarticle'), { data: first[0], user: user_data });
                });
                break;
           case 'INC':
@@ -138,56 +142,66 @@ app.post('/search', function (req, res) {
                          connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, third) {
                               connection.query('SELECT username FROM Admin;', function (err, forth) {
                                    connection.query(`SELECT * FROM Ticket WHERE id = ${search_ticket};`, function (err, final) {
+                                        res.render(path.join(__dirname, '/views/ticket'), {
+                                             data: final[0], user: user_data,
+                                             KB: second, count: first[0].count,
+                                             user_count: third[0].count, users: forth
+                                        });
+                                   });
+                              });
+                         });
+
+                    });
+               })
+               break;
+     }
+})
+
+
+//Ticket creator
+app.get('/ticket_create', function (req, res) {
+     if (user_data.username === '') {
+          res.redirect(path.join('/'))
+     } else {
+          connection.query(`SELECT COUNT(*) AS count FROM Ticket;`, function (err, result) {
+               console.log(result[0].count)
+               ticket_id = result[0].count;
+               ticket_id += 1;
+               new_ticket.id = ticket_id
+               connection.query('SELECT COUNT(*) as count FROM KnowledgeBase;', function (err, first) {
+                    connection.query('SELECT * FROM KnowledgeBase;', function (err, second) {
+                         connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, third) {
+                              connection.query('SELECT username FROM Admin;', function (err, forth) {
                                    res.render(path.join(__dirname, '/views/ticket'), {
-                                        data: final[0], user: user_data,
+                                        data: new_ticket, user: user_data,
                                         KB: second, count: first[0].count,
                                         user_count: third[0].count, users: forth
                                    });
                               });
                          });
                     });
-                    
-               });
-          })
-          break;
-     }
-})
-          
-
-//Ticket creator
-app.get('/ticket_create', function (req, res) {
-     connection.query(`SELECT COUNT(*) AS count FROM Ticket;`, function (err, result) {
-          console.log(result[0].count)
-          ticket_id = result[0].count;
-          ticket_id += 1;
-          new_ticket.id = ticket_id
-          connection.query('SELECT COUNT(*) as count FROM KnowledgeBase;', function (err, first) {
-               connection.query('SELECT * FROM KnowledgeBase;', function (err, second) {
-                    connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, third) {
-                         connection.query('SELECT username FROM Admin;', function (err, forth) {
-                              res.render(path.join(__dirname, '/views/ticket'), {
-                                   data: new_ticket, user: user_data,
-                                   KB: second, count: first[0].count,
-                                   user_count: third[0].count, users: forth
-                              });
-                         });
-                    });
                });
           });
-     });
+     }
 });
 
 
 
 //Tickets Route
 app.get('/ticket', function (req, res) {
-     connection.query(`SELECT * FROM Ticket WHERE id = ${search_ticket};`, function (err, first) {
-          connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, second) {
-               connection.query('SELECT username FROM Admin;', function (err, third) {
-                    res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: third, user_count: second[0].count, KB: kb });
+     if (user_data.username === '') {
+          res.redirect(path.join('/'))
+     } else {
+
+
+          connection.query(`SELECT * FROM Ticket WHERE id = ${search_ticket};`, function (err, first) {
+               connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, second) {
+                    connection.query('SELECT username FROM Admin;', function (err, third) {
+                         res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: third, user_count: second[0].count, KB: kb });
+                    })
                })
           })
-     })
+     }
 })
 
 
@@ -196,7 +210,7 @@ app.post('/ticket', function (req, res) {
      const { incNum, reqBy, reqFor, srvcOf,
           confItem, contactType, State,
           Assigned, Category, Symptom, Impact,
-          Urgency, Description,Kb} = req.body;
+          Urgency, Description, Kb } = req.body;
      const worknotes = req.body.worknotes
      const addcomments = req.body.addcomments
      let Priority = '';
@@ -225,10 +239,10 @@ app.post('/ticket', function (req, res) {
                Priority = '5-Low';
                break;
      }
-     connection.query(`SELECT COUNT(id) FROM Ticket WHERE id = ${incNum}`,function(err,result){
-     if(err) throw err
-     if (result[0].count == 1){
-          connection.query(`UPDATE Ticket SET request_by = "${reqBy}",\
+     connection.query(`SELECT COUNT(id) FROM Ticket WHERE id = ${incNum}`, function (err, result) {
+          if (err) throw err
+          if (result[0].count == 1) {
+               connection.query(`UPDATE Ticket SET request_by = "${reqBy}",\
           request_for = "${reqFor}",service_offering = "${srvcOf}",\
           item = "${confItem}",contact_type = "${contactType}",\
           status = "${State}",assigned = "${Assigned}",\
@@ -236,86 +250,111 @@ app.post('/ticket', function (req, res) {
           impact = "${Impact}",urgency = "${Urgency}",priority = "${Priority}",\
           description = "${Description}",KB = ${Kb},worknote = "${worknotes}",\
           additional = "${addcomments}" WHERE id = ${incNum};`);
-          ;
-     }else{
-          connection.query(`INSERT INTO Ticket VALUES(${incNum},"${reqBy}",\
+               ;
+          } else {
+               connection.query(`INSERT INTO Ticket VALUES(${incNum},"${reqBy}",\
           "${reqFor}","${srvcOf}","${confItem}","${contactType}",\
           "${State}","${Assigned}","${Category}","${Symptom}",\
           "${Impact}","${Urgency}","${Priority}","${Description}",${Kb},"${user_data.username}:  ${worknotes}",\
           "${user_data.username}:  ${addcomments}");`);
-          
-     } 
-});
-update_counters();
-res.redirect(path.join('/backlog'));
+
+          }
+     });
+     update_counters();
+     res.redirect(path.join('/backlog'));
 
 
 });
 
 app.get('/all_inc', function (req, res) {
-     connection.query('SELECT * FROM Ticket;', function (err, result) {
-          connection.query('SELECT COUNT(*) AS count FROM Ticket;', function (err, first) {
-               res.render(path.join(__dirname, '/views/kblist'), {
-                    title: 'Incidents', data: result, count: first[0], user: user_data
+     if (user_data.username === '') {
+          res.redirect(path.join('/'))
+     } else {
+
+
+          connection.query('SELECT * FROM Ticket;', function (err, result) {
+               connection.query('SELECT COUNT(*) AS count FROM Ticket;', function (err, first) {
+                    res.render(path.join(__dirname, '/views/kblist'), {
+                         title: 'Incidents', data: result, count: first[0], user: user_data
+                    });
                });
           });
-     });
+     }
 });
 
 
 //KnowledgeBase Routes
 app.get('/kb_create', function (req, res) {
-     connection.query('SELECT COUNT(*) AS count FROM KnowledgeBase;', function (err, result) {
-          kb_id = result[0].count;
-          kb_id += 1;
-          new_BK.KB = kb_id
-          res.render(path.join(__dirname, '/views/kbarticle'), { data: new_BK, user: user_data });
-     })
+     if (user_data.username === '') {
+          res.redirect(path.join('/'))
+     } else {
+
+
+          connection.query('SELECT COUNT(*) AS count FROM KnowledgeBase;', function (err, result) {
+               kb_id = result[0].count;
+               kb_id += 1;
+               new_BK.KB = kb_id
+               res.render(path.join(__dirname, '/views/kbarticle'), { data: new_BK, user: user_data });
+          })
+     }
 });
 
 app.get('/kbarticle', function (req, res) {
-     connection.query(`SELECT * FROM KnowledgeBase WHERE KB = ${search_kb};`, function (err, first) {
-          res.render(path.join(__dirname, '/views/kbarticle'), { data: first[0], user: user_data });
-     })
+     if (user_data.username === '') {
+     } else {
+          connection.query(`SELECT * FROM KnowledgeBase WHERE KB = ${search_kb};`, function (err, first) {
+               res.render(path.join(__dirname, '/views/kbarticle'), { data: first[0], user: user_data });
+          })
+     }
 });
 
 app.post('/kbarticle', function (req, res) {
      const { kbarticle, title } = req.body
      const knowledge = req.body.knowledge
-     connection.query(`SELECT COUNT(KB) FROM KnowledgeBase WHERE KB = ${kbarticle}`,function(err,result){
-          if (result[0].count == 1){
+     connection.query(`SELECT COUNT(KB) FROM KnowledgeBase WHERE KB = ${kbarticle}`, function (err, result) {
+          if (result[0].count == 1) {
                connection.query(`UPDATE Ticket SET title = "${title}",description = "${knowledge}" WHERE KB = ${kbarticle});`);
-          }else{
+          } else {
                connection.query(`INSERT INTO KnowledgeBase VALUES(${kbarticle},"${title}","${kbarticle}");`);
-          } 
-          });
+          }
+     });
      update_counters();
      res.redirect(path.join('/backlog'));
 });
 
 //KB list
 app.get('/all_kb', function (req, res) {
-     connection.query('SELECT * FROM KnowledgeBase;', function (err, result) {
-          connection.query('SELECT COUNT(*) AS count FROM KnowledgeBase;', function (err, first) {
-               res.render(path.join(__dirname, '/views/kblist'), {
-                    title: 'KnowledgeBase', data: result, count: first[0], user: user_data
+     if (user_data.username === '') {
+          res.redirect(path.join('/'))
+     } else {
+          connection.query('SELECT * FROM KnowledgeBase;', function (err, result) {
+               connection.query('SELECT COUNT(*) AS count FROM KnowledgeBase;', function (err, first) {
+                    res.render(path.join(__dirname, '/views/kblist'), {
+                         title: 'KnowledgeBase', data: result, count: first[0], user: user_data
+                    });
                });
           });
-     });
+     }
 });
 
 
 //all user's incidents
 app.get('/my_inc', function (req, res) {
-     connection.query(`SELECT * FROM Tickets WHERE assigned = "${user_data.username}";`, function (err, result) {
-          connection.query('SELECT COUNT(*) AS count FROM KnowledgeBase;', function (err, first) {
-               if (result != undefined) {
-                    res.render(path.join(__dirname, 'views/kblist'), { title: 'My incidents', count: first[0], user: user_data, data: result })
-               } else {
-                    res.render(path.join(__dirname, '/views/kblist'), { title: 'No pending incidents', count: first[0], user: user_data, data: null })
-               }
+     if (user_data.username === '') {
+          res.redirect(path.join('/'))
+     } else {
+
+
+          connection.query(`SELECT * FROM Tickets WHERE assigned = "${user_data.username}";`, function (err, result) {
+               connection.query('SELECT COUNT(*) AS count FROM KnowledgeBase;', function (err, first) {
+                    if (result != undefined) {
+                         res.render(path.join(__dirname, 'views/kblist'), { title: 'My incidents', count: first[0], user: user_data, data: result })
+                    } else {
+                         res.render(path.join(__dirname, '/views/kblist'), { title: 'No pending incidents', count: first[0], user: user_data, data: null })
+                    }
+               });
           });
-     });
+     }
 });
 
 

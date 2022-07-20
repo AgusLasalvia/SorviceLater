@@ -77,7 +77,7 @@ CREATE TABLE `Ticket` (
   `description` varchar(255) DEFAULT NULL,
   `KB` int NOT NULL,
   `worknotes` varchar(2000) DEFAULT NULL,
-  `aditional` varchar(2000) DEFAULT NULL,
+  `additional` varchar(2000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `assigned` (`assigned`),
   KEY `KB` (`KB`),
