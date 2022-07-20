@@ -262,7 +262,6 @@ app.get('/kbarticle', function (req, res) {
 app.post('/kbarticle', function (req, res) {
      const { kbarticle, title } = req.body
      const knowledge = req.body.knowledge
-     connection.query(`INSERT INTO KnowledgeBase VALUES(${kbarticle},"${title}","${knowledge}");`);
      connection.query(`SELECT COUNT(KB) FROM KnowledgeBase WHERE KB = ${kbarticle}`,function(err,result){
           if (result[0].count == 1){
                connection.query(`UPDATE Ticket SET title = "${title}",description = "${knowledge}" WHERE KB = ${kbarticle});`);
