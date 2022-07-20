@@ -101,7 +101,7 @@ app.post('', function (req, res) {
      update_counters();
      const { username, password } = req.body
      connection.query(`SELECT * FROM Admin WHERE username = "${username}" AND password = "${password}"`, function (err, result) {
-          if (result[0] === undefined) {
+          if (result[0] == undefined) {
                res.render(path.join(__dirname, '/views/login'), { text: 'Username or password not correct' })
           } else if (result[0].username === username) {
                user_data.username = result[0].username
@@ -134,9 +134,9 @@ app.post('/search', function (req, res) {
                search_ticket = parseInt(digit);
                connection.query(`SELECT * FROM Ticket WHERE id = ${search_ticket};`, function (err, first) {
                     res.render(path.join(__dirname, '/views/ticket'), { data: first[0], user: user_data, users: users });
-               })
+               });
                break;
-     }
+     };
 });
 
 
@@ -158,8 +158,8 @@ app.get('/ticket_create', function (req, res) {
                               });
                          });
                     });
-               })
-          })
+               });
+          });
      });
 });
 
@@ -209,11 +209,24 @@ app.post('/ticket', function (req, res) {
                Priority = '5-Low';
                break;
      }
-     connection.query(`INSERT INTO Ticket VALUES(${incNum},"${reqBy}",\
-     "${reqFor}","${srvcOf}","${confItem}","${contactType}",\
-     "${State}","${Assigned}","${Category}","${Symptom}",\
-     "${Impact}","${Urgency}""${Priority}","${Description}","${Kb}","${user_data.username}:\n  ${worknote}",\
-     "${user_data.username}:\n  ${addcomments}");`);
+     connection.query(`SELECT COUNT(id) FROM Ticket WHERE id = ${incNum}`,function(err,result){
+     if (result[0].count == 1){
+          connection.query(`UPDATE Ticket SET request_by = "${reqBy}",\
+          request_for = "${reqFor}",service_offering = "${srvcOf}",\
+          item = "${confItem}",contact_type = "${contactType}",\
+          status = "${State}",assigned = "${Assigned}",\
+          category = "${Category}",symptom = "${Symptom}",\
+          impact = "${Impact}",urgency = "${Urgency}",priority = "${Priority}",\
+          description = "${Description}",KB = ${Kb},worknote = "${worknote}",\
+          additional = "${addcomments}" WHERE id = ${incNum};`);
+     }else{
+          connection.query(`INSERT INTO Ticket VALUES(${incNum},"${reqBy}",\
+          "${reqFor}","${srvcOf}","${confItem}","${contactType}",\
+          "${State}","${Assigned}","${Category}","${Symptom}",\
+          "${Impact}","${Urgency}""${Priority}","${Description}",${Kb},"${user_data.username}:  ${worknote}",\
+          "${user_data.username}:  ${addcomments}");`);
+     } 
+     });
      update_counters();
      res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
 });
@@ -250,6 +263,13 @@ app.post('/kbarticle', function (req, res) {
      const { kbarticle, title } = req.body
      const knowledge = req.body.knowledge
      connection.query(`INSERT INTO KnowledgeBase VALUES(${kbarticle},"${title}","${knowledge}");`);
+     connection.query(`SELECT COUNT(KB) FROM KnowledgeBase WHERE KB = ${kbarticle}`,function(err,result){
+          if (result[0].count == 1){
+               connection.query(`UPDATE Ticket SET title = "${title}",description = "${knowledge}" WHERE KB = ${kbarticle});`);
+          }else{
+               connection.query(`INSERT INTO KnowledgeBase VALUES(${kbarticle},"${title}","${kbarticle}");`);
+          } 
+          });
      update_counters();
      res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
 });
@@ -265,15 +285,6 @@ app.get('/all_kb', function (req, res) {
      });
 });
 
-// app.get('/Pending', function (req, res) {
-//      connection.query('SELECT * FROM Ticket WHERE status = "pendingAdmin" AND status = "pendingVendor";', function (err, result) {
-//           if (result[0] != undefined) {
-//                res.render(path.join(__dirname, '/views/kblist'), { title: 'Incidents', user: user_data, data: result })
-//           } else {
-//                res.render(path.join(__dirname, '/views/kblist'), { title: 'No pending incidents', user: user_data, data: null })
-//           }
-//      })
-// })
 
 //all user's incidents
 app.get('/my_inc', function (req, res) {
@@ -284,7 +295,6 @@ app.get('/my_inc', function (req, res) {
                } else {
                     res.render(path.join(__dirname, '/views/kblist'), { title: 'No pending incidents', count: first[0], user: user_data, data: null })
                }
-
           });
      });
 });
