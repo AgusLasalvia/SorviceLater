@@ -74,10 +74,13 @@ CREATE TABLE `Ticket` (
   `impact` varchar(20) DEFAULT NULL,
   `urgency` varchar(20) DEFAULT NULL,
   `priority` varchar(20) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `KB` int NOT NULL,
   `worknotes` varchar(2000) DEFAULT NULL,
   `aditional` varchar(2000) DEFAULT NULL,
-  ``
   PRIMARY KEY (`id`),
   KEY `assigned` (`assigned`),
-  CONSTRAINT `Ticket_ibfk_1` FOREIGN KEY (`assigned`) REFERENCES `Admin` (`username`)
+  KEY `KB` (`KB`),
+  CONSTRAINT FOREIGN KEY (`assigned`) REFERENCES `Admin` (`username`),
+  CONSTRAINT FOREIGN KEY (`KB`) REFERENCES `KnowledgeBase` (`KB`)
 );

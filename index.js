@@ -79,10 +79,6 @@ let search_kb = 0;
 
 
 //Important functions
-function existing_users() {
-
-};
-
 function update_counters() {
      connection.query('SELECT COUNT(*) as count FROM Ticket WHERE status = "resolved";', function (err, resolved) {
           data.Resolve = resolved[0].count;
@@ -102,7 +98,6 @@ app.get('', function (req, res) {
 });
 
 app.post('', function (req, res) {
-     existing_users();
      update_counters();
      const { username, password } = req.body
      connection.query(`SELECT * FROM Admin WHERE username = "${username}" AND password = "${password}"`, function (err, result) {
@@ -120,7 +115,6 @@ app.post('', function (req, res) {
 
 //backlog Route
 app.get('/backlog', function (req, res) {
-     existing_KB();
      update_counters();
      res.render(path.join(__dirname, '/views/backlog'), { user: user_data, data: data });
 });
@@ -173,7 +167,6 @@ app.get('/ticket_create', function (req, res) {
 
 //Tickets Route
 app.get('/ticket', function (req, res) {
-     existing_KB();
      connection.query(`SELECT * FROM Ticket WHERE id = ${search_ticket};`, function (err, first) {
           connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, second) {
                connection.query('SELECT username FROM Admin;', function (err, third) {
@@ -189,7 +182,7 @@ app.post('/ticket', function (req, res) {
      const { incNum, reqBy, reqFor, srvcOf,
           confItem, contactType, State,
           Assigned, Category, Symptom, Impact,
-          Urgency,Kb,Description } = req.body;
+          Urgency, Description,Kb,worknote,addcomments } = req.body;
      let Priority = '';
      switch (Impact) {
           case 'high':
@@ -219,7 +212,8 @@ app.post('/ticket', function (req, res) {
      connection.query(`INSERT INTO Ticket VALUES(${incNum},"${reqBy}",\
      "${reqFor}","${srvcOf}","${confItem}","${contactType}",\
      "${State}","${Assigned}","${Category}","${Symptom}",\
-     "${Impact}","${Urgency}""${Priority}");`);
+     "${Impact}","${Urgency}""${Priority}","${Description}","${Kb}","${user_data.username}:\n  ${worknote}",\
+     "${user_data.username}:\n  ${addcomments}");`);
      update_counters();
      res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
 });
@@ -257,7 +251,6 @@ app.post('/kbarticle', function (req, res) {
      const knowledge = req.body.knowledge
      connection.query(`INSERT INTO KnowledgeBase VALUES(${kbarticle},"${title}","${knowledge}");`);
      update_counters();
-     existing_KB();
      res.render(path.join(__dirname, '/views/backlog'), { data: data, user: user_data });
 });
 
