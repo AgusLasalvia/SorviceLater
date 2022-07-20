@@ -128,18 +128,31 @@ app.post('/search', function (req, res) {
           case 'KB':
                search_kb = parseInt(digit);
                connection.query(`SELECT * FROM KnowledgeBase WHERE KB = ${search_kb};`, function (err, first) {
-                    res.render(path.join(__dirname, '/views/kbarticle'), { data: first[0], user: user_data, users: users });
+                    res.render(path.join(__dirname, '/views/kbarticle'), { data: first[0], user: user_data});
                });
                break;
           case 'INC':
                search_ticket = parseInt(digit);
-               connection.query(`SELECT * FROM Ticket WHERE id = ${search_ticket};`, function (err, first) {
-                    res.render(path.join(__dirname, '/views/ticket'), { data: first[0], user: user_data, users: users });
+               connection.query('SELECT COUNT(*) as count FROM KnowledgeBase;', function (err, first) {
+                    connection.query('SELECT * FROM KnowledgeBase;', function (err, second) {
+                         connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, third) {
+                              connection.query('SELECT username FROM Admin;', function (err, forth) {
+                                   connection.query(`SELECT * FROM Ticket WHERE id = ${search_ticket};`, function (err, final) {
+                                   res.render(path.join(__dirname, '/views/ticket'), {
+                                        data: final[0], user: user_data,
+                                        KB: second, count: first[0].count,
+                                        user_count: third[0].count, users: forth
+                                   });
+                              });
+                         });
+                    });
+                    
                });
-               break;
-     };
-});
-
+          })
+          break;
+     }
+})
+          
 
 //Ticket creator
 app.get('/ticket_create', function (req, res) {
