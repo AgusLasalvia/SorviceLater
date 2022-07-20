@@ -219,11 +219,11 @@
         <div class="bottomGrid" id="">
           <!-- ESTO ESTÁ ALINEADO PARA LA MIERDA PORQUE NO SE LA FORMA DE ALINEARLO BIEN CON LO DE ARRIBA -->
           <p id="shortDescP" class="inputLabel">Short description</p>
-          <input id="shortDescI" name=" " class="input" type="text" placeholder=" " />
+          <input id="shortDescI" name="Description" class="input" type="text" placeholder=" " />
 
           <p id="knowledgeP" class="inputLabel">Knowledge base</p>
           <!-- <input id="knowledgeI" name=" " class="input" type="text" placeholder=" " /> -->
-          <select id="knowledgeI" name=" " class="select">
+          <select id="knowledgeI" name="Kb" class="select">
             <% for (var i = 0; i < count; i++) {%>
               <option value="<%=KB[i].KB%>"><%=KB[i].title%></option>
             <%}%>
@@ -262,8 +262,9 @@
     document.getElementById("impact").value = '<%=data.impact%>';
     document.getElementById("urgency").value = '<%=data.urgency%>';
     document.getElementById("shortDescI").value = '<%=data.description%>';
-    document.getElementById("knowledgeI").value = '<%=data.priority%>';
+    document.getElementById("knowledgeI").value = '<%=data.Kb%>';
     document.getElementById("priority").value = '<%=data.priority%>';
+    document.getElementById("")
 
   </script>
 </body>

@@ -189,7 +189,7 @@ app.post('/ticket', function (req, res) {
      const { incNum, reqBy, reqFor, srvcOf,
           confItem, contactType, State,
           Assigned, Category, Symptom, Impact,
-          Urgency } = req.body;
+          Urgency,Kb,Description } = req.body;
      let Priority = '';
      switch (Impact) {
           case 'high':
@@ -293,7 +293,7 @@ app.get('/my_inc', function (req, res) {
                }
 
           });
-     })
+     });
 });
 
 

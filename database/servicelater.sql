@@ -1,4 +1,4 @@
--- MySQL dump 10.13  Distrib 8.0.29, for Linux (x86_64)
+
 --
 -- Host: localhost    Database: servicelater
 -- ------------------------------------------------------
@@ -23,8 +23,6 @@ DROP TABLE IF EXISTS `Admin`;
 CREATE TABLE `Admin` (
   `username` varchar(25) NOT NULL,
   `password` varchar(25) DEFAULT NULL,
-  `name` varchar(25) DEFAULT NULL,
-  `lastname` varchar(25) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`username`)
 );
@@ -34,11 +32,6 @@ CREATE TABLE `Admin` (
 -- Dumping data for table `Admin`
 --
 
-LOCK TABLES `Admin` WRITE;
-/*!40000 ALTER TABLE `Admin` DISABLE KEYS */;
-INSERT INTO `Admin` VALUES ('0',NULL,NULL,NULL,NULL),('lasa1307','agus1307','agustin','lasalvia','aguslbluemenfeld@gmail.com');
-/*!40000 ALTER TABLE `Admin` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `KnowledgeBase`
@@ -81,58 +74,10 @@ CREATE TABLE `Ticket` (
   `impact` varchar(20) DEFAULT NULL,
   `urgency` varchar(20) DEFAULT NULL,
   `priority` varchar(20) DEFAULT NULL,
+  `worknotes` varchar(2000) DEFAULT NULL,
+  `aditional` varchar(2000) DEFAULT NULL,
+  ``
   PRIMARY KEY (`id`),
   KEY `assigned` (`assigned`),
   CONSTRAINT `Ticket_ibfk_1` FOREIGN KEY (`assigned`) REFERENCES `Admin` (`username`)
 );
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Ticket`
---
-
-LOCK TABLES `Ticket` WRITE;
-/*!40000 ALTER TABLE `Ticket` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Ticket` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `Worknotes`
---
-
-DROP TABLE IF EXISTS `Worknotes`;
-
-CREATE TABLE `Worknotes` (
-  `note_id` int NOT NULL,
-  `ticket_id` int DEFAULT NULL,
-  `person` varchar(25) DEFAULT NULL,
-  `notes` varchar(900) DEFAULT NULL,
-  `time` time DEFAULT NULL,
-  `date` date DEFAULT NULL,
-  PRIMARY KEY (`note_id`),
-  KEY `ticket_id` (`ticket_id`),
-  KEY `person` (`person`),
-  CONSTRAINT `Worknotes_ibfk_1` FOREIGN KEY (`ticket_id`) REFERENCES `Ticket` (`id`),
-  CONSTRAINT `Worknotes_ibfk_2` FOREIGN KEY (`person`) REFERENCES `Admin` (`username`)
-);
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Worknotes`
---
-
-LOCK TABLES `Worknotes` WRITE;
-/*!40000 ALTER TABLE `Worknotes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Worknotes` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2022-06-25 14:16:38
