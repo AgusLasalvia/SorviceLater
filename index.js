@@ -94,6 +94,7 @@ function update_counters() {
 
 //Home(login) Route
 app.get('', function (req, res) {
+     user_data.username = ""
      res.render(path.join(__dirname, '/views/login'), { text: '' });
 
 });
@@ -338,7 +339,7 @@ app.get('/my_inc', function (req, res) {
           connection.query(`SELECT * FROM Ticket WHERE assigned = "${user_data.username}";`, function (err, result) {
                connection.query('SELECT COUNT(*) AS count FROM KnowledgeBase;', function (err, first) {
                     if (result != undefined) {
-                         res.render(path.join(__dirname, 'views/kblist'), { title: 'My incidents', count: first[0], user: user_data, data: result })
+                         res.render(path.join(__dirname, 'views/kblist'), { title: 'Incidents', count: first[0], user: user_data, data: result })
                     } else {
                          res.render(path.join(__dirname, '/views/kblist'), { title: 'No pending incidents', count: first[0], user: user_data, data: null })
                     }
