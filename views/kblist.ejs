@@ -105,19 +105,19 @@
       <% for(var i=0; i < count.count; i++){ %>
         <% if(title === 'Incidents' ){ %>
           <div class="result">
-            <p class="kbID">
+            <p class="kbID" >
               INC<%=data[i].id%>
             </p>
             <p class="kbID" id="reqfor">
-              <%data[i].reqfor%>
+              request: <%=data[i].reqfor%>
             </p>
             <p class="kbID" id="assignedto">
-              <%data[i].assignedto%>
+              assigned: <%=data[i].assignedto%>
             </p>
             <p class="kbTitle">
-              <%=data[i].title%>
+              <%=data[i].symptom%>
             </p>
-            <button class="button" form="save">Open</button>
+            <button class="button" >Open</button>
           </div>
         <%}else if (title === 'KnowledgeBase' ){%>
           <div class="result">
@@ -127,10 +127,10 @@
             <p class="kbTitle">
               <%=data[i].title%>
             </p>
-            <button class="button" form="save">Open</button>
+            <button class="button" >Open</button>
           </div>
         <%}%>
-       <%}%>
+      <%}%>
     </div>
   </div>
   
