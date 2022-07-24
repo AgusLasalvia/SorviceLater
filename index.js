@@ -126,35 +126,39 @@ app.get('/backlog', function (req, res) {
 });
 
 app.post('/search', function (req, res) {
-     const { Search } = req.body
-     const [word, digit] = Search.split(/(?<=\D)(?=\d)/);
+     if (user_data.username === '') {
+          res.redirect(path.join('/'))
+     } else {
+          const { Search } = req.body
+          const [word, digit] = Search.split(/(?<=\D)(?=\d)/);
 
-     switch (word) {
-          case 'KB':
-               search_kb = parseInt(digit);
-               connection.query(`SELECT * FROM KnowledgeBase WHERE KB = ${search_kb};`, function (err, first) {
-                    res.render(path.join(__dirname, '/views/kbarticle'), { data: first[0], user: user_data });
-               });
-               break;
-          case 'INC':
-               search_ticket = parseInt(digit);
-               connection.query('SELECT COUNT(*) as count FROM KnowledgeBase;', function (err, first) {
-                    connection.query('SELECT * FROM KnowledgeBase;', function (err, second) {
-                         connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, third) {
-                              connection.query('SELECT username FROM Admin;', function (err, forth) {
-                                   connection.query(`SELECT * FROM Ticket WHERE id = ${search_ticket};`, function (err, final) {
-                                        res.render(path.join(__dirname, '/views/ticket'), {
-                                             data: final[0], user: user_data,
-                                             KB: second, count: first[0].count,
-                                             user_count: third[0].count, users: forth
+          switch (word) {
+               case 'KB':
+                    search_kb = parseInt(digit);
+                    connection.query(`SELECT * FROM KnowledgeBase WHERE KB = ${search_kb};`, function (err, first) {
+                         res.render(path.join(__dirname, '/views/kbarticle'), { data: first[0], user: user_data });
+                    });
+                    break;
+               case 'INC':
+                    search_ticket = parseInt(digit);
+                    connection.query('SELECT COUNT(*) as count FROM KnowledgeBase;', function (err, first) {
+                         connection.query('SELECT * FROM KnowledgeBase;', function (err, second) {
+                              connection.query('SELECT COUNT(username) as count FROM Admin;', function (err, third) {
+                                   connection.query('SELECT username FROM Admin;', function (err, forth) {
+                                        connection.query(`SELECT * FROM Ticket WHERE id = ${search_ticket};`, function (err, final) {
+                                             res.render(path.join(__dirname, '/views/ticket'), {
+                                                  data: final[0], user: user_data,
+                                                  KB: second, count: first[0].count,
+                                                  user_count: third[0].count, users: forth
+                                             });
                                         });
                                    });
                               });
-                         });
 
-                    });
-               })
-               break;
+                         });
+                    })
+                    break;
+          }
      }
 })
 
@@ -165,7 +169,6 @@ app.get('/ticket_create', function (req, res) {
           res.redirect(path.join('/'))
      } else {
           connection.query(`SELECT COUNT(*) AS count FROM Ticket;`, function (err, result) {
-               console.log(result[0].count)
                ticket_id = result[0].count;
                ticket_id += 1;
                new_ticket.id = ticket_id
@@ -238,7 +241,7 @@ app.post('/ticket', function (req, res) {
                Priority = '5-Low';
                break;
      }
-     connection.query(`SELECT COUNT(id) FROM Ticket WHERE id = ${incNum}`, function (err, result) {
+     connection.query(`SELECT COUNT(id) as count FROM Ticket WHERE id = ${incNum};`, function (err, result) {
           if (err) throw err
           if (result[0].count == 1) {
                connection.query(`UPDATE Ticket SET request_by = "${reqBy}",\
@@ -247,7 +250,7 @@ app.post('/ticket', function (req, res) {
           status = "${State}",assigned = "${Assigned}",\
           category = "${Category}",symptom = "${Symptom}",\
           impact = "${Impact}",urgency = "${Urgency}",priority = "${Priority}",\
-          description = "${Description}",KB = ${Kb},worknote = "${worknotes}",\
+          description = "${Description}",KB = ${Kb},worknotes = "${worknotes}",\
           additional = "${addcomments}" WHERE id = ${incNum};`);
                ;
           } else {
@@ -294,6 +297,7 @@ app.get('/kb_create', function (req, res) {
 
 app.get('/kbarticle', function (req, res) {
      if (user_data.username === '') {
+          res.redirect(path.join('/'))
      } else {
           connection.query(`SELECT * FROM KnowledgeBase WHERE KB = ${search_kb};`, function (err, first) {
                res.render(path.join(__dirname, '/views/kbarticle'), { data: first[0], user: user_data });
@@ -304,11 +308,11 @@ app.get('/kbarticle', function (req, res) {
 app.post('/kbarticle', function (req, res) {
      const { kbarticle, title } = req.body
      const knowledge = req.body.knowledge
-     connection.query(`SELECT COUNT(KB) FROM KnowledgeBase WHERE KB = ${kbarticle}`, function (err, result) {
+     connection.query(`SELECT COUNT(KB) as count FROM KnowledgeBase WHERE KB = ${kbarticle};`, function (err, result) {
           if (result[0].count == 1) {
-               connection.query(`UPDATE Ticket SET title = "${title}",description = "${knowledge}" WHERE KB = ${kbarticle});`);
+               connection.query(`UPDATE KnowledgeBase SET title = "${title}",description = "${knowledge}" WHERE KB = ${kbarticle};`);
           } else {
-               connection.query(`INSERT INTO KnowledgeBase VALUES(${kbarticle},"${title}","${kbarticle}");`);
+               connection.query(`INSERT INTO KnowledgeBase VALUES(${kbarticle},"${title}","${knowledge}");`);
           }
      });
      update_counters();
