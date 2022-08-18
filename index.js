@@ -8,10 +8,11 @@ const port = 3000
 
 // Database connection
 const connection = mysql.createConnection({
-     host: "localhost",
-     user: "admin",
-     password: "minecraft1234",
-     database: "servicelater"
+     host: "ec2-54-86-106-48.compute-1.amazonaws.com",
+     user: "kdncaxqrswyhxi",
+     password: "e6a2aa1f2db7810ade47a61d7eca95e5cab1d74244a5ed14222dfd6d554c8289",
+     database: "dfh2c5cdja87db",
+     port: "5432"
 });
 
 connection.connect((err) => {
