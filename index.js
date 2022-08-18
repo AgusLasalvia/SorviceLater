@@ -93,13 +93,13 @@ function update_counters() {
 
 
 //Home(login) Route
-app.get('', function (req, res) {
+app.get('/', function (req, res) {
      user_data.username = ""
      res.render(path.join(__dirname, '/views/login'), { text: '' });
 
 });
 
-app.post('', function (req, res) {
+app.post('/', function (req, res) {
      update_counters();
      const { username, password } = req.body
      connection.query(`SELECT * FROM Admin WHERE username = "${username}" AND password = "${password}"`, function (err, result) {
