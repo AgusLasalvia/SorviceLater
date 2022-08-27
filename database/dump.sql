@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.29, for Linux (x86_64)
+-- MySQL dump 10.19  Distrib 10.3.34-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: servicelater
 -- ------------------------------------------------------
--- Server version	8.0.29-0ubuntu0.22.04.2
+-- Server version	10.3.34-MariaDB-0ubuntu0.20.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,15 +21,13 @@
 
 DROP TABLE IF EXISTS `Admin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Admin` (
   `username` varchar(25) NOT NULL,
   `password` varchar(25) DEFAULT NULL,
-  `name` varchar(25) DEFAULT NULL,
-  `lastname` varchar(25) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +36,7 @@ CREATE TABLE `Admin` (
 
 LOCK TABLES `Admin` WRITE;
 /*!40000 ALTER TABLE `Admin` DISABLE KEYS */;
-INSERT INTO `Admin` VALUES ('0',NULL,NULL,NULL,NULL),('lasa1307','agus1307','agustin','lasalvia','aguslbluemenfeld@gmail.com');
+INSERT INTO `Admin` VALUES ('agustin','agus1307','aguslblumenfeld@gmail.com');
 /*!40000 ALTER TABLE `Admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -48,13 +46,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `KnowledgeBase`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `KnowledgeBase` (
-  `KB` int NOT NULL,
+  `KB` int(11) NOT NULL,
   `title` varchar(100) DEFAULT NULL,
   `description` varchar(2000) DEFAULT NULL,
   PRIMARY KEY (`KB`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,6 +61,7 @@ CREATE TABLE `KnowledgeBase` (
 
 LOCK TABLES `KnowledgeBase` WRITE;
 /*!40000 ALTER TABLE `KnowledgeBase` DISABLE KEYS */;
+INSERT INTO `KnowledgeBase` VALUES (1,'None','1'),(2,'prueba','cambio'),(3,'asdasdaasda','asdasdaads');
 /*!40000 ALTER TABLE `KnowledgeBase` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -72,9 +71,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `Ticket`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Ticket` (
-  `id` int NOT NULL,
+  `id` int(11) NOT NULL,
   `request_by` varchar(25) DEFAULT NULL,
   `request_for` varchar(25) DEFAULT NULL,
   `service_offering` varchar(50) DEFAULT NULL,
@@ -87,10 +86,16 @@ CREATE TABLE `Ticket` (
   `impact` varchar(20) DEFAULT NULL,
   `urgency` varchar(20) DEFAULT NULL,
   `priority` varchar(20) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `KB` int(11) NOT NULL,
+  `worknotes` varchar(2000) DEFAULT NULL,
+  `additional` varchar(2000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `assigned` (`assigned`),
-  CONSTRAINT `Ticket_ibfk_1` FOREIGN KEY (`assigned`) REFERENCES `Admin` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `KB` (`KB`),
+  CONSTRAINT `Ticket_ibfk_1` FOREIGN KEY (`assigned`) REFERENCES `Admin` (`username`),
+  CONSTRAINT `Ticket_ibfk_2` FOREIGN KEY (`KB`) REFERENCES `KnowledgeBase` (`KB`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,38 +104,8 @@ CREATE TABLE `Ticket` (
 
 LOCK TABLES `Ticket` WRITE;
 /*!40000 ALTER TABLE `Ticket` DISABLE KEYS */;
+INSERT INTO `Ticket` VALUES (1,'alberto','culo abierto','pepe','papa','Discord','new','agustin','papo','pepo','medium','medium','3-High','para ppapa',1,'asdasda','asdasdsda'),(2,'asd','asd','asd','asd','Discord','new','agustin','asd','asd','high','high','1-Urgent','para ppapa',1,':  undefined',':  undefined'),(3,'asd','asd','asd','asd','ingame','new','agustin','asd','asd','high','high','1-Urgent','asd',1,'agustin:  undefined','agustin:  undefined');
 /*!40000 ALTER TABLE `Ticket` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `Worknotes`
---
-
-DROP TABLE IF EXISTS `Worknotes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Worknotes` (
-  `note_id` int NOT NULL,
-  `ticket_id` int DEFAULT NULL,
-  `person` varchar(25) DEFAULT NULL,
-  `notes` varchar(900) DEFAULT NULL,
-  `time` time DEFAULT NULL,
-  `date` date DEFAULT NULL,
-  PRIMARY KEY (`note_id`),
-  KEY `ticket_id` (`ticket_id`),
-  KEY `person` (`person`),
-  CONSTRAINT `Worknotes_ibfk_1` FOREIGN KEY (`ticket_id`) REFERENCES `Ticket` (`id`),
-  CONSTRAINT `Worknotes_ibfk_2` FOREIGN KEY (`person`) REFERENCES `Admin` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `Worknotes`
---
-
-LOCK TABLES `Worknotes` WRITE;
-/*!40000 ALTER TABLE `Worknotes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Worknotes` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -142,4 +117,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-25 14:16:27
+-- Dump completed on 2022-08-17 23:26:51
