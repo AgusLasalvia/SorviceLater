@@ -79,7 +79,7 @@ let search_kb = 0;
 
 
 //Important functions
-function update_counters() {
+update_counters = () => {
      connection.query('SELECT COUNT(*) as count FROM Ticket WHERE status = "resolved";', function (err, resolved) {
           data.Resolve = resolved[0].count;
           connection.query('SELECT COUNT(*) as count FROM Ticket WHERE status = "new";', function (err, t_new) {
@@ -351,7 +351,6 @@ app.get('/my_inc', function (req, res) {
           });
      }
 });
-
 
 //Server start url
 app.listen(port, () => console.info(`http://localhost:${port}`));
