@@ -104,6 +104,7 @@
     <div class="resultsWrapper">
       <% for(var i=0; i < count.count; i++){ %>
         <% if(title === 'Incidents' ){ %>
+	<form action="get_ticket" method = "post">
           <div class="result">
             <p class="kbID" >
               INC<%=data[i].id%>
