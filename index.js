@@ -78,6 +78,7 @@ let kb_id = 0;
 let search_kb = 0;
 
 
+
 //Important functions
 update_counters = () => {
      connection.query('SELECT COUNT(*) as count FROM Ticket WHERE status = "resolved";', function (err, resolved) {
@@ -351,6 +352,10 @@ app.get('/my_inc', function (req, res) {
           });
      }
 });
+
+app.post('get_ticket',function(req,res){
+	
+)
 
 //Server start url
 app.listen(port, () => console.info(`http://localhost:${port}`));
