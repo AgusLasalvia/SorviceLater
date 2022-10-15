@@ -4,7 +4,7 @@ const app = express();
 const path = require('path');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-var port = process.env.PORT || 5000;
+var port = process.env.PORT;
 
 
 // Database connection
