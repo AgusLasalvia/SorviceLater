@@ -16,6 +16,27 @@ const connection = mysql.createConnection({
      port: 5432
 });
 
+var handleKFDisconnect = function () {
+     kfdb.on('error', function (err) {
+          if (!err.fatal) {
+               return;
+          }
+          if (err.code !== 'PROTOCOL_CONNECTION_LOST') {
+               console.log("PROTOCOL_CONNECTION_LOST");
+               throw err;
+          }
+          log.error("The database is error:" + err.stack);
+
+          kfdb = mysql.createConnection(connection);
+
+          console.log("kfid");
+
+          console.log(kfdb);
+          handleKFDisconnect();
+     });
+};
+handleKFDisconnect();
+
 connection.connect((err) => {
      if (err) throw err
      console.log('db connected')
