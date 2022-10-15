@@ -111,13 +111,13 @@ let search_kb = 0;
 
 //Important functions
 update_counters = () => {
-     connection.query("SELECT COUNT(*) as count FROM ticket WHERE status = 'resolved';", function (err, resolved) {
+     connection.query("SELECT COUNT(*) as Count FROM ticket WHERE status = 'resolved';", function (err, resolved) {
           console.log(resolved)
-          data.Resolve = resolved[0].count;
+          data.Resolve = resolved.rowCount;
           connection.query("SELECT COUNT(*) as count FROM ticket WHERE status = 'new';", function (err, t_new) {
-               data.New = t_new[0].count;
+               data.New = t_new.rowCount;
                connection.query("SELECT COUNT(*) as count FROM ticket WHERE status = 'pendingVendor' AND status = 'pendingAdmin';", function (err, progress) {
-                    data.Pending = progress[0].count
+                    data.Pending = progress.rowCount
                     
                });
           });
