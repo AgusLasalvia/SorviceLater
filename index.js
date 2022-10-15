@@ -44,10 +44,10 @@ const connection = new Client({
 //      hero
 // });
 
-// connection.connect((err) => {
-//      if (err) throw err
-//      console.log('db connected')
-// });
+connection.connect((err) => {
+     if (err) throw err
+     console.log('db connected')
+});
 
 
 // Engine
