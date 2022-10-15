@@ -353,9 +353,9 @@ app.get('/my_inc', function (req, res) {
      }
 });
 
-app.post('get_ticket',function(req,res){
+// app.post('get_ticket',function(req,res){
 	
-)
+// )
 
 //Server start url
 app.listen(port, () => console.info(`http://localhost:${port}`));
