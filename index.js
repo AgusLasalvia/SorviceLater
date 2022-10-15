@@ -135,10 +135,10 @@ app.get('/', function (req, res) {
 app.post('/', function (req, res) {
      update_counters();
      const { username, password } = req.body
-     connection.query(`SELECT * FROM admin WHERE username = "${username}" AND password = "${password}"`, function (err, result) {
+     connection.query(`SELECT * FROM admin WHERE username = "${username}" AND password = "${password};"`, function (err, result) {
           if (result.rows[0] == undefined) {
                res.render(path.join(__dirname, '/views/login'), { text: 'Username or password not correct' })
-               
+
           } else if (result[0].username === username) {
                user_data.username = result[0].username
                user_data.realname = result[0].name
