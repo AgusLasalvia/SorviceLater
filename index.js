@@ -111,12 +111,12 @@ let search_kb = 0;
 
 //Important functions
 update_counters = () => {
-     connection.query('SELECT COUNT(*) as count FROM ticket WHERE status = "resolved";', function (err, resolved) {
+     connection.query("SELECT COUNT(*) as count FROM ticket WHERE status = 'resolved';", function (err, resolved) {
           console.log(resolved)
           data.Resolve = resolved[0].count;
-          connection.query('SELECT COUNT(*) as count FROM ticket WHERE status = "new";', function (err, t_new) {
+          connection.query("SELECT COUNT(*) as count FROM ticket WHERE status = 'new';", function (err, t_new) {
                data.New = t_new[0].count;
-               connection.query('SELECT COUNT(*) as count FROM ticket WHERE status = "pendingVendor" AND status = "pendingAdmin";', function (err, progress) {
+               connection.query("SELECT COUNT(*) as count FROM ticket WHERE status = 'pendingVendor' AND status = 'pendingAdmin';", function (err, progress) {
                     data.Pending = progress[0].count
                     
                });
@@ -174,10 +174,10 @@ app.post('/search', function (req, res) {
                     break;
                case 'INC':
                     search_ticket = parseInt(digit);
-                    connection.query('SELECT COUNT(*) as count FROM KnowledgeBase;', function (err, first) {
-                         connection.query('SELECT * FROM KnowledgeBase;', function (err, second) {
-                              connection.query('SELECT COUNT(username) as count FROM admin;', function (err, third) {
-                                   connection.query('SELECT username FROM admin;', function (err, forth) {
+                    connection.query("SELECT COUNT(*) as count FROM KnowledgeBase;", function (err, first) {
+                         connection.query("SELECT * FROM KnowledgeBase;", function (err, second) {
+                              connection.query("SELECT COUNT(username) as count FROM admin;", function (err, third) {
+                                   connection.query("SELECT username FROM admin;", function (err, forth) {
                                         connection.query(`SELECT * FROM ticket WHERE id = ${search_ticket};`, function (err, final) {
                                              res.render(path.join(__dirname, '/views/ticket'), {
                                                   data: final[0], user: user_data,
@@ -205,10 +205,10 @@ app.get('/ticket_create', function (req, res) {
                ticket_id = result[0].count;
                ticket_id += 1;
                new_ticket.id = ticket_id
-               connection.query('SELECT COUNT(*) as count FROM KnowledgeBase;', function (err, first) {
-                    connection.query('SELECT * FROM KnowledgeBase;', function (err, second) {
-                         connection.query('SELECT COUNT(username) as count FROM admin;', function (err, third) {
-                              connection.query('SELECT username FROM admin;', function (err, forth) {
+               connection.query("SELECT COUNT(*) as count FROM KnowledgeBase;", function (err, first) {
+                    connection.query("SELECT * FROM KnowledgeBase;", function (err, second) {
+                         connection.query("SELECT COUNT(username) as count FROM admin;", function (err, third) {
+                              connection.query("SELECT username FROM admin;", function (err, forth) {
                                    res.render(path.join(__dirname, '/views/ticket'), {
                                         data: new_ticket, user: user_data,
                                         KB: second, count: first[0].count,
@@ -230,8 +230,8 @@ app.get('/ticket', function (req, res) {
           res.redirect(path.join('/'))
      } else {
           connection.query(`SELECT * FROM ticket WHERE id = ${search_ticket};`, function (err, first) {
-               connection.query('SELECT COUNT(username) as count FROM admin;', function (err, second) {
-                    connection.query('SELECT username FROM admin;', function (err, third) {
+               connection.query("SELECT COUNT(username) as count FROM admin;", function (err, second) {
+                    connection.query("SELECT username FROM admin;", function (err, third) {
                          res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: third, user_count: second[0].count, KB: kb });
                     })
                })
@@ -303,8 +303,8 @@ app.get('/all_inc', function (req, res) {
      if (user_data.username === '') {
           res.redirect(path.join('/'))
      } else {
-          connection.query('SELECT * FROM Ticket;', function (err, result) {
-               connection.query('SELECT COUNT(*) AS count FROM Ticket;', function (err, first) {
+          connection.query("SELECT * FROM Ticket;", function (err, result) {
+               connection.query("SELECT COUNT(*) AS count FROM Ticket;", function (err, first) {
                     res.render(path.join(__dirname, '/views/kblist'), {
                          title: 'Incidents', data: result, count: first[0], user: user_data
                     });
@@ -319,7 +319,7 @@ app.get('/kb_create', function (req, res) {
      if (user_data.username === '') {
           res.redirect(path.join('/'))
      } else {
-          connection.query('SELECT COUNT(*) AS count FROM KnowledgeBase;', function (err, result) {
+          connection.query("SELECT COUNT(*) AS count FROM KnowledgeBase;", function (err, result) {
                kb_id = result[0].count;
                kb_id += 1;
                new_BK.KB = kb_id
@@ -343,9 +343,9 @@ app.post('/kbarticle', function (req, res) {
      const knowledge = req.body.knowledge
      connection.query(`SELECT COUNT(KB) as count FROM knowledgeBase WHERE KB = ${kbarticle};`, function (err, result) {
           if (result[0].count == 1) {
-               connection.query(`UPDATE KnowledgeBase SET title = "${title}",description = "${knowledge}" WHERE KB = ${kbarticle};`);
+               connection.query(`UPDATE KnowledgeBase SET title = '${title}',description = '${knowledge}' WHERE KB = ${kbarticle};`);
           } else {
-               connection.query(`INSERT INTO KnowledgeBase VALUES(${kbarticle},"${title}","${knowledge}");`);
+               connection.query(`INSERT INTO KnowledgeBase VALUES(${kbarticle},'${title}','${knowledge}');`);
           }
      });
      update_counters();
@@ -357,8 +357,8 @@ app.get('/all_kb', function (req, res) {
      if (user_data.username === '') {
           res.redirect(path.join('/'))
      } else {
-          connection.query('SELECT * FROM KnowledgeBase;', function (err, result) {
-               connection.query('SELECT COUNT(*) AS count FROM KnowledgeBase;', function (err, first) {
+          connection.query("SELECT * FROM KnowledgeBase;", function (err, result) {
+               connection.query("SELECT COUNT(*) AS count FROM KnowledgeBase;", function (err, first) {
                     res.render(path.join(__dirname, '/views/kblist'), {
                          title: 'KnowledgeBase', data: result, count: first[0], user: user_data
                     });
@@ -374,7 +374,7 @@ app.get('/my_inc', function (req, res) {
           res.redirect(path.join('/'))
      } else {
           connection.query(`SELECT * FROM ticket WHERE assigned = "${user_data.username}";`, function (err, result) {
-               connection.query('SELECT COUNT(*) AS count FROM KnowledgeBase;', function (err, first) {
+               connection.query("SELECT COUNT(*) AS count FROM KnowledgeBase;", function (err, first) {
                     if (result != undefined) {
                          res.render(path.join(__dirname, 'views/kblist'), { title: 'Incidents', count: first[0], user: user_data, data: result })
                     } else {
