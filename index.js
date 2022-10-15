@@ -2,23 +2,25 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const { Client } = require('pg')
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-
 var port = process.env.PORT || 5000;
 
 
-
 // Database connection
-const connection = new Client({
+const connection = mysql.createConnection({
      host: "ec2-44-209-24-62.compute-1.amazonaws.com",
      user: "gnoellfbbbujkx",
      password: "0fd585265a9e50e6a4965f9af22d5f18c49cf32dbda5ff0c29d437060cd4cd2d",
      database: "da1eroecl12e1b",
      port: 5432
 });
-connection.connect()
+
+connection.connect((err) => {
+     if (err) throw err
+     console.log('db connected')
+});
+
 
 // Engine
 app.set('view engine', 'ejs');
