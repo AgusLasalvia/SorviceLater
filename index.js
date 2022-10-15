@@ -37,10 +37,6 @@ var handleKFDisconnect = function () {
 };
 handleKFDisconnect();
 
-connection.connect((err) => {
-     if (err) throw err
-     console.log('db connected')
-});
 
 
 // Engine
