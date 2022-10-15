@@ -5,6 +5,7 @@ const path = require('path');
 const { Client } = require('pg')
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+
 var port = process.env.PORT || 5000;
 
 
@@ -17,12 +18,7 @@ const connection = new Client({
      database: "da1eroecl12e1b",
      port: 5432
 });
-
-connection.connect((err) => {
-     if (err) throw err
-     console.log('db connected')
-});
-
+connection.connect()
 
 // Engine
 app.set('view engine', 'ejs');
