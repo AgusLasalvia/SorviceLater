@@ -112,10 +112,11 @@ let search_kb = 0;
 //Important functions
 update_counters = () => {
      connection.query("SELECT COUNT(*) as Count FROM ticket WHERE status = 'resolved';", function (err, resolved) {
-          console.log(resolved)
           data.Resolve = resolved.rowCount;
+
           connection.query("SELECT COUNT(*) as count FROM ticket WHERE status = 'new';", function (err, t_new) {
                data.New = t_new.rowCount;
+
                connection.query("SELECT COUNT(*) as count FROM ticket WHERE status = 'pendingVendor' AND status = 'pendingAdmin';", function (err, progress) {
                     data.Pending = progress.rowCount
                     
@@ -136,7 +137,8 @@ app.post('/', function (req, res) {
      update_counters();
      const { username, password } = req.body
      connection.query(`SELECT * FROM admin WHERE username = '${username}' AND password = '${password}';`, function (err, result) {
-          console.log(result.rows.find(username))
+          console.log(result.rows[username])
+
           if (result.rows['username'] == undefined) {
                res.render(path.join(__dirname, '/views/login'), { text: 'Username or password not correct' })
 
