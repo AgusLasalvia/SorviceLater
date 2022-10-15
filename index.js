@@ -6,20 +6,46 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 var port = process.env.PORT || 5000;
 
+const { Pool, Client } = require('pg');
 
-// Database connection
-const connection = mysql.createConnection({
+const pool = new Pool({
+     connectionString: '',
      host: "ec2-44-209-24-62.compute-1.amazonaws.com",
      user: "gnoellfbbbujkx",
      password: "0fd585265a9e50e6a4965f9af22d5f18c49cf32dbda5ff0c29d437060cd4cd2d",
      database: "da1eroecl12e1b",
-     port: 5432
+     port: 5432,
+     ssl: {
+          rejectUnauthorized: false
+     }
 });
 
-connection.connect((err) => {
-     if (err) throw err
-     console.log('db connected')
+const connection = new Client({
+     connectionString: '',
+     host: "ec2-44-209-24-62.compute-1.amazonaws.com",
+     user: "gnoellfbbbujkx",
+     password: "0fd585265a9e50e6a4965f9af22d5f18c49cf32dbda5ff0c29d437060cd4cd2d",
+     database: "da1eroecl12e1b",
+     port: 5432,
+     ssl: {
+          rejectUnauthorized: false
+     }
 });
+
+// Database connection
+// const connection = mysql.createConnection({
+//      host: "ec2-44-209-24-62.compute-1.amazonaws.com",
+//      user: "gnoellfbbbujkx",
+//      password: "0fd585265a9e50e6a4965f9af22d5f18c49cf32dbda5ff0c29d437060cd4cd2d",
+//      database: "da1eroecl12e1b",
+//      port: 5432,
+//      hero
+// });
+
+// connection.connect((err) => {
+//      if (err) throw err
+//      console.log('db connected')
+// });
 
 
 // Engine
@@ -97,7 +123,6 @@ update_counters = () => {
 
 //Home(login) Route
 app.get('/', function (req, res) {
-     if (err) throw err
      user_data.username = ""
      res.render(path.join(__dirname, '/views/login'), { text: '' });
 
@@ -121,7 +146,6 @@ app.post('/', function (req, res) {
 
 //backlog Route
 app.get('/backlog', function (req, res) {
-     if (err) throw err
      if (user_data.username === '') {
           res.redirect(path.join('/'))
      } else {
