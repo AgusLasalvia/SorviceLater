@@ -16,12 +16,25 @@ const connection = mysql.createConnection({
      port: 5432
 });
 
-connection.connect((err) => {
-     if (err) throw err
-     console.log('db connected')
-});
+function handleDisconnect() {
+     connection = mysql.createConnection(db_config);
 
+     connection.connect((err) => {
+          if (err) throw err
+          console.log('db connected')
+     });
 
+     connection.on('error', function (err) {
+          console.log('db error', err);
+          if (err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
+               handleDisconnect();                         // lost due to either server restart, or a
+          } else {                                      // connnection idle timeout (the wait_timeout
+               throw err;                                  // server variable configures this)
+          }
+     });
+}
+
+handleDisconnect()
 // Engine
 app.set('view engine', 'ejs');
 app.engine('ejs', require('ejs').__express);
@@ -356,7 +369,7 @@ app.get('/my_inc', function (req, res) {
 });
 
 // app.post('get_ticket',function(req,res){
-	
+
 // )
 
 //Server start url
