@@ -4,7 +4,7 @@ const app = express();
 const path = require('path');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
-var port = process.env.PORT;
+var port = process.env.PORT || 5000;
 
 
 // Database connection
@@ -97,6 +97,7 @@ update_counters = () => {
 
 //Home(login) Route
 app.get('/', function (req, res) {
+     if (err) throw err
      user_data.username = ""
      res.render(path.join(__dirname, '/views/login'), { text: '' });
 
@@ -120,6 +121,7 @@ app.post('/', function (req, res) {
 
 //backlog Route
 app.get('/backlog', function (req, res) {
+     if (err) throw err
      if (user_data.username === '') {
           res.redirect(path.join('/'))
      } else {
