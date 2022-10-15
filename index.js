@@ -8,19 +8,19 @@ var port = process.env.PORT || 5000;
 
 const { Pool, Client } = require('pg');
 
-const pool = new Pool({
-     connectionString: 'postgres://gnoellfbbbujkx:0fd585265a9e50e6a4965f9af22d5f18c49cf32dbda5ff0c29d437060cd4cd2d@ec2-44-209-24-62.compute-1.amazonaws.com:5432/da1eroecl12e1b',
-     host: "ec2-44-209-24-62.compute-1.amazonaws.com",
-     user: "gnoellfbbbujkx",
-     password: "0fd585265a9e50e6a4965f9af22d5f18c49cf32dbda5ff0c29d437060cd4cd2d",
-     database: "da1eroecl12e1b",
-     port: 5432,
-     ssl: {
-          rejectUnauthorized: false
-     }
-});
+// const pool = new Pool({
+//      connectionString: 'postgres://gnoellfbbbujkx:0fd585265a9e50e6a4965f9af22d5f18c49cf32dbda5ff0c29d437060cd4cd2d@ec2-44-209-24-62.compute-1.amazonaws.com:5432/da1eroecl12e1b',
+//      host: "ec2-44-209-24-62.compute-1.amazonaws.com",
+//      user: "gnoellfbbbujkx",
+//      password: "0fd585265a9e50e6a4965f9af22d5f18c49cf32dbda5ff0c29d437060cd4cd2d",
+//      database: "da1eroecl12e1b",
+//      port: 5432,
+//      ssl: {
+//           rejectUnauthorized: false
+//      }
+// });
 
-pool.connect()
+// pool.connect()
 
 const connection = new Client({
      connectionString: 'postgres://gnoellfbbbujkx:0fd585265a9e50e6a4965f9af22d5f18c49cf32dbda5ff0c29d437060cd4cd2d@ec2-44-209-24-62.compute-1.amazonaws.com:5432/da1eroecl12e1b',
@@ -137,7 +137,7 @@ app.post('/', function (req, res) {
      update_counters();
      const { username, password } = req.body
      connection.query(`SELECT * FROM admin WHERE username = '${username}' AND password = '${password}';`, function (err, result) {
-          console.log(result.rows[username])
+          console.log(result.rows)
 
           if (result.rows['username'] == undefined) {
                res.render(path.join(__dirname, '/views/login'), { text: 'Username or password not correct' })
