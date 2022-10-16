@@ -6,9 +6,9 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 var port = process.env.PORT || 5000;
 
-const { Pool } = require('pg');
+const { Pool, Client } = require('pg');
 
-// const connection = new Pool({
+// const pool = new Pool({
 //      connectionString: 'postgres://gnoellfbbbujkx:0fd585265a9e50e6a4965f9af22d5f18c49cf32dbda5ff0c29d437060cd4cd2d@ec2-44-209-24-62.compute-1.amazonaws.com:5432/da1eroecl12e1b',
 //      host: "ec2-44-209-24-62.compute-1.amazonaws.com",
 //      user: "gnoellfbbbujkx",
@@ -20,16 +20,29 @@ const { Pool } = require('pg');
 //      }
 // });
 
+// pool.connect()
 
-// Database connection
-const connection = mysql.createConnection({
+const connection = new Client({
+     connectionString: 'postgres://gnoellfbbbujkx:0fd585265a9e50e6a4965f9af22d5f18c49cf32dbda5ff0c29d437060cd4cd2d@ec2-44-209-24-62.compute-1.amazonaws.com:5432/da1eroecl12e1b',
      host: "ec2-44-209-24-62.compute-1.amazonaws.com",
      user: "gnoellfbbbujkx",
      password: "0fd585265a9e50e6a4965f9af22d5f18c49cf32dbda5ff0c29d437060cd4cd2d",
      database: "da1eroecl12e1b",
      port: 5432,
-     hero
+     ssl: {
+          rejectUnauthorized: false
+     }
 });
+
+// Database connection
+// const connection = mysql.createConnection({
+//      host: "ec2-44-209-24-62.compute-1.amazonaws.com",
+//      user: "gnoellfbbbujkx",
+//      password: "0fd585265a9e50e6a4965f9af22d5f18c49cf32dbda5ff0c29d437060cd4cd2d",
+//      database: "da1eroecl12e1b",
+//      port: 5432,
+//      hero
+// });
 
 connection.connect((err) => {
      if (err) throw err
@@ -98,7 +111,7 @@ let search_kb = 0;
 
 //Important functions
 update_counters = () => {
-     connection.query("SELECT COUNT(*) as Count FROM ticket WHERE status = 'resolved';",function (err, resolved) {
+     connection.query("SELECT COUNT(*) as Count FROM ticket WHERE status = 'resolved';", function (err, resolved) {
           data.Resolve = resolved.rowCount;
 
           connection.query("SELECT COUNT(*) as count FROM ticket WHERE status = 'new';", function (err, t_new) {
