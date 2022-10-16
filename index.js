@@ -3,6 +3,7 @@ const express = require('express');
 const routes = express.Router();
 const app = express();
 const path = require('path');
+const cookieParse = require('cookie-parser')
 //const mysql = require('mysql');
 const bodyParser = require('body-parser');
 var port = process.env.PORT || 5000;
@@ -52,6 +53,8 @@ app.use('/static', express.static(__dirname + '/static'));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use(cookieParse())
 
 
 const data = {
@@ -140,8 +143,7 @@ app.post('/', function (req, res) {
 
           } else if (result.rows[0].username === username) {
                user_data.username = result.rows[0].username
-               //user_data.realname = result.rows[0].name
-               user_data.email = result.rows[0].email
+               res.cookie()
                res.render(path.join(__dirname, '/views/backlog'), { user: user_data, data: data });
           }
      })
