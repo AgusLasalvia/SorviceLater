@@ -22,7 +22,7 @@ const { Pool, Client } = require('pg');
 
 // pool.connect()
 
-const connection = new Client({
+const connection = new Pool({
      connectionString: 'postgres://gnoellfbbbujkx:0fd585265a9e50e6a4965f9af22d5f18c49cf32dbda5ff0c29d437060cd4cd2d@ec2-44-209-24-62.compute-1.amazonaws.com:5432/da1eroecl12e1b',
      host: "ec2-44-209-24-62.compute-1.amazonaws.com",
      user: "gnoellfbbbujkx",
@@ -31,7 +31,8 @@ const connection = new Client({
      port: 5432,
      ssl: {
           rejectUnauthorized: false
-     }
+     },
+     keepAlive: true
 });
 
 // Database connection
