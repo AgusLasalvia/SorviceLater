@@ -140,7 +140,7 @@ app.post('/', function (req, res) {
      connection.query(`SELECT * FROM admin WHERE username = '${username}' AND password = '${password}';`, function (err, result) {
           if (err) throw err
           console.log(result.rows.username)
-          if (result.rows[0][username] == undefined) {
+          if (result.rows == undefined) {
                res.render(path.join(__dirname, '/views/login'), { text: 'Username or password not correct' })
 
           } else if (result.rows['username'] === username) {
