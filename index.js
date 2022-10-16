@@ -1,27 +1,15 @@
 //imports
 const express = require('express');
+const routes = express.Router();
 const app = express();
 const path = require('path');
-const mysql = require('mysql');
+//const mysql = require('mysql');
 const bodyParser = require('body-parser');
 var port = process.env.PORT || 5000;
 
-const { Pool, Client } = require('pg');
+const { Pool } = require('pg');
 
-// const pool = new Pool({
-//      connectionString: 'postgres://gnoellfbbbujkx:0fd585265a9e50e6a4965f9af22d5f18c49cf32dbda5ff0c29d437060cd4cd2d@ec2-44-209-24-62.compute-1.amazonaws.com:5432/da1eroecl12e1b',
-//      host: "ec2-44-209-24-62.compute-1.amazonaws.com",
-//      user: "gnoellfbbbujkx",
-//      password: "0fd585265a9e50e6a4965f9af22d5f18c49cf32dbda5ff0c29d437060cd4cd2d",
-//      database: "da1eroecl12e1b",
-//      port: 5432,
-//      ssl: {
-//           rejectUnauthorized: false
-//      }
-// });
-
-// pool.connect()
-
+// PostgresSQL connection
 const connection = new Pool({
      connectionString: 'postgres://gnoellfbbbujkx:0fd585265a9e50e6a4965f9af22d5f18c49cf32dbda5ff0c29d437060cd4cd2d@ec2-44-209-24-62.compute-1.amazonaws.com:5432/da1eroecl12e1b',
      host: "ec2-44-209-24-62.compute-1.amazonaws.com",
@@ -35,7 +23,7 @@ const connection = new Pool({
      keepAlive: true
 });
 
-// Database connection
+// MySQL Connection
 // const connection = mysql.createConnection({
 //      host: "ec2-44-209-24-62.compute-1.amazonaws.com",
 //      user: "gnoellfbbbujkx",
@@ -127,6 +115,11 @@ update_counters = () => {
      });
 };
 
+function verification(req,res) {
+     if (req.cookies.user == undefined || req.cookies.pass == undefined) {
+          res.render(req.locale + '/', { text: '' });
+     }
+}
 
 //Home(login) Route
 app.get('/', function (req, res) {
@@ -206,7 +199,7 @@ app.post('/search', function (req, res) {
 //Ticket creator
 app.get('/ticket_create', function (req, res) {
      if (user_data.username === '') {
-          res.redirect(path.join('/'))
+          verification(req,res)
      } else {
           connection.query(`SELECT COUNT(*) AS count FROM Ticket;`, function (err, result) {
                ticket_id = result.rows[0].count;
