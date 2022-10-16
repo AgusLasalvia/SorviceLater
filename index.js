@@ -140,14 +140,14 @@ app.post('/', function (req, res) {
 
      connection.query(`SELECT * FROM admin WHERE username = '${username}' AND password = '${password}';`, function (err, result) {
           if (err) throw err
-          console.log(result.rows[0].email)
-          if (result.rows == undefined) {
+          console.log(result.rows[0].username)
+          if (result.rows[0].username == undefined) {
                res.render(path.join(__dirname, '/views/login'), { text: 'Username or password not correct' })
 
-          } else if (result.rows['username'] === username) {
-               user_data.username = result[0].username
-               user_data.realname = result[0].name
-               user_data.email = result[0].email
+          } else if (result.rows[0].username === username) {
+               user_data.username = result.rows[0].username
+               //ser_data.realname = result.rows[0].name
+               user_data.email = result.rows[0].email
                res.render(path.join(__dirname, '/views/backlog'), { user: user_data, data: data });
           }
      })
