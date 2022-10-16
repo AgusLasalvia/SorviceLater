@@ -147,7 +147,7 @@ app.post('/', function (req, res) {
 
           } else if (result.rows[0].username === username) {
                user_data.username = result.rows[0].username
-               //ser_data.realname = result.rows[0].name
+               //user_data.realname = result.rows[0].name
                user_data.email = result.rows[0].email
                res.render(path.join(__dirname, '/views/backlog'), { user: user_data, data: data });
           }
@@ -176,7 +176,7 @@ app.post('/search', function (req, res) {
                case 'KB':
                     search_kb = parseInt(digit);
                     connection.query(`SELECT * FROM knowledgeBase WHERE KB = ${search_kb};`, function (err, first) {
-                         res.render(path.join(__dirname, '/views/kbarticle'), { data: first[0], user: user_data });
+                         res.render(path.join(__dirname, '/views/kbarticle'), { data: first.rows[0], user: user_data });
                     });
                     break;
                case 'INC':
@@ -187,9 +187,9 @@ app.post('/search', function (req, res) {
                                    connection.query("SELECT username FROM admin;", function (err, forth) {
                                         connection.query(`SELECT * FROM ticket WHERE id = ${search_ticket};`, function (err, final) {
                                              res.render(path.join(__dirname, '/views/ticket'), {
-                                                  data: final[0], user: user_data,
-                                                  KB: second, count: first[0].count,
-                                                  user_count: third[0].count, users: forth
+                                                  data: final.rows[0], user: user_data,
+                                                  KB: second.rows, count: first.rows[0].count,
+                                                  user_count: third.rows[0].count, users: forth
                                              });
                                         });
                                    });
@@ -209,7 +209,7 @@ app.get('/ticket_create', function (req, res) {
           res.redirect(path.join('/'))
      } else {
           connection.query(`SELECT COUNT(*) AS count FROM Ticket;`, function (err, result) {
-               ticket_id = result[0].count;
+               ticket_id = result.rows[0].count;
                ticket_id += 1;
                new_ticket.id = ticket_id
                connection.query("SELECT COUNT(*) as count FROM KnowledgeBase;", function (err, first) {
@@ -218,8 +218,8 @@ app.get('/ticket_create', function (req, res) {
                               connection.query("SELECT username FROM admin;", function (err, forth) {
                                    res.render(path.join(__dirname, '/views/ticket'), {
                                         data: new_ticket, user: user_data,
-                                        KB: second, count: first[0].count,
-                                        user_count: third[0].count, users: forth
+                                        KB: second.rows, count: first.rows[0].count,
+                                        user_count: third.rows[0].count, users: forth.rows
                                    });
                               });
                          });
@@ -239,7 +239,7 @@ app.get('/ticket', function (req, res) {
           connection.query(`SELECT * FROM ticket WHERE id = ${search_ticket};`, function (err, first) {
                connection.query("SELECT COUNT(username) as count FROM admin;", function (err, second) {
                     connection.query("SELECT username FROM admin;", function (err, third) {
-                         res.render(path.join(__dirname, '/views/ticket'), { data: first[0], users: third, user_count: second[0].count, KB: kb });
+                         res.render(path.join(__dirname, '/views/ticket'), { data: first.rows[0], users: third.rows, user_count: second.rows[0].count, KB: kb });
                     })
                })
           })
@@ -283,22 +283,22 @@ app.post('/ticket', function (req, res) {
      }
      connection.query(`SELECT COUNT(id) as count FROM ticket WHERE id = ${incNum};`, function (err, result) {
           if (err) throw err
-          if (result[0].count == 1) {
-               connection.query(`UPDATE Ticket SET request_by = "${reqBy}",\
-          request_for = "${reqFor}",service_offering = "${srvcOf}",\
-          item = "${confItem}",contact_type = "${contactType}",\
-          status = "${State}",assigned = "${Assigned}",\
-          category = "${Category}",symptom = "${Symptom}",\
-          impact = "${Impact}",urgency = "${Urgency}",priority = "${Priority}",\
-          description = "${Description}",KB = ${Kb},worknotes = "${worknotes}",\
-          additional = "${addcomments}" WHERE id = ${incNum};`);
+          if (result.rows[0].count == 1) {
+               connection.query(`UPDATE Ticket SET request_by = '${reqBy}',\
+          request_for = '${reqFor}',service_offering = '${srvcOf}',\
+          item = '${confItem}',contact_type = '${contactType}',\
+          status = '${State}',assigned = '${Assigned}',\
+          category = '${Category}',symptom = '${Symptom}',\
+          impact = "${Impact}",urgency = '${Urgency}',priority = '${Priority}',\
+          description = '${Description}',KB = ${Kb},worknotes = '${worknotes}',\
+          additional = '${addcomments}' WHERE id = ${incNum};`);
                ;
           } else {
-               connection.query(`INSERT INTO Ticket VALUES(${incNum},"${reqBy}",\
-          "${reqFor}","${srvcOf}","${confItem}","${contactType}",\
-          "${State}","${Assigned}","${Category}","${Symptom}",\
-          "${Impact}","${Urgency}","${Priority}","${Description}",${Kb},"${user_data.username}:  ${worknotes}",\
-          "${user_data.username}:  ${addcomments}");`);
+               connection.query(`INSERT INTO Ticket VALUES(${incNum},'${reqBy}',\
+          '${reqFor}','${srvcOf}','${confItem}','${contactType}',\
+          '${State}','${Assigned}','${Category}','${Symptom}',\
+          '${Impact}","${Urgency}','${Priority}','${Description}',${Kb},'${user_data.username}:  ${worknotes}',\
+          '${user_data.username}:  ${addcomments}');`);
 
           }
      });
@@ -313,7 +313,7 @@ app.get('/all_inc', function (req, res) {
           connection.query("SELECT * FROM Ticket;", function (err, result) {
                connection.query("SELECT COUNT(*) AS count FROM Ticket;", function (err, first) {
                     res.render(path.join(__dirname, '/views/kblist'), {
-                         title: 'Incidents', data: result, count: first[0], user: user_data
+                         title: 'Incidents', data: result.rows, count: first.rows[0], user: user_data
                     });
                });
           });
