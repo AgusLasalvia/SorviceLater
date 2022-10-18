@@ -1,15 +1,17 @@
 //imports
 //const mysql = require('mysql');
+const { Pool } = require('pg');
 const express = require('express');
 const path = require('path');
 const cookieParse = require('cookie-parser')
 const bodyParser = require('body-parser');
 const session = require("express-session")
 const app = express();
+
 const routes = express.Router();
+
 var port = process.env.PORT || 5000;
 
-const { Pool } = require('pg');
 
 // PostgresSQL connection
 const connection = new Pool({
@@ -35,6 +37,7 @@ const connection = new Pool({
 //      hero
 // });
 
+//connection verification
 connection.connect((err) => {
      if (err) throw err
      console.log('db connected')
@@ -55,15 +58,15 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(cookieParse())
 app.use(session({
      secret: '',
      cookie: { maxAge: 30000 },
      saveUninitialized: true
 
 }))
-app.use(cookieParse())
 
-
+// Counter  init data
 const data = {
      Resolve: 0,
      New: 0,
@@ -78,6 +81,8 @@ const user_data = {
 }
 
 //Ticket data
+let ticket_id = 0;
+let search_ticket = 0;
 const new_ticket = {
      id: 0,
      request_by: '',
@@ -94,21 +99,19 @@ const new_ticket = {
      priority: '',
 
 }
-let ticket_id = 0;
-let search_ticket = 0;
 
 //KB data
+let kb_id = 0;
+let search_kb = 0;
 const new_BK = {
      KB: 0,
      title: '',
      description: ''
 }
-let kb_id = 0;
-let search_kb = 0;
+     
 
 
-
-//Important functions
+//Counter update function
 update_counters = () => {
      connection.query("SELECT COUNT(*) as count FROM ticket WHERE status = 'resolved';", function (err, resolved) {
           console.log(resolved.rows[0].count)
@@ -158,7 +161,7 @@ app.post('/', (req, res) => {
 });
 
 
-//backlog Route
+//Backlog Route
 app.get('/backlog', (req, res) => {
      if (user_data.username === '') {
           res.redirect(path.join('/'))
@@ -343,7 +346,7 @@ app.get('/kbarticle', (req, res) => {
           res.redirect(path.join('/'))
      } else {
           connection.query(`SELECT * FROM knowledgeBase WHERE KB = ${search_kb};`, function (err, first) {
-               res.render(path.join(__dirname, '/views/kbarticle'), { data: first[0], user: user_data });
+               res.render(path.join(__dirname, '/views/kbarticle'), { data: first.rows[0], user: user_data });
           })
      }
 });
@@ -352,7 +355,7 @@ app.post('/kbarticle', (req, res) => {
      const { kbarticle, title } = req.body
      const knowledge = req.body.knowledge
      connection.query(`SELECT COUNT(KB) as count FROM knowledgeBase WHERE KB = ${kbarticle};`, function (err, result) {
-          if (result[0].count == 1) {
+          if (result.rows[0].count == 1) {
                connection.query(`UPDATE KnowledgeBase SET title = '${title}',description = '${knowledge}' WHERE KB = ${kbarticle};`);
           } else {
                connection.query(`INSERT INTO KnowledgeBase VALUES(${kbarticle},'${title}','${knowledge}');`);
@@ -370,7 +373,7 @@ app.get('/all_kb', (req, res) => {
           connection.query("SELECT * FROM KnowledgeBase;", function (err, result) {
                connection.query("SELECT COUNT(*) AS count FROM KnowledgeBase;", function (err, first) {
                     res.render(path.join(__dirname, '/views/kblist'), {
-                         title: 'KnowledgeBase', data: result, count: first[0], user: user_data
+                         title: 'KnowledgeBase', data: result.rows, count: first.rows[0], user: user_data
                     });
                });
           });
@@ -386,9 +389,9 @@ app.get('/my_inc', (req, res) => {
           connection.query(`SELECT * FROM ticket WHERE assigned = "${user_data.username}";`, function (err, result) {
                connection.query("SELECT COUNT(*) AS count FROM KnowledgeBase;", function (err, first) {
                     if (result != undefined) {
-                         res.render(path.join(__dirname, 'views/kblist'), { title: 'Incidents', count: first[0], user: user_data, data: result })
+                         res.render(path.join(__dirname, 'views/kblist'), { title: 'Incidents', count: first.rows[0], user: user_data, data: result.rows })
                     } else {
-                         res.render(path.join(__dirname, '/views/kblist'), { title: 'No pending incidents', count: first[0], user: user_data, data: null })
+                         res.render(path.join(__dirname, '/views/kblist'), { title: 'No pending incidents', count: first.rows[0], user: user_data, data: null })
                     }
                });
           });
