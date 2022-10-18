@@ -1,11 +1,12 @@
 //imports
+//const mysql = require('mysql');
 const express = require('express');
-const routes = express.Router();
-const app = express();
 const path = require('path');
 const cookieParse = require('cookie-parser')
-//const mysql = require('mysql');
 const bodyParser = require('body-parser');
+const session = require("express-session")
+const app = express();
+const routes = express.Router();
 var port = process.env.PORT || 5000;
 
 const { Pool } = require('pg');
@@ -54,6 +55,12 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use(session({
+     secret: '',
+     cookie: { maxAge: 30000 },
+     saveUninitialized: true
+
+}))
 app.use(cookieParse())
 
 
@@ -112,28 +119,29 @@ update_counters = () => {
 
                connection.query("SELECT COUNT(*) as count FROM ticket WHERE status = 'pendingVendor' AND status = 'pendingAdmin';", function (err, progress) {
                     data.Pending = progress.rows[0].count
-                    
+
                });
           });
      });
 };
 
-function verification(req,res) {
-     if (req.cookies.user == undefined || req.cookies.pass == undefined) {
-          res.render(req.locale + '/', { text: '' });
-     }
+function verification(req, res) {
+
 }
 
 //Home(login) Route
-app.get('/', function (req, res) {
+app.get('/', validateCookies, function (req, res) {
      user_data.username = ""
      res.render(path.join(__dirname, '/views/login'), { text: '' });
 
 });
 
-app.post('/', function (req, res) {
+app.post('/', (req, res) => {
      update_counters();
      const { username, password } = req.body
+     if (username && password) {
+          if (req.session.au) { }
+     }
 
      connection.query(`SELECT * FROM admin WHERE username = '${username}' AND password = '${password}';`, function (err, result) {
           if (err) throw err
@@ -151,7 +159,7 @@ app.post('/', function (req, res) {
 
 
 //backlog Route
-app.get('/backlog', function (req, res) {
+app.get('/backlog', (req, res) => {
      if (user_data.username === '') {
           res.redirect(path.join('/'))
      } else {
@@ -160,7 +168,7 @@ app.get('/backlog', function (req, res) {
      }
 });
 
-app.post('/search', function (req, res) {
+app.post('/search', (req, res) => {
      if (user_data.username === '') {
           res.redirect(path.join('/'))
      } else {
@@ -199,9 +207,9 @@ app.post('/search', function (req, res) {
 
 
 //Ticket creator
-app.get('/ticket_create', function (req, res) {
+app.get('/ticket_create', (req, res) => {
      if (user_data.username === '') {
-          verification(req,res)
+          verification(req, res)
      } else {
           connection.query(`SELECT COUNT(*) AS count FROM Ticket;`, function (err, result) {
                ticket_id = result.rows[0].count;
@@ -227,7 +235,7 @@ app.get('/ticket_create', function (req, res) {
 
 
 //Tickets Route
-app.get('/ticket', function (req, res) {
+app.get('/ticket', (req, res) => {
      if (user_data.username === '') {
           res.redirect(path.join('/'))
      } else {
@@ -243,7 +251,7 @@ app.get('/ticket', function (req, res) {
 
 
 //Ticket Modification
-app.post('/ticket', function (req, res) {
+app.post('/ticket', (req, res) => {
      const { incNum, reqBy, reqFor, srvcOf,
           confItem, contactType, State,
           Assigned, Category, Symptom, Impact,
@@ -317,7 +325,7 @@ app.get('/all_inc', function (req, res) {
 
 
 //KnowledgeBase Routes
-app.get('/kb_create', function (req, res) {
+app.get('/kb_create', (req, res) => {
      if (user_data.username === '') {
           res.redirect(path.join('/'))
      } else {
@@ -330,7 +338,7 @@ app.get('/kb_create', function (req, res) {
      }
 });
 
-app.get('/kbarticle', function (req, res) {
+app.get('/kbarticle', (req, res) => {
      if (user_data.username === '') {
           res.redirect(path.join('/'))
      } else {
@@ -340,7 +348,7 @@ app.get('/kbarticle', function (req, res) {
      }
 });
 
-app.post('/kbarticle', function (req, res) {
+app.post('/kbarticle', (req, res) => {
      const { kbarticle, title } = req.body
      const knowledge = req.body.knowledge
      connection.query(`SELECT COUNT(KB) as count FROM knowledgeBase WHERE KB = ${kbarticle};`, function (err, result) {
@@ -355,7 +363,7 @@ app.post('/kbarticle', function (req, res) {
 });
 
 //KB list
-app.get('/all_kb', function (req, res) {
+app.get('/all_kb', (req, res) => {
      if (user_data.username === '') {
           res.redirect(path.join('/'))
      } else {
@@ -371,7 +379,7 @@ app.get('/all_kb', function (req, res) {
 
 
 //all user's incidents
-app.get('/my_inc', function (req, res) {
+app.get('/my_inc', (req, res) => {
      if (user_data.username === '') {
           res.redirect(path.join('/'))
      } else {
