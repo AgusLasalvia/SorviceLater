@@ -133,7 +133,7 @@ function verification(req, res) {
 }
 
 //Home(login) Route
-app.get('/', validateCookies, function (req, res) {
+app.get('/', (req, res) => {
      user_data.username = ""
      res.render(path.join(__dirname, '/views/login'), { text: '' });
 
