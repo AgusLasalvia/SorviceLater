@@ -59,12 +59,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(cookieParse())
-app.use(session({
-     secret: '',
-     cookie: { maxAge: 30000 },
-     saveUninitialized: true
+// app.use(session({
+//      secret: '',
+//      cookie: { maxAge: 30000 },
+//      saveUninitialized: true
 
-}))
+// }))
 
 // Counter  init data
 const data = {
