@@ -6,7 +6,7 @@ const path = require('path');
 const cookieParse = require('cookie-parser')
 const bodyParser = require('body-parser');
 const session = require("express-session")
-const app = express();
+const app = express.Router();
 
 const routes = express.Router();
 
@@ -59,12 +59,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(cookieParse())
-// app.use(session({
-//      secret: '',
-//      cookie: { maxAge: 30000 },
-//      saveUninitialized: true
+app.use(session({
+     secret: 'secret-key',
+     resave: false,
+     saveUninitialized: true
 
-// }))
+}));
 
 // Counter  init data
 const data = {
@@ -128,9 +128,6 @@ update_counters = () => {
      });
 };
 
-function verification(req, res) {
-
-}
 
 //Home(login) Route
 app.get('/', (req, res) => {
@@ -142,10 +139,6 @@ app.get('/', (req, res) => {
 app.post('/', (req, res) => {
      update_counters();
      const { username, password } = req.body
-     if (username && password) {
-          if (req.session.au) { }
-     }
-
      connection.query(`SELECT * FROM admin WHERE username = '${username}' AND password = '${password}';`, function (err, result) {
           if (err) throw err
           console.log(result.rows[0].username)
@@ -154,7 +147,6 @@ app.post('/', (req, res) => {
 
           } else if (result.rows[0].username === username) {
                user_data.username = result.rows[0].username
-               res.cookie()
                res.render(path.join(__dirname, '/views/backlog'), { user: user_data, data: data });
           }
      })
@@ -398,9 +390,6 @@ app.get('/my_inc', (req, res) => {
      }
 });
 
-// app.post('get_ticket',function(req,res){
-
-// )
 
 //Server start url
 app.listen(port, () => console.info(`http://localhost:${port}`));
