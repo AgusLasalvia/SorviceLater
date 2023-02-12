@@ -6,7 +6,7 @@ const path = require('path');
 const cookieParse = require('cookie-parser')
 const bodyParser = require('body-parser');
 const session = require("express-session")
-const app = express.Router();
+const app = express
 
 const routes = express.Router();
 
@@ -51,7 +51,6 @@ app.engine('ejs', require('ejs').__express);
 
 // statics
 app.use('/styles', express.static(__dirname + "/styles"));
-app.use('/js', express.static(__dirname + '/js'));
 app.use('/static', express.static(__dirname + '/static'));
 
 app.use(express.json());
