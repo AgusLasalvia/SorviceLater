@@ -6,7 +6,7 @@ const path = require('path');
 const cookieParse = require('cookie-parser')
 const bodyParser = require('body-parser');
 const session = require("express-session")
-const app = express
+const app = express()
 
 const routes = express.Router();
 
@@ -107,7 +107,7 @@ const new_BK = {
      title: '',
      description: ''
 }
-     
+
 
 
 //Counter update function
