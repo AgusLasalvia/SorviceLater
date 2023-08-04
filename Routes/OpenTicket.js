@@ -1,7 +1,7 @@
 const express = require('express');
 const route = express.Router();
 const sql = require('../sql')
-
+const path = require('path');
 
 route.get('/:id', (req, res) => {
     ticket_id = req.params.id

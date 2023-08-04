@@ -1,8 +1,7 @@
 
 //imports
-const sql = require('./sql');
 const express = require('express');
-const path = require('path');
+
 const cookieParse = require('cookie-parser')
 const bodyParser = require('body-parser');
 const session = require("express-session");
@@ -32,12 +31,13 @@ app.use(session({
 
 }));
 
-//User data
-export const user_data = {
+const user_data = {
      username: '',
      realname: '',
      email: ''
 }
+//User data
+exports.user_datra = user_data;  
 
 // routes declaration
 const Login = require('./Routes/Login');

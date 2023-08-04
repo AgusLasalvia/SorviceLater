@@ -1,6 +1,7 @@
 const express = require('express');
 const route = express.Router();
-const sql = require('../sql')
+const sql = require('../sql');
+const path = require('path');
 
 route.get('/', function (req, res) {
     knowleadgebase = sql.getAllKnowledgeBase();

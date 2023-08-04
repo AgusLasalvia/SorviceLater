@@ -1,7 +1,7 @@
 const express = require('express');
 const route = express.Router();
 const sql = require('../sql')
-
+const path = require('path');
 const new_ticket = {
     id: 0,
     request_by: '',

@@ -17,7 +17,7 @@ let data = {
     Pending: 0
 };
 
-export function updateCounter() {
+function updateCounter() {
     connection.query("SELECT COUNT(*) FROM ticket WHERE status = 'resolved';", function (err, resolved) {
         if (err) throw err;
         console.log(resolved.row[0].count);
@@ -36,7 +36,7 @@ export function updateCounter() {
     return data;
 };
 
-export function userVerification(username, password) {
+function userVerification(username, password) {
     connection.query(`SELECT * FROM admin WHERE username = '${username}' AND password = '${password}';`, function (err, response) {
         if (err) throw err;
         if (response.row[0].username === undefined) return false;
@@ -45,7 +45,7 @@ export function userVerification(username, password) {
 };
 
 
-export function getAllAdmin() {
+function getAllAdmin() {
     connection.query("SELECT username,COUNT(*) FROM admin;", function (err, admin) {
         if (err) throw err;
         console.log(admin);
@@ -53,7 +53,7 @@ export function getAllAdmin() {
     });
 };
 
-export function getTicketCounter() {
+function getTicketCounter() {
     connection.query("SELECT COUNT(*) FROM ticket;", function (err, ticket) {
         if (err) throw err;
         console.log(ticket.row[0].count);
@@ -62,7 +62,7 @@ export function getTicketCounter() {
 };
 
 
-export function getAllKnowledgeBase() {
+function getAllKnowledgeBase() {
     connection.query("SELECT *,COUNT(*) FROM knowledgebase;", function (err, knowledgebase) {
         if (err) throw err;
         console.log(knowledgebase);
@@ -71,7 +71,7 @@ export function getAllKnowledgeBase() {
 };
 
 
-export function getSpecificTicket(id) { 
+function getSpecificTicket(id) { 
     connection.query(`SELECT * FROM ticket WHERE id = ${id};`, function (err, ticket) {
         if (err) throw err;
         console.log(ticket);
@@ -80,7 +80,7 @@ export function getSpecificTicket(id) {
 };
 
 
-export function insertNewTicket(ticket,user_data) {
+function insertNewTicket(ticket, user_data) {
     const { incNum, reqBy, reqFor, srvcOf,
         confItem, contactType, State,
         Assigned, Category, Symptom, Impact,
@@ -137,7 +137,7 @@ export function insertNewTicket(ticket,user_data) {
 };
 
 
-export function getKnowledgeCounter() {
+function getKnowledgeCounter() {
     connection.query("SELECT COUNT(*) FROM knowledgebase;", function (err, knowledgebase) {
         if (err) throw err;
         console.log(knowledgebase.row[0].count);
@@ -145,7 +145,7 @@ export function getKnowledgeCounter() {
     });
 };
 
-export function getSpecificKnlowledgeBase(id) {
+function getSpecificKnlowledgeBase(id) {
     connection.query(`SELECT * FROM knowledgebase WHERE KB = ${id};`, function (err, knowledgebase) {
         if (err) throw err;
         console.log(knowledgebase);
@@ -153,7 +153,7 @@ export function getSpecificKnlowledgeBase(id) {
     });
 };
 
-export function getAllKnowledgeBase() {
+function getAllKnowledgeBase() {
     connection.query("SELECT *,COUNT(*) FROM knowledgebase;", function (err, knowledgebase) {
         if (err) throw err;
         console.log(knowledgebase);
@@ -161,7 +161,7 @@ export function getAllKnowledgeBase() {
     });
 };
 
-export function verifyExistingKnowledge(knowledge) {
+function verifyExistingKnowledge(knowledge) {
     connection.query(`SELECT COUNT(KB) as count FROM knowledgebase WHERE KB = ${knowledge};`, function (err, result) {
         if (err) throw err
         if (result.rows[0].count == 1) {
@@ -173,14 +173,14 @@ export function verifyExistingKnowledge(knowledge) {
 };
 
 
-export function insertNewKnowledgeBase(knowledgebase,title,article) { 
+function insertNewKnowledgeBase(knowledgebase, title, article) { 
     connection.query(`INSERT INTO knowledgebase VALUES(${article},'${title}',\
       '${knowledgebase}');`, function (err) { 
         if (err) throw err;
     });
 };
 
-export function updateKnowledgeBase(knowledgebase, title, article) { 
+function updateKnowledgeBase(knowledgebase, title, article) { 
     connection.query(`UPDATE knowledgebase SET title = '${title}',\
       article = '${knowledgebase}' WHERE KB = ${article};`, function (err) { 
         if (err) throw err;
@@ -188,9 +188,26 @@ export function updateKnowledgeBase(knowledgebase, title, article) {
 };
 
 
-export function getAllMyIncidents(username) {
+function getAllMyIncidents(username) {
     connection.query(`SELECT * FROM tickets WHERE username = '${username}';`, function (err,response) {
         if (err) throw err;
         return response.rows
     })
 };
+
+module.exports = {
+    getAllMyIncidents,
+    updateKnowledgeBase,
+    insertNewKnowledgeBase,
+    verifyExistingKnowledge,
+    getAllKnowledgeBase,
+    updateCounter,
+    userVerification,
+    getAllAdmin,
+    getTicketCounter,
+    getSpecificTicket,
+    insertNewTicket,
+    getKnowledgeCounter,
+    getSpecificKnlowledgeBase
+
+}

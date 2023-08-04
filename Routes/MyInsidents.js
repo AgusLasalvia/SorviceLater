@@ -1,6 +1,7 @@
 const express = require('express');
 const route = express.Router();
 const sql = require('../sql')
+const path = require('path');
 
 route.get('/', (req, res) => {
     tickets = sql.getAllMyIncidents(user_data.username);

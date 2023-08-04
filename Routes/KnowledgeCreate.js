@@ -1,6 +1,7 @@
 const express = require('express');
 const route = express.Router();
 const sql = require('../sql')
+const path = require('path');
 const new_BK = {
     KB: 0,
     title: '',

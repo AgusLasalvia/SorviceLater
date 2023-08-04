@@ -2,6 +2,7 @@ const express = require('express');
 const route = express.Router();
 const sql = require('../sql')
 const { user_data } = require('../index')
+const path = require('path');
 
 route.get('/:id', (req, res) => {
     knowledge = sql.getSpecificKnlowledgeBase(req.params.id);
