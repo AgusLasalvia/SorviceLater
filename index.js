@@ -1,8 +1,7 @@
 
 //imports
 const express = require('express');
-
-const cookieParse = require('cookie-parser')
+const cookieParse = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require("express-session");
 const app = express();
@@ -37,7 +36,7 @@ const user_data = {
      email: ''
 }
 //User data
-exports.user_datra = user_data;  
+exports.user_data = user_data;  
 
 // routes declaration
 const Login = require('./Routes/Login');

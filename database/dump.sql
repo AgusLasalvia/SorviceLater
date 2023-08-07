@@ -5,10 +5,11 @@ CREATE TABLE `Admin` (
   `username` varchar(25) NOT NULL,
   `password` varchar(25) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
+  `phone` int(40) DEFAULT NULL, 
   PRIMARY KEY (`username`)
 );
 
-INSERT INTO `Admin` VALUES ('agustin','agus1307','aguslblumenfeld@gmail.com');
+INSERT INTO `Admin` VALUES ('agustin','agus1307','aguslblumenfeld@gmail.com',098816883);
 
 DROP TABLE IF EXISTS `KnowledgeBase`;
 
