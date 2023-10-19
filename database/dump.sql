@@ -9,7 +9,7 @@ CREATE TABLE `Admin` (
   PRIMARY KEY (`username`)
 );
 
-INSERT INTO `Admin` VALUES ('agustin','agus1307','aguslblumenfeld@gmail.com',098816883);
+INSERT INTO `Admin` VALUES ('admin','admin','admin@gmail.com',111111111);
 
 DROP TABLE IF EXISTS `KnowledgeBase`;
 
