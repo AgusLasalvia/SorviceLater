@@ -1,9 +1,9 @@
 const sql = require("mysql");
 const connection = sql.createConnection({
-    host: "localhost",
-    user: "root",
+    host: "<IP>",
+    user: "<USER>",
     password: "<PASSWORD>",
-    database: "test"
+    database: "<DATABASE>"
 });
 
 connection.connect(err => {
@@ -14,7 +14,7 @@ connection.connect(err => {
 let data = {
     Resolved: 0,
     New: 0,
-    Pending: 0
+    Pending: 0Sorv
 };
 
 function updateCounter() {
