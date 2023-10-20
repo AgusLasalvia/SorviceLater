@@ -20,11 +20,9 @@ Linux:
 		For this, you must type "CREATE DATABASE SorvisLater;"
 		After that, create a user with all privileges to access de database.
 			CREATE USER 'username'@'localhost' IDENTIFIED BY 'password';
-
 		And grant it all privileges.
 			GRANT ALL PRIVILEGES ON SorvisLater.* TO 'username'@'localhost';
 			FLUSH PRIVILEGES;
-
 		And finaly, user the dump file to load all tables.
 		Exit SQL and enter de code folder, enter the database forlder.
 		Then in the terminal type:
