@@ -14,7 +14,7 @@ connection.connect(err => {
 let data = {
     Resolved: 0,
     New: 0,
-    Pending: 0Sorv
+    Pending: 0
 };
 
 function updateCounter() {
