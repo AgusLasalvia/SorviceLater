@@ -18,7 +18,7 @@ CREATE TABLE `KnowledgeBase` (
   `title` varchar(100) DEFAULT NULL,
   `description` varchar(2000) DEFAULT NULL,
   PRIMARY KEY (`KB`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+)
 
 DROP TABLE IF EXISTS `Ticket`;
 

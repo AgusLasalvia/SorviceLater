@@ -4,8 +4,8 @@ const sql = require('../sql')
 const path = require('path');
 
 route.get('/', (req, res) => {
-    counter = sql.updateCounter();
-    res.render(path.join(__dirname, '/views/backlog'), { user: user_data, count: counter });
+	counter = sql.updateCounter();
+	res.render(path.join(__dirname, '/views/backlog'), { user: user_data, count: counter });
 });
 
 module.exports = route;
