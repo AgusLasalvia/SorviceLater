@@ -1,28 +1,26 @@
 {
-  "name": "servicelater",
+  "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "backend for sorvicelater",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nodemon index.ts"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AgusLasalvia/ServiceLater.git"
-  },
-  "author": "",
+  "keywords": [
+    "Sorvice"
+  ],
+  "author": "Agustin Lasalvia",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/AgusLasalvia/ServiceLater/issues"
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
   },
-  "homepage": "https://github.com/AgusLasalvia/ServiceLater#readme",
   "dependencies": {
-    "body-parser": "^1.20.1",
-    "cookie-parser": "^1.4.6",
-    "ejs": "^3.1.8",
-    "express": "^4.18.2",
-    "express-session": "^1.17.3",
-    "mongoose": "^7.4.2",
-    "mysql": "^2.18.1"
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mysql2": "^3.12.0"
   }
 }
