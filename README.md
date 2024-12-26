@@ -24,7 +24,7 @@ Install mysql-server
 	Create a database like SorvisLater
 	For this, you must type 
  	`CREATE DATABASE SorvisLater;`
-	After that, create a user with all privileges to access de database.
+	After that, create a user with all privileges to access the database.
  	`CREATE USER 'username'@'%' IDENTIFIED BY 'password';`
 	
  And grant it all privileges.
@@ -39,7 +39,8 @@ Then in the terminal type: `mysql -u username -p SorvisLater < dump.sql`
 
 
 Make shure that your database has the correct IP address,password and username.
-If you're using a separate machine, remeber to open your TCP port in you DB machine
+If you're using a separate machine, remeber to open your TCP port in you DB machine,
+by default mysql uses the port 3306.
 
 inside the server folder run the command `npm install` or `npm i`, then use `npm i -D`.
 
