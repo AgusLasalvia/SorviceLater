@@ -25,25 +25,7 @@ export class Database {
 	}
 
 
-	private async query(sql: string, values: any[] = []): Promise<any> {
-		return await this.connection.query(sql, values);
-	}
-
-	// User methods
-
-	public async login(email: string, password: string): Promise<User | null> {
-		const [rows] = await this.query('SELECT * FROM users WHERE email = ? AND password = ?', [email, password]);
-		return rows[0];
-	}
-
-
-	public async getUsers(): Promise<User[] | null> {
-		const [rows] = await this.query('SELECT id,username FROM users');
-		return rows;
-	}
-
-	public async getUserById(id:number):Promise<User | null>{
-		const [rows] = await this.query('SELECT id,username FROM users WHERE id = ?', [id]);
-		return rows[0];
+	public async query<T = any>(sql: string, values: any[] = []): Promise<[T[], mysql.FieldPacket[]]> {
+		return this.connection.query<any>(sql, values);
 	}
 }
