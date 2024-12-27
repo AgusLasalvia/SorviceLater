@@ -4,7 +4,9 @@ import cors from 'cors';
 
 
 // Routes imports
-import Auth from "./src/routes/auth.routes";
+import AuthRoute from "./src/routes/auth.routes";
+import UserRoute from './src/routes/user.routes'
+import TicketRoute from './src/routes/ticket.routes'
 
 config();
 
@@ -20,7 +22,9 @@ app.use(express.urlencoded({ extended: true }));
 
 
 //Routes initialization
-app.use('/auth', Auth);
+app.use('/auth', AuthRoute);
+app.use('/user', UserRoute);
+app.use('/ticket', TicketRoute)
 
 
 // Server start and port listening

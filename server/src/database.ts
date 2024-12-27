@@ -1,6 +1,6 @@
 import mysql from 'mysql2/promise';
 import { DatabaseSettings } from './lib/settings';
-import { User } from './models/user.model';
+
 
 export class Database {
 	private static instance: Database;

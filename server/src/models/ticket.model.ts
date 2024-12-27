@@ -1,0 +1,86 @@
+import { Database } from "../database";
+
+export interface Ticket {
+	_id: number,
+	request_by: string,
+	request_for: string,
+	service_offering: string,
+	item: string,
+	contact_type: string,
+	status: string,
+	assigned: string,
+	category: string,
+	symptom: string,
+	impact: string,
+	urgency: string,
+	priority: string,
+}
+
+
+export class TicektModel {
+	static async createTicket(ticket: Ticket): Promise<Ticket | null> {
+		const db = await Database.getInstance();
+		const sql = `INSERT INTO tickets (request_by,request_for,service_offering,item,contact_type,status,assigned,category,symptom,impact,urgency,priority) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`;
+		const [result] = await db.query(sql, [
+			ticket.request_by,
+			ticket.request_for,
+			ticket.service_offering,
+			ticket.item,
+			ticket.contact_type,
+			ticket.status,
+			ticket.assigned,
+			ticket.category,
+			ticket.symptom,
+			ticket.impact,
+			ticket.urgency,
+			ticket.priority
+		]);
+		return result ? ticket : null;
+	}
+
+
+	static async getTicketById(id: number): Promise<Ticket | null> {
+		const db = await Database.getInstance();
+		const sql = `SELECT * FROM tickets WHERE id = ?`;
+		const [rows] = await db.query<Ticket>(sql, [id]);
+		return rows.length ? rows[0] : null;
+	}
+
+
+	static async getTicketByUser(username: string): Promise<Ticket[] | null> {
+		const db = await Database.getInstance();
+		const sql = `SELECT * FROM tickets WHERE request_by = ?`;
+		const [rows] = await db.query<Ticket>(sql, [username]);
+		return rows;
+	}
+
+
+	static async updateTicket(id: number, ticket: Ticket): Promise<Ticket | null> {
+		const db = await Database.getInstance();
+		const sql = `
+		UPDATE tickets SET 
+		request_by = ?, request_for = ?, 
+		service_offering = ?,item = ?, 
+		contact_type = ?, status = ?, 
+		assigned = ?, category = ?, 
+		symptom = ?, impact = ?, 
+		urgency = ?, priority = ? 
+		WHERE id = ?`;
+		const [result] = await db.query(sql, [
+			ticket.request_by,
+			ticket.request_for,
+			ticket.service_offering,
+			ticket.item,
+			ticket.contact_type,
+			ticket.status,
+			ticket.assigned,
+			ticket.category,
+			ticket.symptom,
+			ticket.impact,
+			ticket.urgency,
+			ticket.priority,
+			id
+		]);
+		return result ? ticket : null;
+	}
+}

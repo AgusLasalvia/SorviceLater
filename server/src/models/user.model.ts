@@ -11,6 +11,7 @@ export interface User {
 }
 
 export class UserModel {
+
 	static async register(user: User): Promise<User> {
 		return user;
 	}

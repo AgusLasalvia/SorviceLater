@@ -5,3 +5,6 @@ import { Router } from 'express';
 const router = Router();
 
 router.get('/all_users', userAuthMiddelware, UserController.getUsers);
+
+
+export default router;
