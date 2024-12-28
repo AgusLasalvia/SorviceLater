@@ -20,7 +20,14 @@ export interface Ticket {
 export class TicektModel {
 	static async createTicket(ticket: Ticket): Promise<Ticket | null> {
 		const db = await Database.getInstance();
-		const sql = `INSERT INTO tickets (request_by,request_for,service_offering,item,contact_type,status,assigned,category,symptom,impact,urgency,priority) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`;
+		const sql = `INSERT INTO tickets (
+		request_by,request_for,
+		service_offering,item,
+		contact_type,status,assigned,
+		category,symptom,
+		impact,urgency,
+		priority ) 
+		VALUES  (?,?,?,?,?,?,?,?,?,?,?,?)`;
 		const [result] = await db.query(sql, [
 			ticket.request_by,
 			ticket.request_for,
@@ -41,7 +48,7 @@ export class TicektModel {
 
 	static async getTicketById(id: number): Promise<Ticket | null> {
 		const db = await Database.getInstance();
-		const sql = `SELECT * FROM tickets WHERE id = ?`;
+		const sql = `SELECT * FROM Ticket WHERE id = ?`;
 		const [rows] = await db.query<Ticket>(sql, [id]);
 		return rows.length ? rows[0] : null;
 	}
@@ -49,7 +56,7 @@ export class TicektModel {
 
 	static async getTicketByUser(username: string): Promise<Ticket[] | null> {
 		const db = await Database.getInstance();
-		const sql = `SELECT * FROM tickets WHERE request_by = ?`;
+		const sql = `SELECT * FROM Ticket WHERE request_by = ?`;
 		const [rows] = await db.query<Ticket>(sql, [username]);
 		return rows;
 	}
@@ -58,7 +65,7 @@ export class TicektModel {
 	static async updateTicket(id: number, ticket: Ticket): Promise<Ticket | null> {
 		const db = await Database.getInstance();
 		const sql = `
-		UPDATE tickets SET 
+		UPDATE Ticket SET 
 		request_by = ?, request_for = ?, 
 		service_offering = ?,item = ?, 
 		contact_type = ?, status = ?, 

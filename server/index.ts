@@ -16,12 +16,14 @@ const PORT = process.env.PORT || 5000;
 
 
 // Express configuration
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-//Routes initialization
+// Routes initialization
+
 app.use('/auth', AuthRoute);
 app.use('/user', UserRoute);
 app.use('/ticket', TicketRoute)

@@ -8,7 +8,9 @@ router.post('/create', userAuthMiddelware, TicketController.createTicket);
 
 router.post('/update', userAuthMiddelware, TicketController.updateTicket);
 
-router.get('/open', userAuthMiddelware, TicketController.getTicket)
+router.get('/open', userAuthMiddelware, TicketController.getTicket);
+
+router.get('/list', userAuthMiddelware, TicketController.getListOfTicketByUser);
 
 
 export default router;

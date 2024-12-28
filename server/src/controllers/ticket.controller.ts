@@ -31,4 +31,15 @@ export class TicketController {
 		else
 			res.status(200).json({ message: 'Update Successfull' })
 	}
+
+
+	static async getListOfTicketByUser(req: Request, res: Response) {
+		const { user } = req.body;
+		const response = await TicektModel.getTicketByUser(user);
+		if (!response)
+			res.status(404).json({ message: "No ticket found for this user" })
+		else
+			res.status(200).json({ data: response });
+
+	}
 }
