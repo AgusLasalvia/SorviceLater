@@ -38,7 +38,7 @@ Exit SQL and enter de code folder, enter the database forlder.
 Then in the terminal type: `mysql -u username -p SorvisLater < dump.sql`
 
 
-Make shure that your database has the correct IP address,password and username.
+Make sure that your database has the correct IP address,password and username.
 If you're using a separate machine, remeber to open your TCP port in you DB machine,
 by default mysql uses the port 3306.
 
