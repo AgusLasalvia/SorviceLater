@@ -8,7 +8,7 @@ And Agustin Lasalvia( Back-End )
 `SorvisLater`
 
 This is a solution for those who want to work with a ticket sistem.
-Sorvis later y ticket is a solution for Minecraft IT services, based on the existing ServiceNow of TCS (Tata Consultancy Services)
+Sorvis later y ticket is a solution for Minecraft IT services, based on the existing ServiceNow 
 
 ##############INSTALATION###############
 
