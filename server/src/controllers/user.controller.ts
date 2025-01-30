@@ -9,8 +9,9 @@ export default class UserController {
 	}
 
 	static async login(req: Request, res: Response) {
-		const { email, password } = req.body;
-		const user = await UserModel.login(email, password);
+		const { username, password } = req.body;
+		console.log(username)
+		const user = await UserModel.login(username, password);
 		if (user)
 			res.json(user);
 		else

@@ -1,7 +1,10 @@
 import mysql from 'mysql2/promise';
+
 import { DatabaseSettings } from './lib/settings';
 
 
+
+console.log(DatabaseSettings.database as string)
 export class Database {
 	private static instance: Database;
 	private connection: mysql.Connection;

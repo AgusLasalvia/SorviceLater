@@ -1,17 +1,18 @@
-import express, { Application } from 'express';
 import { config } from 'dotenv';
-import cors from 'cors';
+config();
 
+import express, { Application } from 'express';
+import cors from 'cors';
 
 // Routes imports
 import AuthRoute from "./src/routes/auth.routes";
 import UserRoute from './src/routes/user.routes'
 import TicketRoute from './src/routes/ticket.routes'
 
-config();
+
 
 const app: Application = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.SERVER_PORT || 5000;
 
 
 
@@ -31,5 +32,5 @@ app.use('/ticket', TicketRoute)
 
 // Server start and port listening
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+	console.log(`Server is running on port ${PORT}`);
 });

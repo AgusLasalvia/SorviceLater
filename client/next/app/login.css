@@ -3,7 +3,7 @@ body {
   display: flex;
   justify-content: center;
   height: 100vh;
-  background-image: url(../static/blurredBALLS.svg);
+  background-image: url(./blurredBALLS.svg);
   background-size: cover;
 }
 

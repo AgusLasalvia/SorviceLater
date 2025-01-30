@@ -1,7 +1,7 @@
 import { Database } from "../database";
 
 export interface User {
-  _id: string;
+  id: number;
   username: string
   firstName: string;
   lastName: string;
@@ -17,10 +17,10 @@ export class UserModel {
     return user;
   }
 
-  static async login(email: string, password: string): Promise<User | null> {
+  static async login(username: string, password: string): Promise<User | null> {
     const db = await Database.getInstance();
-    const sql = `SELECT id,username FROM users WHERE email = ? AND password = ?`;
-    const [rows] = await db.query<User>(sql, [email, password]);
+    const sql = `SELECT id,username FROM user WHERE username = ? AND password = ?`;
+    const [rows] = await db.query<User>(sql, [username, password]);
     return rows.length ? rows[0] : null;
   }
 
@@ -59,3 +59,6 @@ export class UserModel {
     return result ? user : null;
   }
 }
+
+
+
