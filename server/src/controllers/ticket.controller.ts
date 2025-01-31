@@ -42,4 +42,13 @@ export class TicketController {
 			res.status(200).json({ data: response });
 
 	}
+
+	static async getAllTypeTicketCounter(req: Request, res: Response) {
+		const response = await TicektModel.getAllTicketCounter();
+		if (!response)
+			res.status(404).json({ data: { new: 0, pending: 0, resolved: 0 } })
+		else
+			res.status(200).json({ data: response });
+
+	}
 }

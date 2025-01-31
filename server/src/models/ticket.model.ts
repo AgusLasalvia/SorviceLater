@@ -90,4 +90,17 @@ export class TicektModel {
 		]);
 		return result ? ticket : null;
 	}
+
+
+	static async getAllTicketCounter() {
+		const db = await Database.getInstance()
+		const sql = `
+		SELECT status, COUNT(*) AS count
+		FROM your_table
+		WHERE status IN ('new', 'resolved', 'pending')
+		GROUP BY status;
+		`
+		const [rows] = await db.query(sql)
+		return rows.length ? rows[0] : null;
+	}
 }

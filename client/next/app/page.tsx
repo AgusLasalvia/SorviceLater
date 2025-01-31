@@ -1,35 +1,38 @@
-"use client"
-import './login.css'
+"use client";
+
+import "./page.css";
+import "./globals.css";
 
 import { useState } from "react";
 import { loginForm } from "@/lib/forms";
-import { fetchLogin } from '@/lib/fetch';
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { fetchLogin } from "@/lib/fetch";
 
-
-
-const Login = () => {
-
-	const [form, setForm] = useState(loginForm)
+export default function Home() {
+	const [formLogin, setFormLogin] = useState(loginForm);
 	const [error, setError] = useState("")
 	const router = useRouter();
-	const handdleSubmit = async () => {
 
+
+	// handle submit action
+	const handleSubmit = async () => {
 		// Ternary function handdler
-		const response = await fetchLogin(form)
+		const response = await fetchLogin(formLogin)
 		response == 404 ? setError("User Not Found")
-		: response == 500 ? setError("Server Error")
-		: router.push('/dashboard')
-	}
+			: response == 500 ? setError("Server Error")
+				: router.push('/backlog')
+	};
 
-
+	// TSX returns
 	return (
 		<div className="formWrapper">
-			<form className="form" action="/" method="post">
-
-				<p className="subtitle">Log in now, or<span> later!</span></p>
-				<p className="title">Sorvis<span>Later</span></p>
-
+			<div className="form">
+				<p className="subtitle">
+					Log in now, or<span> later!</span>
+				</p>
+				<p className="title">
+					Sorvis<span>Later</span>
+				</p>
 				{/* <!-- Username textbox --> */}
 				<div className="input-container ic1">
 					<input
@@ -38,14 +41,13 @@ const Login = () => {
 						className="input"
 						type="text"
 						placeholder=" "
-						value={form.username}
 						onChange={(e) => {
-							setForm({ ...form, username: e.target.value })
-						}} />
+							setFormLogin({ ...formLogin, username: e.target.value });
+						}}
+					/>
 					<div className="cut"></div>
-					<label htmlFor="username" className="placeholder">Username</label>
+					<label className="placeholder">Username</label>
 				</div>
-
 				{/* <!-- Password textbox --> */}
 				<div className="input-container ic2">
 					<input
@@ -54,25 +56,21 @@ const Login = () => {
 						className="input"
 						type="password"
 						placeholder=" "
-						value={form.password}
 						onChange={(e) => {
-							setForm({ ...form, password: e.target.value })
+							setFormLogin({ ...formLogin, password: e.target.value });
 						}}
 					/>
 					<div className="cut"></div>
-					<label htmlFor="password" className="placeholder">Password</label>
+					<label className="placeholder">Password</label>
 				</div>
-
 				{/* <!-- login button --> */}
-				<button type="button" className="loginBtn" onClick={handdleSubmit}>login</button>
-
+				<button className="loginBtn" id="btnLogin" onClick={handleSubmit}>
+					login
+				</button>
+				
 				{/* <!-- error text --> */}
 				{error != "" ? <p className="errortext">{error}</p> : <></>}
-
-			</form>
+			</div>
 		</div>
-	)
+	);
 }
-
-
-export default Login;
