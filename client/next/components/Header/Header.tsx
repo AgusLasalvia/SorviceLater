@@ -1,5 +1,4 @@
 type HeaderProps = {
-
     username: string
     toggleSidebar: () => void
 }

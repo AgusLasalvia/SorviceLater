@@ -22,9 +22,6 @@ function GetUsername({ isSidebarOpen, toggleSidebar }: any) {
 
 
 const Navbar = () => {
-
-
-
 	// Navbar state for sidebar
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	// toggle sidebar
