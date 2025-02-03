@@ -9,12 +9,12 @@ export interface Knowledge {
 export class KnowledgeModel {
 	static async createKnowledge(knowledge: Knowledge): Promise<Knowledge | null> {
 		const db = await Database.getInstance();
-		const sql = `INSERT INTO knowledge (title,description) VALUES(?,?)`
+		const sql = `INSERT INTO knowledge (title,description) VALUES(?,?);`
 		const [result] = await db.query(sql, [
 			knowledge.title,
 			knowledge.description
 		])
-		console.log(result)
+		
 
 		return result ? knowledge : null;
 	}

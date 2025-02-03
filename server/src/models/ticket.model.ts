@@ -18,6 +18,7 @@ export interface Ticket {
 
 
 export class TicektModel {
+
 	static async createTicket(ticket: Ticket): Promise<Ticket | null> {
 		const db = await Database.getInstance();
 		const sql = `INSERT INTO tickets (
@@ -27,7 +28,7 @@ export class TicektModel {
 		category,symptom,
 		impact,urgency,
 		priority ) 
-		VALUES  (?,?,?,?,?,?,?,?,?,?,?,?)`;
+		VALUES  (?,?,?,?,?,?,?,?,?,?,?,?);`;
 		const [result] = await db.query(sql, [
 			ticket.request_by,
 			ticket.request_for,
@@ -48,7 +49,7 @@ export class TicektModel {
 
 	static async getTicketById(id: number): Promise<Ticket | null> {
 		const db = await Database.getInstance();
-		const sql = `SELECT * FROM Ticket WHERE id = ?`;
+		const sql = `SELECT * FROM Ticket WHERE id = ?;`;
 		const [rows] = await db.query<Ticket>(sql, [id]);
 		return rows.length ? rows[0] : null;
 	}
@@ -56,7 +57,7 @@ export class TicektModel {
 
 	static async getTicketByUser(username: string): Promise<Ticket[] | null> {
 		const db = await Database.getInstance();
-		const sql = `SELECT * FROM Ticket WHERE request_by = ?`;
+		const sql = `SELECT * FROM Ticket WHERE request_by = ?;`;
 		const [rows] = await db.query<Ticket>(sql, [username]);
 		return rows;
 	}
@@ -72,7 +73,7 @@ export class TicektModel {
 		assigned = ?, category = ?, 
 		symptom = ?, impact = ?, 
 		urgency = ?, priority = ? 
-		WHERE id = ?`;
+		WHERE id = ?;`;
 		const [result] = await db.query(sql, [
 			ticket.request_by,
 			ticket.request_for,

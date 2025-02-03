@@ -1,3 +1,4 @@
+// .env read file
 import { config } from 'dotenv';
 config();
 
@@ -5,10 +6,10 @@ import express, { Application } from 'express';
 import cors from 'cors';
 
 // Routes imports
-import AuthRoute from "./src/routes/auth.routes";
+import AuthRoute from './src/routes/auth.routes';
 import UserRoute from './src/routes/user.routes'
 import TicketRoute from './src/routes/ticket.routes'
-
+import KnowledgeRoute from './src/routes/knowledge.routes'
 
 
 const app: Application = express();
@@ -27,7 +28,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/auth', AuthRoute);
 app.use('/user', UserRoute);
-app.use('/ticket', TicketRoute)
+app.use('/ticket', TicketRoute);
+app.use('/knowledge', KnowledgeRoute);
 
 
 // Server start and port listening
