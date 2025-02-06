@@ -9,7 +9,7 @@ export default class UserController {
 
 	static async login(req: Request, res: Response) {
 		const { username, password } = req.body;
-		console.log(username)
+
 		const user = await UserModel.login(username, password);
 
 		if (user)
@@ -21,10 +21,10 @@ export default class UserController {
 
 	static async getUsers(req: Request, res: Response) {
 		const users = await UserModel.getUsers();
-		if (!users)
+		if (users.length < 1)
 			res.status(404).json({ message: "no users found" });
 		else
-			res.status(200).json({ data: users })
+			res.status(200).json(users)
 	}
 
 	static async getUser(req: Request, res: Response) {

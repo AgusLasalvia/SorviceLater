@@ -19,7 +19,7 @@ export class KnowledgeModel {
 
 	static async getAllKnowledge(): Promise<Knowledge[] | []> {
 		const db = await Database.getInstance();
-		const sql = `SELECT id, title FROM knowledge;`
+		const sql = `SELECT * FROM knowledge;`
 		const [rows] = await db.query(sql);
 		return rows.length > 0 ? rows : [];
 	}

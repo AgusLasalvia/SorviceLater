@@ -2,13 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { KnowledgeSubmitForm } from "@/lib/forms";
+import { KnowledgeBaseForm } from "@/lib/forms";
 import { fetchCountKnowledge, fetchKnowledge } from '@/lib/fetch'
 
 
 const KnowledgeForm = () => {
 
-	const [knowledgeForm, setKnowledgeForm] = useState(KnowledgeSubmitForm);
+	const [knowledgeForm, setKnowledgeForm] = useState(KnowledgeBaseForm);
 	const [error, setError] = useState('')
 
 	const router = useRouter();

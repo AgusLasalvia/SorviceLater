@@ -22,6 +22,19 @@ export const fetchLogin = async (body: Interfaces.Login) => {
 };
 
 
+export const fetchAllAdmins = async () => {
+	const response = await fetch(`${API_BASE_URL}/user/all_users`, {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json"
+		},
+	})
+
+	const data = await response.json()
+	return data;
+}
+
+
 
 
 
@@ -79,3 +92,12 @@ export const fetchAllKnowledge = async (): Promise<Interfaces.Knowledge[]> => {
 	})
 	return response.json();
 }
+
+
+// fetch("/api/ticket/", {
+// 	method: method,
+// 	headers: {
+// 		"Content-Type": "application/json",
+// 	},
+// 	body: JSON.stringify(props),
+// });

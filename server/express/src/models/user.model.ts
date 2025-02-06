@@ -25,9 +25,9 @@ export class UserModel {
 		return rows.length ? rows[0] : null;
 	}
 
-	static async getUsers(): Promise<User[] | null> {
+	static async getUsers(): Promise<User[] | []> {
 		const db = await Database.getInstance();
-		const sql = `SELECT id,username FROM users`;
+		const sql = `SELECT id,username FROM user;`;
 		const [rows] = await db.query<User>(sql);
 		return rows;
 	}

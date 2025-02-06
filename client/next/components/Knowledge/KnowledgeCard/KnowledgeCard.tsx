@@ -10,7 +10,7 @@ export const KnowledgeCard = (item: KnowledgeCardProp) => {
 		<div className="result">
 			<p className="kbID">{item.id}</p>
 			<p className="kbTitle">{item.title}</p>
-			<button className="button" >Open</button>
+			<a className="button" >Open</a>
 		</div>
 
 

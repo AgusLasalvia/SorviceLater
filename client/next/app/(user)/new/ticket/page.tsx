@@ -1,24 +1,24 @@
-import "./ticket.css";
-import { getAllAdmins } from "@/actions/get-user";
-import { getAllKnowledge } from "@/actions/get-knowledge";
-import TicketForm from "@/components/Ticket/TicketForm/TicketForm";
-import { ticketDefaultForm } from "@/types";
+"use client"
 
-const Page = async () => {
-  const knowledgeList = await getAllKnowledge();
-  const adminsList = await getAllAdmins();
-  return (
-    <>
-      <div className="formWrapper">
-        <TicketForm
-          admins={adminsList}
-          knowledgels={knowledgeList}
-          props={ticketDefaultForm}
-          method="POST"
-        />
-      </div>
-    </>
-  );
+import "./ticket.css";
+import TicketForm from "@/components/Ticket/TicketForm/TicketForm";
+import { TicketBaseForm } from "@/lib/forms"
+
+
+const Page = () => {
+
+
+	return (
+
+
+
+		<div className="formWrapper">
+			<TicketForm
+
+				props={TicketBaseForm} />
+		</div>
+
+	);
 };
 
 export default Page;
