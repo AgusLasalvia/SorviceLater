@@ -18,7 +18,8 @@ const KnowledgeForm = () => {
 	useEffect(() => {
 		const getNewId = async () => {
 			const id = await fetchCountKnowledge()
-			setKnowledgeForm({ ...knowledgeForm, id: id.count + 1 })
+	
+			setKnowledgeForm({ ...knowledgeForm, id: id + 1 })
 		}
 		getNewId()
 	}, [])
