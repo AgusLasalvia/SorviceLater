@@ -13,8 +13,22 @@ export class KnowledgeController {
 	}
 
 	static async getKnowledgeTotalCouter(req: Request, res: Response) {
-		const response = KnowledgeModel.getKnowledgeTotalCount();
+		const response = await KnowledgeModel.getKnowledgeTotalCount();
 		res.status(200).json(response);
+	}
+
+	static async getAllKnowledge(req: Request, res: Response) {
+		const response: Knowledge[] | [] = await KnowledgeModel.getAllKnowledge();
+		res.json(response);
+	}
+
+	static async getKnowledgeById(req: Request, res: Response) {
+		const { id } = req.params
+		const response: Knowledge | null = await KnowledgeModel.getKnowledgeById(Number(id));
+		if (!response)
+			res.status(404)
+		else
+			res.status(200).json({ data: response })
 	}
 
 

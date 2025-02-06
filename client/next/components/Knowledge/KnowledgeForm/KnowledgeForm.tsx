@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { KnowledgeSubmitForm } from "@/lib/forms";
 import { fetchCountKnowledge, fetchKnowledge } from '@/lib/fetch'
 
@@ -13,10 +13,14 @@ const KnowledgeForm = () => {
 
 	const router = useRouter();
 
+
+
 	useEffect(() => {
-		fetchCountKnowledge().then((data) => {
-			knowledgeForm.id = data.count + 1;
-		});
+		const getNewId = async () => {
+			const id = await fetchCountKnowledge()
+			setKnowledgeForm({ ...knowledgeForm, id: id.count + 1 })
+		}
+		getNewId()
 	}, [])
 
 	const handleSubmit = async () => {
@@ -66,7 +70,10 @@ const KnowledgeForm = () => {
 							name="title"
 							className="input"
 							type="text"
-							placeholder={knowledgeForm.title}
+							value={knowledgeForm.title}
+							onChange={(e) => {
+								setKnowledgeForm({ ...knowledgeForm, title: e.target.value })
+							}}
 						/>
 
 						<p id="knowledgeP" className="inputLabel">
@@ -77,7 +84,10 @@ const KnowledgeForm = () => {
 							name="knowledge"
 							className="input"
 							typeof="text"
-							placeholder={knowledgeForm.description}
+							value={knowledgeForm.description}
+							onChange={(e) => {
+								setKnowledgeForm({ ...knowledgeForm, description: e.target.value })
+							}}
 						></textarea>
 					</div>
 				</div>

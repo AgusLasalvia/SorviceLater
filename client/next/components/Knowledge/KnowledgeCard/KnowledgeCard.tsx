@@ -1,17 +1,18 @@
+"use client"
+interface KnowledgeCardProp {
+	id: number
+	title: string,
+}
 
-
-export const KnowledgeCard = async () => {
+export const KnowledgeCard = (item: KnowledgeCardProp) => {
 	return (
-		<>
-			{/* {await getAllKnowledge().then((knowledge) => {
-				knowledge.map((item) => {
-					<div className="result">
-						<p className="kbID">{item.id}</p>
-						<p className="kbTitle">{item.title}</p>
-						<button className="button">Open</button>
-					</div>;
-				});
-			})} */}
-		</>
+
+		<div className="result">
+			<p className="kbID">{item.id}</p>
+			<p className="kbTitle">{item.title}</p>
+			<button className="button" >Open</button>
+		</div>
+
+
 	);
 };

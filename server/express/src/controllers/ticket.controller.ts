@@ -25,7 +25,7 @@ export class TicketController {
 
 	static async updateTicket(req: Request, res: Response) {
 		const ticket: Ticket = req.body;
-		const response = await TicektModel.updateTicket(ticket._id, ticket);
+		const response = await TicektModel.updateTicket(ticket.id, ticket);
 		if (!response)
 			res.status(500).json({ message: 'Error updating the Ticket' });
 		else
@@ -45,10 +45,11 @@ export class TicketController {
 
 	static async getAllTypeTicketCounter(req: Request, res: Response) {
 		const response = await TicektModel.getAllTicketCounter();
+		console.log(response)
 		if (!response)
-			res.status(404).json({ data: { new: 0, pending: 0, resolved: 0 } })
+			res.status(200).json({ new: 0, pending: 0, resolved: 0 })
 		else
-			res.status(200).json({ data: response });
+			res.status(200).json(response);
 
 	}
 }

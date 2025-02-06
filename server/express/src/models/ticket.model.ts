@@ -1,7 +1,7 @@
 import { Database } from "../database";
 
 export interface Ticket {
-	_id: number,
+	id: number,
 	request_by: string,
 	request_for: string,
 	service_offering: string,
@@ -14,6 +14,8 @@ export interface Ticket {
 	impact: string,
 	urgency: string,
 	priority: string,
+	created_at: Date,
+	updated_at: Date
 }
 
 
@@ -21,7 +23,7 @@ export class TicektModel {
 
 	static async createTicket(ticket: Ticket): Promise<Ticket | null> {
 		const db = await Database.getInstance();
-		const sql = `INSERT INTO tickets (
+		const sql = `INSERT INTO ticket (
 		request_by,request_for,
 		service_offering,item,
 		contact_type,status,assigned,
@@ -29,7 +31,7 @@ export class TicektModel {
 		impact,urgency,
 		priority ) 
 		VALUES  (?,?,?,?,?,?,?,?,?,?,?,?);`;
-		const [result] = await db.query(sql, [
+		const [rows] = await db.query(sql, [
 			ticket.request_by,
 			ticket.request_for,
 			ticket.service_offering,
@@ -43,7 +45,7 @@ export class TicektModel {
 			ticket.urgency,
 			ticket.priority
 		]);
-		return result ? ticket : null;
+		return rows ? ticket : null;
 	}
 
 
@@ -74,7 +76,7 @@ export class TicektModel {
 		symptom = ?, impact = ?, 
 		urgency = ?, priority = ? 
 		WHERE id = ?;`;
-		const [result] = await db.query(sql, [
+		const [rows] = await db.query(sql, [
 			ticket.request_by,
 			ticket.request_for,
 			ticket.service_offering,
@@ -89,7 +91,7 @@ export class TicektModel {
 			ticket.priority,
 			id
 		]);
-		return result ? ticket : null;
+		return rows ? ticket : null;
 	}
 
 
@@ -97,11 +99,12 @@ export class TicektModel {
 		const db = await Database.getInstance()
 		const sql = `
 		SELECT status, COUNT(*) AS count
-		FROM your_table
+		FROM ticket
 		WHERE status IN ('new', 'resolved', 'pending')
 		GROUP BY status;
 		`
-		const [rows] = await db.query(sql)
+		const [rows] = await db.query<any>(sql)
+
 		return rows.length ? rows[0] : null;
 	}
 }

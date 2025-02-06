@@ -11,11 +11,8 @@ import UserRoute from './src/routes/user.routes'
 import TicketRoute from './src/routes/ticket.routes'
 import KnowledgeRoute from './src/routes/knowledge.routes'
 
-
 const app: Application = express();
 const PORT = process.env.SERVER_PORT || 5000;
-
-
 
 // Express configuration
 
