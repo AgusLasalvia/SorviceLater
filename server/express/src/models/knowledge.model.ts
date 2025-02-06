@@ -28,7 +28,8 @@ export class KnowledgeModel {
 		const db = await Database.getInstance();
 		const sql = `SELECT COUNT(id) as count FROM knowledge;`
 		const [rows] = await db.query<any>(sql);
-		return rows[0].count > 0 ? rows[0] : null;
+		console.log(rows)
+		return rows[0].count
 	}
 
 

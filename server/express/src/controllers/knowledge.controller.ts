@@ -14,7 +14,7 @@ export class KnowledgeController {
 
 	static async getKnowledgeTotalCouter(req: Request, res: Response) {
 		const response = await KnowledgeModel.getKnowledgeTotalCount();
-		res.status(200).json(response);
+		res.status(200).json(Number(response));
 	}
 
 	static async getAllKnowledge(req: Request, res: Response) {

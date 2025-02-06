@@ -12,7 +12,7 @@ import TicketRoute from './src/routes/ticket.routes'
 import KnowledgeRoute from './src/routes/knowledge.routes'
 
 const app: Application = express();
-const PORT = process.env.SERVER_PORT || 5000;
+const PORT = Number(process.env.SERVER_PORT) || 5000;
 
 // Express configuration
 
@@ -31,5 +31,5 @@ app.use('/knowledge', KnowledgeRoute);
 
 // Server start and port listening
 app.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
+	console.log(`✅ Server is running on port ${PORT} ✅`);	
 });
