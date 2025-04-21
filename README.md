@@ -1,73 +1,74 @@
+
 # 🎫 SorvisLater
 
-**SorvisLater** es una solución de sistema de tickets IT para servidores **Minecraft**, inspirado en **ServiceNow**.  
-Está pensado para facilitar la gestión de solicitudes de soporte en comunidades y servidores técnicos.
+**SorvisLater** is an IT ticketing system solution for **Minecraft** servers, inspired by **ServiceNow**.  
+It is designed to facilitate the management of support requests in communities and technical servers.
 
 ---
 
-## 👨‍💻 Autores
+## 👨‍💻 Authors
 
 - 🎨 **Joaquín Gómez** – *Front-End*
 - 🛠️ **Agustín Lasalvia** – *Back-End*
 
 ---
 
-## ⚙️ Instalación completa
+## ⚙️ Full Installation
 
-### 🔧 Requisitos
+### 🔧 Prerequisites
 
-Antes de comenzar, asegurate de tener instalado:
+Before getting started, make sure you have installed:
 
-- [Node.js](https://nodejs.org/) (LTS recomendado)
+- [Node.js](https://nodejs.org/) (LTS recommended)
 - MySQL Server
 
 ---
 
-### 🧱 Pasos a seguir (Linux)
+### 🧱 Steps (Linux)
 
-1. **Clonar el repositorio:**
+1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/tu-usuario/SorvisLater.git
+   git clone https://github.com/your-user/SorvisLater.git
    cd SorvisLater
    ```
 
-2. **Instalar MySQL Server:**
+2. **Install MySQL Server:**
 
    ```bash
    sudo apt-get install mysql-server
    ```
 
-3. **Ingresar a MySQL como root:**
+3. **Login to MySQL as root:**
 
    ```bash
    sudo mysql
    ```
 
-4. **Crear la base de datos y el usuario:**
+4. **Create the database and user:**
 
-   Dentro del cliente de MySQL:
+   Inside the MySQL client:
 
    ```sql
    CREATE DATABASE SorvisLater;
-   CREATE USER 'sorvis_user'@'%' IDENTIFIED BY 'tu_contraseña';
+   CREATE USER 'sorvis_user'@'%' IDENTIFIED BY 'your_password';
    GRANT ALL PRIVILEGES ON SorvisLater.* TO 'sorvis_user'@'%';
    FLUSH PRIVILEGES;
    EXIT;
    ```
 
-5. **Importar las tablas usando el dump:**
+5. **Import tables using the dump:**
 
-   Asegurate de estar en la carpeta `database` del proyecto y ejecutá:
+   Make sure you are in the `database` folder of the project and run:
 
    ```bash
    cd database
    mysql -u sorvis_user -p SorvisLater < dump.sql
    ```
 
-> 🛑 Si usás una máquina distinta para la base de datos, asegurate de abrir el puerto **3306** (por defecto de MySQL).
+> 🛑 If you are using a separate machine for the database, make sure to open port **3306** (default for MySQL).
 
-6. **Volver a la carpeta del servidor e instalar dependencias:**
+6. **Go back to the server folder and install dependencies:**
 
    ```bash
    cd ../server
@@ -75,15 +76,15 @@ Antes de comenzar, asegurate de tener instalado:
    npm i -D
    ```
 
-7. **Build del backend:**
+7. **Build the backend:**
 
    ```bash
    npm run build
    ```
 
-   Esto generará una carpeta `dist/` con el backend compilado desde TypeScript.
+   This will generate a `dist/` folder with the backend compiled from TypeScript.
 
-8. **Ejecutar el servidor:**
+8. **Run the server:**
 
    ```bash
    cd dist
@@ -92,52 +93,52 @@ Antes de comenzar, asegurate de tener instalado:
 
 ---
 
-## 🌐 Conexión a la base de datos
+## 🌐 Database Connection
 
-Verificá que tu archivo de configuración tenga los datos correctos:
+Check that your configuration file has the correct details:
 
-- IP del servidor
-- Usuario: `sorvis_user`
-- Contraseña: `tu_contraseña`
-- Puerto: `3306` (por defecto)
-- Base de datos: `SorvisLater`
+- Server IP
+- Username: `sorvis_user`
+- Password: `your_password`
+- Port: `3306` (default)
+- Database: `SorvisLater`
 
 ---
 
-## 🧪 Prueba rápida
+## 🧪 Quick Test
 
-1. Asegurate de que el servicio MySQL esté activo:
+1. Make sure the MySQL service is running:
 
    ```bash
    sudo service mysql start
    ```
 
-2. Iniciá el backend si no lo hiciste ya:
+2. Start the backend if you haven’t already:
 
    ```bash
    cd server/dist
    node index.js
    ```
 
-3. ¡Listo! Tu API debería estar corriendo y lista para recibir peticiones.
+3. Done! Your API should be up and running, ready to receive requests.
 
 ---
 
-## 🤝 Contribuciones
+## 🤝 Contributions
 
-¿Querés colaborar? ¡Sos bienvenido!  
-Podés:
+Want to contribute? You're welcome!  
+You can:
 
-- Abrir un issue con tus dudas o sugerencias
-- Hacer un fork y enviar un pull request
-
----
-
-## 📄 Licencia
-
-Este proyecto es de código abierto bajo los términos definidos por sus autores.  
-Usalo, modificálo y adaptálo como quieras ✨
+- Open an issue with your questions or suggestions
+- Fork the repo and submit a pull request
 
 ---
 
-Gracias por usar **SorvisLater** 💙
+## 📄 License
+
+This project is open source under the terms defined by its authors.  
+Feel free to use, modify, and adapt it as you wish ✨
+
+---
+
+Thanks for using **SorvisLater** 💙
