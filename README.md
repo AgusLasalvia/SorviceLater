@@ -122,23 +122,3 @@ Check that your configuration file has the correct details:
 
 3. Done! Your API should be up and running, ready to receive requests.
 
----
-
-## 🤝 Contributions
-
-Want to contribute? You're welcome!  
-You can:
-
-- Open an issue with your questions or suggestions
-- Fork the repo and submit a pull request
-
----
-
-## 📄 License
-
-This project is open source under the terms defined by its authors.  
-Feel free to use, modify, and adapt it as you wish ✨
-
----
-
-Thanks for using **SorvisLater** 💙
